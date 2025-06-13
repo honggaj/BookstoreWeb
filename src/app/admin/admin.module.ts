@@ -6,11 +6,13 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ManageBooksModule } from './pages/manage-books/manage-books.module';
 import { ManageUsersModule } from './pages/manage-users/manage-users.module';
 import { ManageOrdersModule } from './pages/manage-orders/manage-orders.module';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
+    SidebarComponent,
     
     
   ],

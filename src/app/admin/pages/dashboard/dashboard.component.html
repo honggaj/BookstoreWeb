@@ -1,329 +1,141 @@
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <app-sidebar *ngIf="isSidebarOpen"></app-sidebar>
 
-  <div class="flex min-h-screen">
-   <!-- Sidebar -->
-   <aside class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between">
-    <div>
-     <div class="flex items-center gap-2 px-6 py-5 border-b border-gray-200">
-      <img alt="Mantis logo blue diamond shape" class="w-6 h-6" height="24" src="https://storage.googleapis.com/a1aa/image/ae517be5-4d4b-4154-c554-d0aab4d268f8.jpg" width="24"/>
-      <span class="font-semibold text-lg select-none">
-       Mantis
-      </span>
-     </div>
-     <nav class="mt-6 px-4 text-xs text-gray-400 select-none">
-      <p class="uppercase font-semibold mb-2">
-       Dashboard
-      </p>
-      <ul>
-       <li>
-        <a class="flex items-center gap-2 text-blue-600 font-semibold rounded-md px-3 py-2 bg-blue-50" href="#">
-         <i class="fas fa-list-ul text-xs">
-         </i>
-         Default
-        </a>
-       </li>
-      </ul>
-      <p class="uppercase font-semibold mt-6 mb-2">
-       Authentication
-      </p>
-      <ul class="space-y-1">
-       <li>
-        <a class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md" href="#">
-         <i class="fas fa-sign-in-alt text-xs">
-         </i>
-         Login
-        </a>
-       </li>
-       <li>
-        <a class="flex items-center gap-2 font-semibold text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md" href="#">
-         <i class="fas fa-user-plus text-xs">
-         </i>
-         Register
-        </a>
-       </li>
-      </ul>
-      <p class="uppercase font-semibold mt-6 mb-2">
-       UI Components
-      </p>
-      <ul class="space-y-1">
-       <li>
-        <a class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md" href="#">
-         <i class="fas fa-text-height text-xs">
-         </i>
-         Typography
-        </a>
-       </li>
-       <li>
-        <a class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md" href="#">
-         <i class="fas fa-palette text-xs">
-         </i>
-         Colors
-        </a>
-       </li>
-       <li>
-        <a class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md" href="#">
-         <i class="fas fa-icons text-xs">
-         </i>
-         Ant Icons
-        </a>
-       </li>
-      </ul>
-      <p class="uppercase font-semibold mt-6 mb-2">
-       Other
-      </p>
-      <ul class="space-y-1">
-       <li>
-        <a class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md" href="#">
-         <i class="fas fa-globe text-xs">
-         </i>
-         Sample Page
-        </a>
-       </li>
-       <li>
-        <a class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md" href="#">
-         <i class="fas fa-question-circle text-xs">
-         </i>
-         Document
-        </a>
-       </li>
-      </ul>
-     </nav>
-    </div>
-    <div class="p-6">
-     <div class="bg-white border border-gray-200 rounded-lg p-4 flex flex-col items-center text-center">
-      <img alt="Avatar of a man with a black hat and beard with two small donuts around" class="rounded-full mb-3" height="64" src="https://storage.googleapis.com/a1aa/image/ecb943b6-3bd1-4f42-6fd1-5bd58724a71e.jpg" width="64"/>
-      <p class="font-semibold text-gray-900 text-sm">
-       Mantis Pro
-      </p>
-      <p class="text-xs text-gray-500">
-       Checkout pro features
-      </p>
-     </div>
-    </div>
-   </aside>
-   <!-- Main content -->
-   <main class="flex-1 flex flex-col">
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col">
     <!-- Top bar -->
     <header class="flex items-center justify-between border-b border-gray-200 px-6 py-3">
-     <div class="flex items-center gap-4">
-      <button aria-label="Menu" class="text-gray-600 hover:text-gray-900 focus:outline-none">
-       <i class="fas fa-bars">
-       </i>
-      </button>
-      <div class="relative">
-       <input class="border border-gray-300 rounded-md text-xs py-1.5 pl-3 pr-10 w-48 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="Ctrl + K" type="search"/>
-       <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
-       </i>
+      <div class="flex items-center gap-6">
+        <button aria-label="Menu" class="text-gray-600 hover:text-gray-900 focus:outline-none"
+          (click)="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="relative">
+          <input
+            class="border border-gray-300 rounded-md text-xs py-1.5 pl-3 pr-10 w-48 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Ctrl + K" type="search" />
+          <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+          </i>
+        </div>
       </div>
-     </div>
-     <div class="flex items-center gap-6">
-      <button aria-label="GitHub" class="text-gray-600 hover:text-gray-900 focus:outline-none">
-       <i class="fab fa-github text-lg">
-       </i>
-      </button>
-      <button aria-label="Notifications" class="relative text-gray-600 hover:text-gray-900 focus:outline-none">
-       <i class="fas fa-bell text-lg">
-       </i>
-       <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-semibold rounded-full w-4 h-4 flex items-center justify-center">
-        3
-       </span>
-      </button>
-      <div class="flex items-center gap-2 cursor-pointer select-none">
-       <img alt="User avatar with short brown hair and light skin tone" class="rounded-full w-8 h-8" height="32" src="https://storage.googleapis.com/a1aa/image/ed1a5e68-b920-497e-d426-42778d1e60c5.jpg" width="32"/>
-       <span class="text-sm font-semibold text-gray-900">
-        John Doe
-       </span>
+      <div class="flex items-center gap-6">
+        <button aria-label="GitHub" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+          <i class="fab fa-github text-lg">
+          </i>
+        </button>
+        <button aria-label="Notifications" class="relative text-gray-600 hover:text-gray-900 focus:outline-none">
+          <i class="fas fa-bell text-lg">
+          </i>
+          <span
+            class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+            3
+          </span>
+        </button>
+        <div class="flex items-center gap-2 cursor-pointer select-none">
+          <img alt="User avatar with short brown hair and light skin tone" class="rounded-full w-8 h-8" height="32"
+            src="https://storage.googleapis.com/a1aa/image/ed1a5e68-b920-497e-d426-42778d1e60c5.jpg" width="32" />
+          <span class="text-sm font-semibold text-gray-900">
+            John Doe
+          </span>
+        </div>
       </div>
-     </div>
     </header>
     <!-- Dashboard cards -->
     <section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-gray-50">
-     <div class="bg-white rounded-md p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
-      <p class="text-xs text-gray-500 mb-1 select-none">
-       Total Page Views
-      </p>
-      <div class="flex items-center gap-2">
-       <p class="font-extrabold text-lg text-gray-900 select-text">
-        4,42,236
-       </p>
-       <div class="text-xs text-blue-600 bg-blue-100 rounded px-2 py-0.5 select-text flex items-center gap-1">
-        <i class="fas fa-chart-line">
-        </i>
-        59.3%
-       </div>
+      <div class="bg-white rounded-md p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
+        <p class="text-xs text-gray-500 mb-1 select-none">
+          Total Page Views
+        </p>
+        <div class="flex items-center gap-2">
+          <p class="font-extrabold text-lg text-gray-900 select-text">
+            4,42,236
+          </p>
+          <div class="text-xs text-blue-600 bg-blue-100 rounded px-2 py-0.5 select-text flex items-center gap-1">
+            <i class="fas fa-chart-line">
+            </i>
+            59.3%
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-1 select-text">
+          You made an extra
+          <span class="text-blue-600 font-semibold cursor-pointer">
+            35,000
+          </span>
+          this year
+        </p>
       </div>
-      <p class="text-xs text-gray-500 mt-1 select-text">
-       You made an extra
-       <span class="text-blue-600 font-semibold cursor-pointer">
-        35,000
-       </span>
-       this year
-      </p>
-     </div>
-     <div class="bg-white rounded-md p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
-      <p class="text-xs text-gray-500 mb-1 select-none">
-       Total Users
-      </p>
-      <div class="flex items-center gap-2">
-       <p class="font-extrabold text-lg text-gray-900 select-text">
-        78,250
-       </p>
-       <div class="text-xs text-blue-600 bg-blue-100 rounded px-2 py-0.5 select-text flex items-center gap-1">
-        <i class="fas fa-chart-line">
-        </i>
-        70.5%
-       </div>
+      <div class="bg-white rounded-md p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
+        <p class="text-xs text-gray-500 mb-1 select-none">
+          Total Users
+        </p>
+        <div class="flex items-center gap-2">
+          <p class="font-extrabold text-lg text-gray-900 select-text">
+            78,250
+          </p>
+          <div class="text-xs text-blue-600 bg-blue-100 rounded px-2 py-0.5 select-text flex items-center gap-1">
+            <i class="fas fa-chart-line">
+            </i>
+            70.5%
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-1 select-text">
+          You made an extra
+          <span class="text-blue-600 font-semibold cursor-pointer">
+            8,900
+          </span>
+          this year
+        </p>
       </div>
-      <p class="text-xs text-gray-500 mt-1 select-text">
-       You made an extra
-       <span class="text-blue-600 font-semibold cursor-pointer">
-        8,900
-       </span>
-       this year
-      </p>
-     </div>
-     <div class="bg-white rounded-md p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
-      <p class="text-xs text-gray-500 mb-1 select-none">
-       Total Order
-      </p>
-      <div class="flex items-center gap-2">
-       <p class="font-extrabold text-lg text-gray-900 select-text">
-        18,800
-       </p>
-       <div class="text-xs text-yellow-600 bg-yellow-100 rounded px-2 py-0.5 select-text flex items-center gap-1">
-        <i class="fas fa-chart-line" style="transform: rotate(20deg)">
-        </i>
-        27.4%
-       </div>
+      <div class="bg-white rounded-md p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
+        <p class="text-xs text-gray-500 mb-1 select-none">
+          Total Order
+        </p>
+        <div class="flex items-center gap-2">
+          <p class="font-extrabold text-lg text-gray-900 select-text">
+            18,800
+          </p>
+          <div class="text-xs text-yellow-600 bg-yellow-100 rounded px-2 py-0.5 select-text flex items-center gap-1">
+            <i class="fas fa-chart-line" style="transform: rotate(20deg)">
+            </i>
+            27.4%
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-1 select-text">
+          You made an extra
+          <span class="text-yellow-600 font-semibold cursor-pointer">
+            1,943
+          </span>
+          this year
+        </p>
       </div>
-      <p class="text-xs text-gray-500 mt-1 select-text">
-       You made an extra
-       <span class="text-yellow-600 font-semibold cursor-pointer">
-        1,943
-       </span>
-       this year
-      </p>
-     </div>
-     <div class="bg-white rounded-md p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
-      <p class="text-xs text-gray-500 mb-1 select-none">
-       Total Sales
-      </p>
-      <div class="flex items-center gap-2">
-       <p class="font-extrabold text-lg text-gray-900 select-text">
-        $35,078
-       </p>
-       <div class="text-xs text-yellow-600 bg-yellow-100 rounded px-2 py-0.5 select-text flex items-center gap-1">
-        <i class="fas fa-chart-line" style="transform: rotate(20deg)">
-        </i>
-        27.4%
-       </div>
+      <div class="bg-white rounded-md p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
+        <p class="text-xs text-gray-500 mb-1 select-none">
+          Total Sales
+        </p>
+        <div class="flex items-center gap-2">
+          <p class="font-extrabold text-lg text-gray-900 select-text">
+            $35,078
+          </p>
+          <div class="text-xs text-yellow-600 bg-yellow-100 rounded px-2 py-0.5 select-text flex items-center gap-1">
+            <i class="fas fa-chart-line" style="transform: rotate(20deg)">
+            </i>
+            27.4%
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-1 select-text">
+          You made an extra
+          <span class="text-yellow-600 font-semibold cursor-pointer">
+            $20,395
+          </span>
+          this year
+        </p>
       </div>
-      <p class="text-xs text-gray-500 mt-1 select-text">
-       You made an extra
-       <span class="text-yellow-600 font-semibold cursor-pointer">
-        $20,395
-       </span>
-       this year
-      </p>
-     </div>
     </section>
     <!-- Main dashboard content -->
     <section class="flex flex-col lg:flex-row p-6 gap-6 flex-1 overflow-auto">
-     <!-- Left chart area -->
-     <div class="flex-1 bg-white rounded-md border border-gray-100 p-6">
-      <div class="flex justify-between items-center mb-4">
-       <h2 class="font-semibold text-gray-900 text-sm select-none">
-        Unique Visitor
-       </h2>
-       <div class="flex items-center gap-2 text-xs text-gray-500 select-none">
-        <span>
-         Month
-        </span>
-        <button class="text-blue-600 bg-blue-50 border border-blue-200 rounded px-2 py-0.5 font-semibold">
-         Week
-        </button>
-       </div>
-      </div>
-      <div class="w-full h-48">
-       <img alt="Area chart showing unique visitors with two layered blue shaded areas, labeled Page Views and Sessions, with x-axis days Tue to Fri and y-axis values 0 to 250" class="w-full h-full object-contain" height="192" src="https://storage.googleapis.com/a1aa/image/de5e9459-d256-4631-73b8-1aa4814baf7f.jpg" width="600"/>
-      </div>
-      <div class="flex justify-center gap-6 mt-2 text-xs select-none text-gray-600">
-       <div class="flex items-center gap-1">
-        <span class="w-3 h-3 rounded-full bg-blue-400 block">
-        </span>
-        Page Views
-       </div>
-       <div class="flex items-center gap-1">
-        <span class="w-3 h-3 rounded-full bg-blue-800 block">
-        </span>
-        Sessions
-       </div>
-      </div>
-     </div>
-     <!-- Right income overview -->
-     <div class="w-full max-w-xs bg-white rounded-md border border-gray-100 p-6 flex flex-col">
-      <h3 class="font-semibold text-gray-900 text-sm mb-2 select-none">
-       Income Overview
-      </h3>
-      <div class="bg-gray-50 rounded-md p-4 flex flex-col gap-3">
-       <p class="text-xs text-gray-500 select-none">
-        This Week Statistics
-       </p>
-       <p class="font-extrabold text-lg text-gray-900 select-text">
-        $7,650
-       </p>
-       <div class="flex justify-between items-end gap-1 h-32">
-        <div class="flex flex-col items-center gap-1">
-         <div class="bg-cyan-400 rounded-sm w-6" style="height: 70%">
-         </div>
-         <span class="text-xs text-gray-500 select-none">
-          Mo
-         </span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-         <div class="bg-cyan-400 rounded-sm w-6" style="height: 90%">
-         </div>
-         <span class="text-xs text-gray-500 select-none">
-          Tu
-         </span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-         <div class="bg-cyan-400 rounded-sm w-6" style="height: 100%">
-         </div>
-         <span class="text-xs text-gray-500 select-none">
-          We
-         </span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-         <div class="bg-cyan-400 rounded-sm w-6" style="height: 60%">
-         </div>
-         <span class="text-xs text-gray-500 select-none">
-          Th
-         </span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-         <div class="bg-cyan-400 rounded-sm w-6" style="height: 80%">
-         </div>
-         <span class="text-xs text-gray-500 select-none">
-          Fr
-         </span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-         <div class="bg-cyan-400 rounded-sm w-6" style="height: 70%">
-         </div>
-         <span class="text-xs text-gray-500 select-none">
-          Sa
-         </span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-         <div class="bg-cyan-400 rounded-sm w-6" style="height: 90%">
-         </div>
-         <span class="text-xs text-gray-500 select-none">
-          Su
-         </span>
-        </div>
-       </div>
-      </div>
-     </div>
+      <router-outlet></router-outlet>
     </section>
-   </main>
-  </div>
+  </main>
+</div>
