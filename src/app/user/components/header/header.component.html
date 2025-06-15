@@ -1,0 +1,43 @@
+<!-- Top bar -->
+<div class="text-xs text-gray-500 flex justify-between px-4 py-1 border-b border-gray-200 bg-white">
+    <div class="flex items-center space-x-1">
+        <span>BookStore - Nhà sách online uy tín</span>
+        <i class="fas fa-phone-alt"></i>
+        <span class="text-red-600 font-semibold">Hotline: 0911 233 455</span>
+    </div>
+    <div class="flex space-x-4 text-gray-400">
+        <a class="hover:text-gray-600" href="#">Điều khoản</a>
+        <a class="hover:text-gray-600" href="#">Thanh toán</a>
+        <a class="hover:text-gray-600" href="#">Liên hệ</a>
+    </div>
+</div>
+
+<!-- Header -->
+<header class="border-b border-gray-200 bg-white">
+    <div class="w-full mx-auto flex items-center justify-between gap-4 px-4 py-3">
+        <!-- Logo + Search -->
+        <div class="flex items-center gap-4 flex-1">
+            <img alt="BookStore logo" class="h-12 w-auto"
+                src="https://phuongnamvina.com/img_data/images/mau-logo-nha-sach.jpg" />
+
+            <!-- Search -->
+            <form class="relative flex-1">
+                <input type="text" placeholder="Bạn muốn mua gì?"
+                    class="border border-gray-300 rounded-l-md py-2 px-3 w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                <button type="submit"
+                    class="absolute right-0 top-0 bottom-0 bg-blue-500 hover:bg-blue-600 text-white px-3 rounded-r-md">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Cart -->
+        <button
+            class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md px-4 py-2 flex items-center space-x-1 relative">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Giỏ hàng</span>
+            <span
+                class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">1</span>
+        </button>
+    </div>
+</header>

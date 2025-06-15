@@ -11,18 +11,33 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { apiGenreCreatePost } from '../fn/genre/api-genre-create-post';
-import { ApiGenreCreatePost$Params } from '../fn/genre/api-genre-create-post';
-import { apiGenreDeleteIdDelete } from '../fn/genre/api-genre-delete-id-delete';
-import { ApiGenreDeleteIdDelete$Params } from '../fn/genre/api-genre-delete-id-delete';
-import { apiGenreGet } from '../fn/genre/api-genre-get';
-import { ApiGenreGet$Params } from '../fn/genre/api-genre-get';
-import { apiGenreIdGet } from '../fn/genre/api-genre-id-get';
-import { ApiGenreIdGet$Params } from '../fn/genre/api-genre-id-get';
-import { apiGenreSearchGet } from '../fn/genre/api-genre-search-get';
-import { ApiGenreSearchGet$Params } from '../fn/genre/api-genre-search-get';
-import { apiGenreUpdateIdPut } from '../fn/genre/api-genre-update-id-put';
-import { ApiGenreUpdateIdPut$Params } from '../fn/genre/api-genre-update-id-put';
+import { apiGenreCreatePost$Json } from '../fn/genre/api-genre-create-post-json';
+import { ApiGenreCreatePost$Json$Params } from '../fn/genre/api-genre-create-post-json';
+import { apiGenreCreatePost$Plain } from '../fn/genre/api-genre-create-post-plain';
+import { ApiGenreCreatePost$Plain$Params } from '../fn/genre/api-genre-create-post-plain';
+import { apiGenreDeleteIdDelete$Json } from '../fn/genre/api-genre-delete-id-delete-json';
+import { ApiGenreDeleteIdDelete$Json$Params } from '../fn/genre/api-genre-delete-id-delete-json';
+import { apiGenreDeleteIdDelete$Plain } from '../fn/genre/api-genre-delete-id-delete-plain';
+import { ApiGenreDeleteIdDelete$Plain$Params } from '../fn/genre/api-genre-delete-id-delete-plain';
+import { apiGenreGet$Json } from '../fn/genre/api-genre-get-json';
+import { ApiGenreGet$Json$Params } from '../fn/genre/api-genre-get-json';
+import { apiGenreGet$Plain } from '../fn/genre/api-genre-get-plain';
+import { ApiGenreGet$Plain$Params } from '../fn/genre/api-genre-get-plain';
+import { apiGenreIdGet$Json } from '../fn/genre/api-genre-id-get-json';
+import { ApiGenreIdGet$Json$Params } from '../fn/genre/api-genre-id-get-json';
+import { apiGenreIdGet$Plain } from '../fn/genre/api-genre-id-get-plain';
+import { ApiGenreIdGet$Plain$Params } from '../fn/genre/api-genre-id-get-plain';
+import { apiGenreSearchGet$Json } from '../fn/genre/api-genre-search-get-json';
+import { ApiGenreSearchGet$Json$Params } from '../fn/genre/api-genre-search-get-json';
+import { apiGenreSearchGet$Plain } from '../fn/genre/api-genre-search-get-plain';
+import { ApiGenreSearchGet$Plain$Params } from '../fn/genre/api-genre-search-get-plain';
+import { apiGenreUpdateIdPut$Json } from '../fn/genre/api-genre-update-id-put-json';
+import { ApiGenreUpdateIdPut$Json$Params } from '../fn/genre/api-genre-update-id-put-json';
+import { apiGenreUpdateIdPut$Plain } from '../fn/genre/api-genre-update-id-put-plain';
+import { ApiGenreUpdateIdPut$Plain$Params } from '../fn/genre/api-genre-update-id-put-plain';
+import { GenreResponseListResultCustomModel } from '../models/genre-response-list-result-custom-model';
+import { GenreResponseResultCustomModel } from '../models/genre-response-result-custom-model';
+import { ObjectResultCustomModel } from '../models/object-result-custom-model';
 
 @Injectable({ providedIn: 'root' })
 export class GenreService extends BaseService {
@@ -35,23 +50,45 @@ export class GenreService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiGenreGet()` instead.
+   * To access only the response body, use `apiGenreGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiGenreGet$Response(params?: ApiGenreGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiGenreGet(this.http, this.rootUrl, params, context);
+  apiGenreGet$Plain$Response(params?: ApiGenreGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<GenreResponseListResultCustomModel>> {
+    return apiGenreGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiGenreGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiGenreGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiGenreGet(params?: ApiGenreGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiGenreGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiGenreGet$Plain(params?: ApiGenreGet$Plain$Params, context?: HttpContext): Observable<GenreResponseListResultCustomModel> {
+    return this.apiGenreGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GenreResponseListResultCustomModel>): GenreResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiGenreGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiGenreGet$Json$Response(params?: ApiGenreGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<GenreResponseListResultCustomModel>> {
+    return apiGenreGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiGenreGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiGenreGet$Json(params?: ApiGenreGet$Json$Params, context?: HttpContext): Observable<GenreResponseListResultCustomModel> {
+    return this.apiGenreGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GenreResponseListResultCustomModel>): GenreResponseListResultCustomModel => r.body)
     );
   }
 
@@ -60,23 +97,45 @@ export class GenreService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiGenreIdGet()` instead.
+   * To access only the response body, use `apiGenreIdGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiGenreIdGet$Response(params: ApiGenreIdGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiGenreIdGet(this.http, this.rootUrl, params, context);
+  apiGenreIdGet$Plain$Response(params: ApiGenreIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<GenreResponseResultCustomModel>> {
+    return apiGenreIdGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiGenreIdGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiGenreIdGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiGenreIdGet(params: ApiGenreIdGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiGenreIdGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiGenreIdGet$Plain(params: ApiGenreIdGet$Plain$Params, context?: HttpContext): Observable<GenreResponseResultCustomModel> {
+    return this.apiGenreIdGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GenreResponseResultCustomModel>): GenreResponseResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiGenreIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiGenreIdGet$Json$Response(params: ApiGenreIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<GenreResponseResultCustomModel>> {
+    return apiGenreIdGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiGenreIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiGenreIdGet$Json(params: ApiGenreIdGet$Json$Params, context?: HttpContext): Observable<GenreResponseResultCustomModel> {
+    return this.apiGenreIdGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GenreResponseResultCustomModel>): GenreResponseResultCustomModel => r.body)
     );
   }
 
@@ -85,23 +144,45 @@ export class GenreService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiGenreCreatePost()` instead.
+   * To access only the response body, use `apiGenreCreatePost$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiGenreCreatePost$Response(params?: ApiGenreCreatePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiGenreCreatePost(this.http, this.rootUrl, params, context);
+  apiGenreCreatePost$Plain$Response(params?: ApiGenreCreatePost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiGenreCreatePost$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiGenreCreatePost$Response()` instead.
+   * To access the full response (for headers, for example), `apiGenreCreatePost$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiGenreCreatePost(params?: ApiGenreCreatePost$Params, context?: HttpContext): Observable<void> {
-    return this.apiGenreCreatePost$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiGenreCreatePost$Plain(params?: ApiGenreCreatePost$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiGenreCreatePost$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiGenreCreatePost$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiGenreCreatePost$Json$Response(params?: ApiGenreCreatePost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiGenreCreatePost$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiGenreCreatePost$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiGenreCreatePost$Json(params?: ApiGenreCreatePost$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiGenreCreatePost$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
@@ -110,23 +191,45 @@ export class GenreService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiGenreUpdateIdPut()` instead.
+   * To access only the response body, use `apiGenreUpdateIdPut$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiGenreUpdateIdPut$Response(params: ApiGenreUpdateIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiGenreUpdateIdPut(this.http, this.rootUrl, params, context);
+  apiGenreUpdateIdPut$Plain$Response(params: ApiGenreUpdateIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiGenreUpdateIdPut$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiGenreUpdateIdPut$Response()` instead.
+   * To access the full response (for headers, for example), `apiGenreUpdateIdPut$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiGenreUpdateIdPut(params: ApiGenreUpdateIdPut$Params, context?: HttpContext): Observable<void> {
-    return this.apiGenreUpdateIdPut$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiGenreUpdateIdPut$Plain(params: ApiGenreUpdateIdPut$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiGenreUpdateIdPut$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiGenreUpdateIdPut$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiGenreUpdateIdPut$Json$Response(params: ApiGenreUpdateIdPut$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiGenreUpdateIdPut$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiGenreUpdateIdPut$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiGenreUpdateIdPut$Json(params: ApiGenreUpdateIdPut$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiGenreUpdateIdPut$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
@@ -135,23 +238,45 @@ export class GenreService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiGenreDeleteIdDelete()` instead.
+   * To access only the response body, use `apiGenreDeleteIdDelete$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiGenreDeleteIdDelete$Response(params: ApiGenreDeleteIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiGenreDeleteIdDelete(this.http, this.rootUrl, params, context);
+  apiGenreDeleteIdDelete$Plain$Response(params: ApiGenreDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiGenreDeleteIdDelete$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiGenreDeleteIdDelete$Response()` instead.
+   * To access the full response (for headers, for example), `apiGenreDeleteIdDelete$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiGenreDeleteIdDelete(params: ApiGenreDeleteIdDelete$Params, context?: HttpContext): Observable<void> {
-    return this.apiGenreDeleteIdDelete$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiGenreDeleteIdDelete$Plain(params: ApiGenreDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiGenreDeleteIdDelete$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiGenreDeleteIdDelete$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiGenreDeleteIdDelete$Json$Response(params: ApiGenreDeleteIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiGenreDeleteIdDelete$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiGenreDeleteIdDelete$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiGenreDeleteIdDelete$Json(params: ApiGenreDeleteIdDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiGenreDeleteIdDelete$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
@@ -160,23 +285,45 @@ export class GenreService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiGenreSearchGet()` instead.
+   * To access only the response body, use `apiGenreSearchGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiGenreSearchGet$Response(params?: ApiGenreSearchGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiGenreSearchGet(this.http, this.rootUrl, params, context);
+  apiGenreSearchGet$Plain$Response(params?: ApiGenreSearchGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<GenreResponseListResultCustomModel>> {
+    return apiGenreSearchGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiGenreSearchGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiGenreSearchGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiGenreSearchGet(params?: ApiGenreSearchGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiGenreSearchGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiGenreSearchGet$Plain(params?: ApiGenreSearchGet$Plain$Params, context?: HttpContext): Observable<GenreResponseListResultCustomModel> {
+    return this.apiGenreSearchGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GenreResponseListResultCustomModel>): GenreResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiGenreSearchGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiGenreSearchGet$Json$Response(params?: ApiGenreSearchGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<GenreResponseListResultCustomModel>> {
+    return apiGenreSearchGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiGenreSearchGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiGenreSearchGet$Json(params?: ApiGenreSearchGet$Json$Params, context?: HttpContext): Observable<GenreResponseListResultCustomModel> {
+    return this.apiGenreSearchGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GenreResponseListResultCustomModel>): GenreResponseListResultCustomModel => r.body)
     );
   }
 

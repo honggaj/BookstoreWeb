@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-   isSidebarOpen: boolean = true;
+  isSidebarOpen: boolean = true;
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
@@ -26,11 +26,13 @@ export class SidebarComponent {
         { label: 'Register', icon: 'fas fa-user-plus', link: '#' }
       ]
     },
-     {
+    {
       title: 'Manage',
       items: [
         { label: 'Tài khoản', icon: 'fas fa-text-height', link: '/users' },
         { label: 'Sách', icon: 'fas fa-palette', link: '/books' },
+        { label: 'Thể loại sách', icon: 'fas fa-palette', link: '/genres' },
+
         { label: 'Đơn hàng', icon: 'fas fa-icons', link: '/orders' }
       ]
     },

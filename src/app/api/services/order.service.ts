@@ -11,16 +11,29 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { apiOrderCreatePost } from '../fn/order/api-order-create-post';
-import { ApiOrderCreatePost$Params } from '../fn/order/api-order-create-post';
-import { apiOrderDeleteIdDelete } from '../fn/order/api-order-delete-id-delete';
-import { ApiOrderDeleteIdDelete$Params } from '../fn/order/api-order-delete-id-delete';
-import { apiOrderGet } from '../fn/order/api-order-get';
-import { ApiOrderGet$Params } from '../fn/order/api-order-get';
-import { apiOrderUpdateStatusIdPut } from '../fn/order/api-order-update-status-id-put';
-import { ApiOrderUpdateStatusIdPut$Params } from '../fn/order/api-order-update-status-id-put';
-import { apiOrderUserUserIdGet } from '../fn/order/api-order-user-user-id-get';
-import { ApiOrderUserUserIdGet$Params } from '../fn/order/api-order-user-user-id-get';
+import { apiOrderCreatePost$Json } from '../fn/order/api-order-create-post-json';
+import { ApiOrderCreatePost$Json$Params } from '../fn/order/api-order-create-post-json';
+import { apiOrderCreatePost$Plain } from '../fn/order/api-order-create-post-plain';
+import { ApiOrderCreatePost$Plain$Params } from '../fn/order/api-order-create-post-plain';
+import { apiOrderDeleteIdDelete$Json } from '../fn/order/api-order-delete-id-delete-json';
+import { ApiOrderDeleteIdDelete$Json$Params } from '../fn/order/api-order-delete-id-delete-json';
+import { apiOrderDeleteIdDelete$Plain } from '../fn/order/api-order-delete-id-delete-plain';
+import { ApiOrderDeleteIdDelete$Plain$Params } from '../fn/order/api-order-delete-id-delete-plain';
+import { apiOrderGet$Json } from '../fn/order/api-order-get-json';
+import { ApiOrderGet$Json$Params } from '../fn/order/api-order-get-json';
+import { apiOrderGet$Plain } from '../fn/order/api-order-get-plain';
+import { ApiOrderGet$Plain$Params } from '../fn/order/api-order-get-plain';
+import { apiOrderUpdateStatusIdPut$Json } from '../fn/order/api-order-update-status-id-put-json';
+import { ApiOrderUpdateStatusIdPut$Json$Params } from '../fn/order/api-order-update-status-id-put-json';
+import { apiOrderUpdateStatusIdPut$Plain } from '../fn/order/api-order-update-status-id-put-plain';
+import { ApiOrderUpdateStatusIdPut$Plain$Params } from '../fn/order/api-order-update-status-id-put-plain';
+import { apiOrderUserUserIdGet$Json } from '../fn/order/api-order-user-user-id-get-json';
+import { ApiOrderUserUserIdGet$Json$Params } from '../fn/order/api-order-user-user-id-get-json';
+import { apiOrderUserUserIdGet$Plain } from '../fn/order/api-order-user-user-id-get-plain';
+import { ApiOrderUserUserIdGet$Plain$Params } from '../fn/order/api-order-user-user-id-get-plain';
+import { ObjectResultCustomModel } from '../models/object-result-custom-model';
+import { OrderResponseListResultCustomModel } from '../models/order-response-list-result-custom-model';
+import { StringResultCustomModel } from '../models/string-result-custom-model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService extends BaseService {
@@ -33,23 +46,45 @@ export class OrderService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiOrderGet()` instead.
+   * To access only the response body, use `apiOrderGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiOrderGet$Response(params?: ApiOrderGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiOrderGet(this.http, this.rootUrl, params, context);
+  apiOrderGet$Plain$Response(params?: ApiOrderGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<OrderResponseListResultCustomModel>> {
+    return apiOrderGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiOrderGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiOrderGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiOrderGet(params?: ApiOrderGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiOrderGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiOrderGet$Plain(params?: ApiOrderGet$Plain$Params, context?: HttpContext): Observable<OrderResponseListResultCustomModel> {
+    return this.apiOrderGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<OrderResponseListResultCustomModel>): OrderResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiOrderGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderGet$Json$Response(params?: ApiOrderGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<OrderResponseListResultCustomModel>> {
+    return apiOrderGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiOrderGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderGet$Json(params?: ApiOrderGet$Json$Params, context?: HttpContext): Observable<OrderResponseListResultCustomModel> {
+    return this.apiOrderGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<OrderResponseListResultCustomModel>): OrderResponseListResultCustomModel => r.body)
     );
   }
 
@@ -58,23 +93,45 @@ export class OrderService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiOrderUserUserIdGet()` instead.
+   * To access only the response body, use `apiOrderUserUserIdGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiOrderUserUserIdGet$Response(params: ApiOrderUserUserIdGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiOrderUserUserIdGet(this.http, this.rootUrl, params, context);
+  apiOrderUserUserIdGet$Plain$Response(params: ApiOrderUserUserIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<OrderResponseListResultCustomModel>> {
+    return apiOrderUserUserIdGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiOrderUserUserIdGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiOrderUserUserIdGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiOrderUserUserIdGet(params: ApiOrderUserUserIdGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiOrderUserUserIdGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiOrderUserUserIdGet$Plain(params: ApiOrderUserUserIdGet$Plain$Params, context?: HttpContext): Observable<OrderResponseListResultCustomModel> {
+    return this.apiOrderUserUserIdGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<OrderResponseListResultCustomModel>): OrderResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiOrderUserUserIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderUserUserIdGet$Json$Response(params: ApiOrderUserUserIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<OrderResponseListResultCustomModel>> {
+    return apiOrderUserUserIdGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiOrderUserUserIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderUserUserIdGet$Json(params: ApiOrderUserUserIdGet$Json$Params, context?: HttpContext): Observable<OrderResponseListResultCustomModel> {
+    return this.apiOrderUserUserIdGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<OrderResponseListResultCustomModel>): OrderResponseListResultCustomModel => r.body)
     );
   }
 
@@ -83,23 +140,45 @@ export class OrderService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiOrderCreatePost()` instead.
+   * To access only the response body, use `apiOrderCreatePost$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiOrderCreatePost$Response(params?: ApiOrderCreatePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiOrderCreatePost(this.http, this.rootUrl, params, context);
+  apiOrderCreatePost$Plain$Response(params?: ApiOrderCreatePost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiOrderCreatePost$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiOrderCreatePost$Response()` instead.
+   * To access the full response (for headers, for example), `apiOrderCreatePost$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiOrderCreatePost(params?: ApiOrderCreatePost$Params, context?: HttpContext): Observable<void> {
-    return this.apiOrderCreatePost$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiOrderCreatePost$Plain(params?: ApiOrderCreatePost$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiOrderCreatePost$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiOrderCreatePost$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiOrderCreatePost$Json$Response(params?: ApiOrderCreatePost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiOrderCreatePost$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiOrderCreatePost$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiOrderCreatePost$Json(params?: ApiOrderCreatePost$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiOrderCreatePost$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
@@ -108,23 +187,45 @@ export class OrderService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiOrderUpdateStatusIdPut()` instead.
+   * To access only the response body, use `apiOrderUpdateStatusIdPut$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiOrderUpdateStatusIdPut$Response(params: ApiOrderUpdateStatusIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiOrderUpdateStatusIdPut(this.http, this.rootUrl, params, context);
+  apiOrderUpdateStatusIdPut$Plain$Response(params: ApiOrderUpdateStatusIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<StringResultCustomModel>> {
+    return apiOrderUpdateStatusIdPut$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiOrderUpdateStatusIdPut$Response()` instead.
+   * To access the full response (for headers, for example), `apiOrderUpdateStatusIdPut$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiOrderUpdateStatusIdPut(params: ApiOrderUpdateStatusIdPut$Params, context?: HttpContext): Observable<void> {
-    return this.apiOrderUpdateStatusIdPut$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiOrderUpdateStatusIdPut$Plain(params: ApiOrderUpdateStatusIdPut$Plain$Params, context?: HttpContext): Observable<StringResultCustomModel> {
+    return this.apiOrderUpdateStatusIdPut$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<StringResultCustomModel>): StringResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiOrderUpdateStatusIdPut$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderUpdateStatusIdPut$Json$Response(params: ApiOrderUpdateStatusIdPut$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<StringResultCustomModel>> {
+    return apiOrderUpdateStatusIdPut$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiOrderUpdateStatusIdPut$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderUpdateStatusIdPut$Json(params: ApiOrderUpdateStatusIdPut$Json$Params, context?: HttpContext): Observable<StringResultCustomModel> {
+    return this.apiOrderUpdateStatusIdPut$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<StringResultCustomModel>): StringResultCustomModel => r.body)
     );
   }
 
@@ -133,23 +234,45 @@ export class OrderService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiOrderDeleteIdDelete()` instead.
+   * To access only the response body, use `apiOrderDeleteIdDelete$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiOrderDeleteIdDelete$Response(params: ApiOrderDeleteIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiOrderDeleteIdDelete(this.http, this.rootUrl, params, context);
+  apiOrderDeleteIdDelete$Plain$Response(params: ApiOrderDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiOrderDeleteIdDelete$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiOrderDeleteIdDelete$Response()` instead.
+   * To access the full response (for headers, for example), `apiOrderDeleteIdDelete$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiOrderDeleteIdDelete(params: ApiOrderDeleteIdDelete$Params, context?: HttpContext): Observable<void> {
-    return this.apiOrderDeleteIdDelete$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiOrderDeleteIdDelete$Plain(params: ApiOrderDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiOrderDeleteIdDelete$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiOrderDeleteIdDelete$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderDeleteIdDelete$Json$Response(params: ApiOrderDeleteIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiOrderDeleteIdDelete$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiOrderDeleteIdDelete$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderDeleteIdDelete$Json(params: ApiOrderDeleteIdDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiOrderDeleteIdDelete$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 

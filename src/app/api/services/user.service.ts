@@ -15,14 +15,20 @@ import { apiUserCreatePost } from '../fn/user/api-user-create-post';
 import { ApiUserCreatePost$Params } from '../fn/user/api-user-create-post';
 import { apiUserDeleteIdDelete } from '../fn/user/api-user-delete-id-delete';
 import { ApiUserDeleteIdDelete$Params } from '../fn/user/api-user-delete-id-delete';
-import { apiUserGet } from '../fn/user/api-user-get';
-import { ApiUserGet$Params } from '../fn/user/api-user-get';
-import { apiUserIdGet } from '../fn/user/api-user-id-get';
-import { ApiUserIdGet$Params } from '../fn/user/api-user-id-get';
+import { apiUserGet$Json } from '../fn/user/api-user-get-json';
+import { ApiUserGet$Json$Params } from '../fn/user/api-user-get-json';
+import { apiUserGet$Plain } from '../fn/user/api-user-get-plain';
+import { ApiUserGet$Plain$Params } from '../fn/user/api-user-get-plain';
+import { apiUserIdGet$Json } from '../fn/user/api-user-id-get-json';
+import { ApiUserIdGet$Json$Params } from '../fn/user/api-user-id-get-json';
+import { apiUserIdGet$Plain } from '../fn/user/api-user-id-get-plain';
+import { ApiUserIdGet$Plain$Params } from '../fn/user/api-user-id-get-plain';
 import { apiUserSearchGet } from '../fn/user/api-user-search-get';
 import { ApiUserSearchGet$Params } from '../fn/user/api-user-search-get';
 import { apiUserUpdateIdPut } from '../fn/user/api-user-update-id-put';
 import { ApiUserUpdateIdPut$Params } from '../fn/user/api-user-update-id-put';
+import { UserResponseListResultCustomModel } from '../models/user-response-list-result-custom-model';
+import { UserResponseResultCustomModel } from '../models/user-response-result-custom-model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService extends BaseService {
@@ -35,23 +41,45 @@ export class UserService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiUserGet()` instead.
+   * To access only the response body, use `apiUserGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiUserGet$Response(params?: ApiUserGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiUserGet(this.http, this.rootUrl, params, context);
+  apiUserGet$Plain$Response(params?: ApiUserGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<UserResponseListResultCustomModel>> {
+    return apiUserGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiUserGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiUserGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiUserGet(params?: ApiUserGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiUserGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiUserGet$Plain(params?: ApiUserGet$Plain$Params, context?: HttpContext): Observable<UserResponseListResultCustomModel> {
+    return this.apiUserGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<UserResponseListResultCustomModel>): UserResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiUserGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiUserGet$Json$Response(params?: ApiUserGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<UserResponseListResultCustomModel>> {
+    return apiUserGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiUserGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiUserGet$Json(params?: ApiUserGet$Json$Params, context?: HttpContext): Observable<UserResponseListResultCustomModel> {
+    return this.apiUserGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<UserResponseListResultCustomModel>): UserResponseListResultCustomModel => r.body)
     );
   }
 
@@ -60,23 +88,45 @@ export class UserService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiUserIdGet()` instead.
+   * To access only the response body, use `apiUserIdGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiUserIdGet$Response(params: ApiUserIdGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiUserIdGet(this.http, this.rootUrl, params, context);
+  apiUserIdGet$Plain$Response(params: ApiUserIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<UserResponseResultCustomModel>> {
+    return apiUserIdGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiUserIdGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiUserIdGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiUserIdGet(params: ApiUserIdGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiUserIdGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiUserIdGet$Plain(params: ApiUserIdGet$Plain$Params, context?: HttpContext): Observable<UserResponseResultCustomModel> {
+    return this.apiUserIdGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<UserResponseResultCustomModel>): UserResponseResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiUserIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiUserIdGet$Json$Response(params: ApiUserIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<UserResponseResultCustomModel>> {
+    return apiUserIdGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiUserIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiUserIdGet$Json(params: ApiUserIdGet$Json$Params, context?: HttpContext): Observable<UserResponseResultCustomModel> {
+    return this.apiUserIdGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<UserResponseResultCustomModel>): UserResponseResultCustomModel => r.body)
     );
   }
 

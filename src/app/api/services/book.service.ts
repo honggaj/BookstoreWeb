@@ -11,18 +11,37 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { apiBookCreatePost } from '../fn/book/api-book-create-post';
-import { ApiBookCreatePost$Params } from '../fn/book/api-book-create-post';
-import { apiBookDeleteIdDelete } from '../fn/book/api-book-delete-id-delete';
-import { ApiBookDeleteIdDelete$Params } from '../fn/book/api-book-delete-id-delete';
-import { apiBookGet } from '../fn/book/api-book-get';
-import { ApiBookGet$Params } from '../fn/book/api-book-get';
-import { apiBookIdGet } from '../fn/book/api-book-id-get';
-import { ApiBookIdGet$Params } from '../fn/book/api-book-id-get';
-import { apiBookSearchGet } from '../fn/book/api-book-search-get';
-import { ApiBookSearchGet$Params } from '../fn/book/api-book-search-get';
-import { apiBookUpdateIdPut } from '../fn/book/api-book-update-id-put';
-import { ApiBookUpdateIdPut$Params } from '../fn/book/api-book-update-id-put';
+import { apiBookByGenreGenreIdGet$Json } from '../fn/book/api-book-by-genre-genre-id-get-json';
+import { ApiBookByGenreGenreIdGet$Json$Params } from '../fn/book/api-book-by-genre-genre-id-get-json';
+import { apiBookByGenreGenreIdGet$Plain } from '../fn/book/api-book-by-genre-genre-id-get-plain';
+import { ApiBookByGenreGenreIdGet$Plain$Params } from '../fn/book/api-book-by-genre-genre-id-get-plain';
+import { apiBookCreatePost$Json } from '../fn/book/api-book-create-post-json';
+import { ApiBookCreatePost$Json$Params } from '../fn/book/api-book-create-post-json';
+import { apiBookCreatePost$Plain } from '../fn/book/api-book-create-post-plain';
+import { ApiBookCreatePost$Plain$Params } from '../fn/book/api-book-create-post-plain';
+import { apiBookDeleteIdDelete$Json } from '../fn/book/api-book-delete-id-delete-json';
+import { ApiBookDeleteIdDelete$Json$Params } from '../fn/book/api-book-delete-id-delete-json';
+import { apiBookDeleteIdDelete$Plain } from '../fn/book/api-book-delete-id-delete-plain';
+import { ApiBookDeleteIdDelete$Plain$Params } from '../fn/book/api-book-delete-id-delete-plain';
+import { apiBookGet$Json } from '../fn/book/api-book-get-json';
+import { ApiBookGet$Json$Params } from '../fn/book/api-book-get-json';
+import { apiBookGet$Plain } from '../fn/book/api-book-get-plain';
+import { ApiBookGet$Plain$Params } from '../fn/book/api-book-get-plain';
+import { apiBookIdGet$Json } from '../fn/book/api-book-id-get-json';
+import { ApiBookIdGet$Json$Params } from '../fn/book/api-book-id-get-json';
+import { apiBookIdGet$Plain } from '../fn/book/api-book-id-get-plain';
+import { ApiBookIdGet$Plain$Params } from '../fn/book/api-book-id-get-plain';
+import { apiBookSearchGet$Json } from '../fn/book/api-book-search-get-json';
+import { ApiBookSearchGet$Json$Params } from '../fn/book/api-book-search-get-json';
+import { apiBookSearchGet$Plain } from '../fn/book/api-book-search-get-plain';
+import { ApiBookSearchGet$Plain$Params } from '../fn/book/api-book-search-get-plain';
+import { apiBookUpdateIdPut$Json } from '../fn/book/api-book-update-id-put-json';
+import { ApiBookUpdateIdPut$Json$Params } from '../fn/book/api-book-update-id-put-json';
+import { apiBookUpdateIdPut$Plain } from '../fn/book/api-book-update-id-put-plain';
+import { ApiBookUpdateIdPut$Plain$Params } from '../fn/book/api-book-update-id-put-plain';
+import { BookResponseListResultCustomModel } from '../models/book-response-list-result-custom-model';
+import { BookResponseResultCustomModel } from '../models/book-response-result-custom-model';
+import { ObjectResultCustomModel } from '../models/object-result-custom-model';
 
 @Injectable({ providedIn: 'root' })
 export class BookService extends BaseService {
@@ -35,23 +54,45 @@ export class BookService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiBookGet()` instead.
+   * To access only the response body, use `apiBookGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiBookGet$Response(params?: ApiBookGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiBookGet(this.http, this.rootUrl, params, context);
+  apiBookGet$Plain$Response(params?: ApiBookGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseListResultCustomModel>> {
+    return apiBookGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiBookGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiBookGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiBookGet(params?: ApiBookGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiBookGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiBookGet$Plain(params?: ApiBookGet$Plain$Params, context?: HttpContext): Observable<BookResponseListResultCustomModel> {
+    return this.apiBookGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseListResultCustomModel>): BookResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookGet$Json$Response(params?: ApiBookGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseListResultCustomModel>> {
+    return apiBookGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookGet$Json(params?: ApiBookGet$Json$Params, context?: HttpContext): Observable<BookResponseListResultCustomModel> {
+    return this.apiBookGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseListResultCustomModel>): BookResponseListResultCustomModel => r.body)
     );
   }
 
@@ -60,23 +101,45 @@ export class BookService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiBookIdGet()` instead.
+   * To access only the response body, use `apiBookIdGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiBookIdGet$Response(params: ApiBookIdGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiBookIdGet(this.http, this.rootUrl, params, context);
+  apiBookIdGet$Plain$Response(params: ApiBookIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseResultCustomModel>> {
+    return apiBookIdGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiBookIdGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiBookIdGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiBookIdGet(params: ApiBookIdGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiBookIdGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiBookIdGet$Plain(params: ApiBookIdGet$Plain$Params, context?: HttpContext): Observable<BookResponseResultCustomModel> {
+    return this.apiBookIdGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseResultCustomModel>): BookResponseResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookIdGet$Json$Response(params: ApiBookIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseResultCustomModel>> {
+    return apiBookIdGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookIdGet$Json(params: ApiBookIdGet$Json$Params, context?: HttpContext): Observable<BookResponseResultCustomModel> {
+    return this.apiBookIdGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseResultCustomModel>): BookResponseResultCustomModel => r.body)
     );
   }
 
@@ -85,23 +148,45 @@ export class BookService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiBookCreatePost()` instead.
+   * To access only the response body, use `apiBookCreatePost$Plain()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  apiBookCreatePost$Response(params?: ApiBookCreatePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiBookCreatePost(this.http, this.rootUrl, params, context);
+  apiBookCreatePost$Plain$Response(params?: ApiBookCreatePost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiBookCreatePost$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiBookCreatePost$Response()` instead.
+   * To access the full response (for headers, for example), `apiBookCreatePost$Plain$Response()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  apiBookCreatePost(params?: ApiBookCreatePost$Params, context?: HttpContext): Observable<void> {
-    return this.apiBookCreatePost$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiBookCreatePost$Plain(params?: ApiBookCreatePost$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiBookCreatePost$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookCreatePost$Json()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  apiBookCreatePost$Json$Response(params?: ApiBookCreatePost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiBookCreatePost$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookCreatePost$Json$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  apiBookCreatePost$Json(params?: ApiBookCreatePost$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiBookCreatePost$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
@@ -110,23 +195,45 @@ export class BookService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiBookUpdateIdPut()` instead.
+   * To access only the response body, use `apiBookUpdateIdPut$Plain()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  apiBookUpdateIdPut$Response(params: ApiBookUpdateIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiBookUpdateIdPut(this.http, this.rootUrl, params, context);
+  apiBookUpdateIdPut$Plain$Response(params: ApiBookUpdateIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiBookUpdateIdPut$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiBookUpdateIdPut$Response()` instead.
+   * To access the full response (for headers, for example), `apiBookUpdateIdPut$Plain$Response()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  apiBookUpdateIdPut(params: ApiBookUpdateIdPut$Params, context?: HttpContext): Observable<void> {
-    return this.apiBookUpdateIdPut$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiBookUpdateIdPut$Plain(params: ApiBookUpdateIdPut$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiBookUpdateIdPut$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookUpdateIdPut$Json()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  apiBookUpdateIdPut$Json$Response(params: ApiBookUpdateIdPut$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiBookUpdateIdPut$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookUpdateIdPut$Json$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  apiBookUpdateIdPut$Json(params: ApiBookUpdateIdPut$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiBookUpdateIdPut$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
@@ -135,23 +242,45 @@ export class BookService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiBookDeleteIdDelete()` instead.
+   * To access only the response body, use `apiBookDeleteIdDelete$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiBookDeleteIdDelete$Response(params: ApiBookDeleteIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiBookDeleteIdDelete(this.http, this.rootUrl, params, context);
+  apiBookDeleteIdDelete$Plain$Response(params: ApiBookDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiBookDeleteIdDelete$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiBookDeleteIdDelete$Response()` instead.
+   * To access the full response (for headers, for example), `apiBookDeleteIdDelete$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiBookDeleteIdDelete(params: ApiBookDeleteIdDelete$Params, context?: HttpContext): Observable<void> {
-    return this.apiBookDeleteIdDelete$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiBookDeleteIdDelete$Plain(params: ApiBookDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiBookDeleteIdDelete$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookDeleteIdDelete$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookDeleteIdDelete$Json$Response(params: ApiBookDeleteIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiBookDeleteIdDelete$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookDeleteIdDelete$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookDeleteIdDelete$Json(params: ApiBookDeleteIdDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiBookDeleteIdDelete$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
@@ -160,23 +289,92 @@ export class BookService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiBookSearchGet()` instead.
+   * To access only the response body, use `apiBookSearchGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiBookSearchGet$Response(params?: ApiBookSearchGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiBookSearchGet(this.http, this.rootUrl, params, context);
+  apiBookSearchGet$Plain$Response(params?: ApiBookSearchGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseListResultCustomModel>> {
+    return apiBookSearchGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiBookSearchGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiBookSearchGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiBookSearchGet(params?: ApiBookSearchGet$Params, context?: HttpContext): Observable<void> {
-    return this.apiBookSearchGet$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+  apiBookSearchGet$Plain(params?: ApiBookSearchGet$Plain$Params, context?: HttpContext): Observable<BookResponseListResultCustomModel> {
+    return this.apiBookSearchGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseListResultCustomModel>): BookResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookSearchGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookSearchGet$Json$Response(params?: ApiBookSearchGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseListResultCustomModel>> {
+    return apiBookSearchGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookSearchGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookSearchGet$Json(params?: ApiBookSearchGet$Json$Params, context?: HttpContext): Observable<BookResponseListResultCustomModel> {
+    return this.apiBookSearchGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseListResultCustomModel>): BookResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /** Path part for operation `apiBookByGenreGenreIdGet()` */
+  static readonly ApiBookByGenreGenreIdGetPath = '/api/Book/ByGenre/{genreId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookByGenreGenreIdGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookByGenreGenreIdGet$Plain$Response(params: ApiBookByGenreGenreIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseListResultCustomModel>> {
+    return apiBookByGenreGenreIdGet$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookByGenreGenreIdGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookByGenreGenreIdGet$Plain(params: ApiBookByGenreGenreIdGet$Plain$Params, context?: HttpContext): Observable<BookResponseListResultCustomModel> {
+    return this.apiBookByGenreGenreIdGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseListResultCustomModel>): BookResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookByGenreGenreIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookByGenreGenreIdGet$Json$Response(params: ApiBookByGenreGenreIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseListResultCustomModel>> {
+    return apiBookByGenreGenreIdGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookByGenreGenreIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookByGenreGenreIdGet$Json(params: ApiBookByGenreGenreIdGet$Json$Params, context?: HttpContext): Observable<BookResponseListResultCustomModel> {
+    return this.apiBookByGenreGenreIdGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseListResultCustomModel>): BookResponseListResultCustomModel => r.body)
     );
   }
 

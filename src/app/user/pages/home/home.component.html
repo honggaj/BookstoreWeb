@@ -1,1 +1,199 @@
-<p>home works!</p>
+<!-- Modern Grid Layout -->
+<main class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+
+    <!-- Main Grid Container -->
+    <div class="max-w-7xl mx-auto p-4 lg:p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+
+            <!-- Sidebar - Categories (Hidden on mobile, shown on large screens) -->
+            <aside class="lg:col-span-3 xl:col-span-2">
+                <!-- Mobile Category Toggle -->
+                <div class="lg:hidden mb-4">
+                    <button
+                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2">
+                        <i class="fas fa-filter"></i>
+                        <span>Danh mục sản phẩm</span>
+                    </button>
+                </div>
+
+                <!-- Desktop Sidebar -->
+                <nav class="hidden lg:block bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-list-ul"></i>
+                            <span class="font-semibold">Danh mục sản phẩm</span>
+                        </div>
+                    </div>
+                    <ul class="divide-y divide-gray-100">
+                        <li *ngFor="let genre of genres"
+                            class="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 cursor-pointer">
+                            <div class="px-6 py-4 flex items-center space-x-3">
+                                <div
+                                    class="w-2 h-2 bg-blue-400 rounded-full group-hover:bg-blue-600 transition-colors duration-200">
+                                </div>
+                                <span class="text-gray-700 group-hover:text-blue-700 font-medium">{{ genre.name
+                                    }}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="lg:col-span-9 xl:col-span-10 space-y-8">
+
+                <!-- Hero Banner Section -->
+                <section class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-0 min-h-[300px] lg:min-h-[400px]">
+
+                        <!-- Main Banner (Large Image) -->
+                        <div class="md:col-span-8 relative group overflow-hidden">
+                            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                src="https://i.pinimg.com/736x/f2/1e/3b/f21e3bb7773622e945aad2375224c93c.jpg"
+                                alt="Main Banner" />
+
+                            <!-- Overlay Content -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent flex items-center">
+                                <div class="text-white p-6 lg:p-12 max-w-lg">
+                                    <h2 class="text-2xl lg:text-4xl font-bold mb-4">Khám phá thế giới sách</h2>
+                                    <p class="text-lg lg:text-xl mb-6 opacity-90">Hàng ngàn cuốn sách hay đang chờ bạn
+                                    </p>
+                                    <button
+                                        class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                                        Khám phá ngay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Side Banners (Small Images) -->
+                        <div class="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-0">
+
+                            <!-- Top Small Banner -->
+                            <div class="relative group overflow-hidden bg-gradient-to-br from-orange-100 to-red-100">
+                                <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    src="https://i.pinimg.com/736x/f2/1e/3b/f21e3bb7773622e945aad2375224c93c.jpg"
+                                    alt="Promo 1" />
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-orange-600/80 to-transparent flex items-end">
+                                    <div class="text-white p-4 w-full">
+                                        <h3 class="font-bold text-lg mb-1">Sách mới</h3>
+                                        <p class="text-sm opacity-90">Cập nhật hàng tuần</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Small Banner -->
+                            <div class="relative group overflow-hidden bg-gradient-to-br from-green-100 to-blue-100">
+                                <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    src="https://i.pinimg.com/736x/f2/1e/3b/f21e3bb7773622e945aad2375224c93c.jpg"
+                                    alt="Promo 2" />
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-green-600/80 to-transparent flex items-end">
+                                    <div class="text-white p-4 w-full">
+                                        <h3 class="font-bold text-lg mb-1">Giảm giá</h3>
+                                        <p class="text-sm opacity-90">Lên đến 50%</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Stats Cards -->
+                <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-book text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-800">1,200</p>
+                                <p class="text-gray-600 text-sm">Sách có sẵn</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-users text-green-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-800">5,600</p>
+                                <p class="text-gray-600 text-sm">Khách hàng</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-star text-purple-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-800">4.8</p>
+                                <p class="text-gray-600 text-sm">Đánh giá</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-shipping-fast text-orange-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-800">24h</p>
+                                <p class="text-gray-600 text-sm">Giao hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Book Carousel -->
+                <section class="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Sản phẩm mới</h2>
+                        <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full"></div>
+                    </div> <app-product-carousel></app-product-carousel>
+                </section>
+
+
+                <!-- Additional Content Area -->
+                <section class="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Danh mục phổ biến</h2>
+                        <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full"></div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <div class="flex flex-nowrap gap-4 px-2">
+                            <div *ngFor="let genre of genres" (click)="loadBooksByGenre(genre.genreId)"
+                                class="min-w-[120px] shrink-0 group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg p-4 text-center hover:border-blue-300 hover:shadow-md transition-all duration-300 cursor-pointer">
+
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-md mx-auto mb-2 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                    <i class="fas fa-book-open text-white text-xs"></i>
+                                </div>
+
+                                <h3
+                                    class="font-medium text-gray-700 group-hover:text-blue-600 transition-colors duration-300 truncate">
+                                    {{ genre.name }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
+
+                   
+                    <app-product-list-home></app-product-list-home>
+                </section>
+
+
+
+            </main>
+        </div>
+    </div>
+</main>

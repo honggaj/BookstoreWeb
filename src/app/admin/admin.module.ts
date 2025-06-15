@@ -8,11 +8,14 @@ import { ManageUsersModule } from './pages/manage-users/manage-users.module';
 import { ManageOrdersModule } from './pages/manage-orders/manage-orders.module';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 
+import { ManageGenresModule } from './pages/manage-genres/manage-genres.module';
+
 
 @NgModule({
   declarations: [
     DashboardComponent,
     SidebarComponent,
+   
     
     
   ],
@@ -21,7 +24,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     AdminRoutingModule,
     ManageBooksModule,
     ManageUsersModule,
-    ManageOrdersModule
+    ManageOrdersModule,
+    ManageGenresModule
   ]
 })
 export class AdminModule { }

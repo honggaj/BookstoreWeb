@@ -9,7 +9,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
-
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   declarations: [
@@ -17,13 +18,17 @@ import { AdminModule } from './admin/admin.module';
 
  
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     UserModule,
-    AdminModule
+    AdminModule,
+
+    HttpClientModule,
+    SlickCarouselModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
