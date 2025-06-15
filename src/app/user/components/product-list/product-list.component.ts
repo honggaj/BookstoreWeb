@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BookResponse } from '../../../api/models';
 import { BookService } from '../../../api/services';
 import { Router } from '@angular/router';
+import {  Input } from '@angular/core';
 
 @Component({
   selector: 'app-product-list-home',
@@ -10,12 +11,10 @@ import { Router } from '@angular/router';
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent {
-books: BookResponse[] = [];
-    loading = false;
-
-
+  loading = false;
+ @Input() books: BookResponse[] = []; // 📥 nhận sách từ cha
   constructor(private bookService: BookService, private router: Router) {
-    
+
 
   } // ✅ bookService viết đúng tên
 
@@ -36,4 +35,8 @@ books: BookResponse[] = [];
       }
     });
   }
+  goToDetail(bookId: number): void {
+    this.router.navigate(['/book', bookId]);
+  }
+
 }

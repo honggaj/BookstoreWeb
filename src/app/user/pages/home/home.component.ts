@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BookResponse } from '../../../api/models';
 import { BookService, GenreService } from '../../../api/services';
 import { Router } from '@angular/router';
+import { Input } from 'postcss';
 
 @Component({
   selector: 'app-home',

@@ -52,4 +52,7 @@ responsiveOptions = [
       }
     });
   }
+   goToDetail(bookId: number): void {
+    this.router.navigate(['/book', bookId]);
+  }
 }

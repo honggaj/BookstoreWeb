@@ -13,6 +13,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { StoreComponent } from './pages/store/store.component';
 import { ProductCarouselComponent } from './components/product-carousel/product-carousel.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
+import { BookDetailComponent } from './pages/book-detail/book-detail.component';
+import { GenreListComponent } from './components/genre-list/genre-list.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { ProductListComponent } from './components/product-list/product-list.com
     StoreComponent,
     ProductCarouselComponent,
     ProductListComponent,
-    
+    BookDetailComponent,
+    GenreListComponent
   ],
   imports: [
     CommonModule,
