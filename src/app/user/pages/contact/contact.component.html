@@ -1,0 +1,70 @@
+<div class="bg-white min-h-screen p-4 flex flex-col items-center justify-center gap-6">
+
+  <!-- Contact Form + Info -->
+  <div class="max-w-5xl w-full flex flex-col md:flex-row border border-gray-200">
+
+    <!-- Form -->
+    <form class="flex-1 bg-white p-8 space-y-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <input type="text" placeholder="Tên của bạn"
+          class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
+        <input type="email" placeholder="Địa chỉ Email"
+          class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
+        <input type="text" placeholder="Số điện thoại"
+          class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
+        <input type="text" placeholder="Tiêu đề"
+          class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
+      </div>
+      <textarea placeholder="Nội dung" rows="3"
+        class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full resize-none"></textarea>
+      <button type="submit" aria-label="Send message"
+        class="w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full flex justify-center items-center text-white text-lg ml-auto">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </form>
+
+    <!-- Contact Info -->
+    <div class="w-full md:w-80 bg-gradient-to-br from-blue-600 to-blue-400 text-white p-8 flex flex-col justify-between space-y-6">
+      <div>
+        <h2 class="text-xl font-semibold mb-4">Thông tin liên hệ</h2>
+        <div class="space-y-3 text-sm">
+          <p class="flex items-center gap-2"><i class="fas fa-map-marker-alt"></i> 533 PVB, P.15, Q.TB, TP.HCM</p>
+          <p class="flex items-center gap-2"><i class="fas fa-mobile-alt"></i> +84 908 562750</p>
+          <p class="flex items-center gap-2 break-all"><i class="fas fa-envelope"></i> contact.vietblogger&#64;gmail.com</p>
+          <p class="flex items-center gap-2"><i class="fab fa-facebook-f"></i> fb.com/kequaduongvodanh</p>
+        </div>
+      </div>
+      <div class="border-t border-white border-opacity-50 w-16 mx-auto"></div>
+      <div class="flex justify-center space-x-6 text-lg">
+        <a href="#" aria-label="Facebook" class="hover:text-blue-200"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Twitter" class="hover:text-blue-200"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="LinkedIn" class="hover:text-blue-200"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bookstore Features + Map -->
+  <div class="w-full max-w-5xl flex flex-col md:flex-row  border border-gray-200">
+
+    <!-- Bookstore Features -->
+    <div class=" bg-blue-600 text-white p-8 space-y-4">
+      <h2 class="text-2xl font-bold mb-4">Tiêu chí của BookStore</h2>
+      <ul class="space-y-3 text-sm">
+        <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i> Sách chính hãng 100% từ các nhà xuất bản uy tín.</li>
+        <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i> Giao hàng nhanh toàn quốc chỉ trong 2-3 ngày.</li>
+        <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i> Hỗ trợ đổi trả trong vòng 7 ngày nếu lỗi.</li>
+        <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i> Ưu đãi thành viên và điểm tích lũy hấp dẫn.</li>
+        <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i> Đội ngũ tư vấn tận tâm, hỗ trợ 24/7.</li>
+      </ul>
+    </div>
+
+    <!-- Google Map -->
+    <div class="flex-1 h-64">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4605566520113!2d106.66478991066712!3d10.775994589328388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752edb0ab44827%3A0x5f09c38a53b03a0f!2zODI4IMSQLiBTxrAgVuG6oW4gSOG6oW5oLCBQaMaw4budbmcgMTIsIFF14bqtbiAxMCwgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1749980137941!5m2!1svi!2s"
+        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</div>

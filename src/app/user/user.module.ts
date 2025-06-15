@@ -16,6 +16,7 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { GenreListComponent } from './components/genre-list/genre-list.component';
 import { AuthModule } from '../auth/auth.module';
+import { ContactComponent } from './pages/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AuthModule } from '../auth/auth.module';
     ProductCarouselComponent,
     ProductListComponent,
     BookDetailComponent,
-    GenreListComponent
+    GenreListComponent,
+    ContactComponent
   ],
   imports: [
     CommonModule,
