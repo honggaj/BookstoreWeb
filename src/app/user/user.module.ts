@@ -15,6 +15,7 @@ import { ProductCarouselComponent } from './components/product-carousel/product-
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { GenreListComponent } from './components/genre-list/genre-list.component';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { GenreListComponent } from './components/genre-list/genre-list.component
     SlickCarouselModule,
       CarouselModule,
     ButtonModule,
-    TagModule
+    TagModule,
+    AuthModule
    
   
   ]

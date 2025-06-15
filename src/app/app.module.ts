@@ -5,27 +5,26 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
+
 import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
     AppComponent,
 
  
-    LoginComponent,
-    RegisterComponent,
+  
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     UserModule,
     AdminModule,
-
+AuthModule,
     HttpClientModule,
     SlickCarouselModule
     
