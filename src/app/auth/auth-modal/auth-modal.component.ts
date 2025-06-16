@@ -2,20 +2,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../api/services';
-import { ForgotPasswordRequest, LoginRequest, RegisterRequest, ResetPasswordRequest } from '../../api/models';
+import { ForgotPasswordRequest, LoginRequest, RegisterRequest, ResetPasswordRequest, UserResponse } from '../../api/models';
 // ...tương tự cho các interface khác nếu đã có...
 
 
-export interface LoginResponse {
-  token?: string;
-  user?: {
-    id?: number;
-    username?: string;
-    email?: string;
-    fullName?: string;
-  };
-  message?: string;
-}
 
 
 @Component({
@@ -45,7 +35,8 @@ export class AuthModalComponent {
 
   constructor(
     private fb: FormBuilder,
-    private apiService: AuthService
+    private apiService: AuthService,
+
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -148,81 +139,56 @@ export class AuthModalComponent {
     this.forgotPasswordForm.reset();
     this.resetPasswordForm.reset();
   }
-
-  onLogin() {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
-
-      const loginData: LoginRequest = {
-        email: this.loginForm.value.email,
-        password: this.loginForm.value.password
-      };
-
-      this.apiService.apiAuthLoginPost({ body: loginData }).subscribe({
-        next: (response: any) => {
-          console.log('API Response:', response);
+      // ...existing code...
+    onLogin() {
+      if (this.loginForm.valid) {
+        this.isLoading = true;
+        this.errorMessage = '';
+    
+        const loginData = {
+          email: this.loginForm.value.email,
+          password: this.loginForm.value.password
+        };
+    
+        this.apiService.apiAuthLoginPost({ body: loginData }).subscribe({
+                   // ...existing code...
+          next: (response: any) => {
+            this.isLoading = false;
+            this.successMessage = 'Đăng nhập thành công!';
           
-          this.isLoading = false;
-          this.successMessage = 'Đăng nhập thành công!';
+            // Nếu response là string, parse nó
+            if (typeof response === 'string') {
+              try {
+                response = JSON.parse(response);
+              } catch (e) {
+                console.error('Không parse được response:', response);
+              }
+            }
           
-          // Store token
-          if (response?.token) {
-            sessionStorage.setItem('token', response.token);
+            // Ghi log chi tiết các trường
+            console.log('API login response:', response);
+            console.log('token:', response.token);
+            console.log('username:', response.username);
+            console.log('email:', response.email);
+            console.log('role:', response.role);
+          
+            const username = response.username ?? null;
+            sessionStorage.setItem('user', JSON.stringify({ username }));
+            this.loginSuccess.emit({ username });
+          
+            setTimeout(() => this.closeModal(), 1000);
+          },
+          // ...existing code...
+          error: (error) => {
+            this.isLoading = false;
+            this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
           }
-
-          // API trả về user data trực tiếp ở root level
-          if (response?.username || response?.email) {
-            const userData = {
-              username: response.username,
-              email: response.email,
-              role: response.role,
-              displayName: response.username || response.email || 'User'
-            };
-
-            sessionStorage.setItem('user', JSON.stringify(userData));
-            sessionStorage.setItem('username', userData.username || userData.email || 'User');
-
-            console.log('Storing user data and emitting:', userData);
-
-            // EMIT NGAY LẬP TỨC - KHÔNG DÙNG setTimeout
-            this.loginSuccess.emit(userData);
-            
-            // Delay chỉ cho việc đóng modal để user thấy success message
-            setTimeout(() => {
-              this.closeModal();
-            }, 1000);
-          } else {
-            // Fallback
-            const userData = {
-              username: loginData.email?.split('@')[0] || 'User',
-              email: loginData.email,
-              displayName: loginData.email?.split('@')[0] || 'User'
-            };
-            sessionStorage.setItem('user', JSON.stringify(userData));
-            sessionStorage.setItem('username', userData.username);
-            
-            console.log('Storing fallback user data and emitting:', userData);
-            
-            // EMIT NGAY LẬP TỨC
-            this.loginSuccess.emit(userData);
-            
-            setTimeout(() => {
-              this.closeModal();
-            }, 1000);
-          }
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
-          console.error('Login error:', error);
-        }
-      });
-    } else {
-      this.markFormGroupTouched(this.loginForm);
+        });
+      } else {
+        this.markFormGroupTouched(this.loginForm);
+      }
     }
-  }
-
+  // ...existing code...
   onRegister() {
     if (this.registerForm.valid) {
       this.isLoading = true;
@@ -266,7 +232,7 @@ export class AuthModalComponent {
         next: (response) => {
           this.isLoading = false;
           this.successMessage = 'Email khôi phục mật khẩu đã được gửi! Vui lòng kiểm tra hộp thư của bạn.';
-          
+
           // Optionally redirect to reset password form after some time
           setTimeout(() => {
             this.setMode('reset-password');
@@ -289,7 +255,7 @@ export class AuthModalComponent {
       this.errorMessage = '';
 
       const resetPasswordData: ResetPasswordRequest = {
-         email: this.resetPasswordForm.value.email, 
+        email: this.resetPasswordForm.value.email,
         token: this.resetPasswordForm.value.token,
         newPassword: this.resetPasswordForm.value.newPassword
       };
@@ -298,7 +264,7 @@ export class AuthModalComponent {
         next: (response) => {
           this.isLoading = false;
           this.successMessage = 'Mật khẩu đã được đặt lại thành công! Vui lòng đăng nhập với mật khẩu mới.';
-          
+
           setTimeout(() => {
             this.setMode('login');
           }, 2000);

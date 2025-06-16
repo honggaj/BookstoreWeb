@@ -4,7 +4,8 @@
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <div
+                    class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                     <i class="fas fa-book text-white text-lg"></i>
                 </div>
                 <span class="text-xl font-bold text-gray-800">BookStore</span>
@@ -12,39 +13,46 @@
 
             <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center space-x-8">
-                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200" href="/user/home">Trang chủ</a>
-                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200" href="/user/store">Cửa hàng</a>
-                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200" href="/user/news">Tin tức</a>
-                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200" href="#">Giới thiệu</a>
-                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200" href="/user/contact">Liên hệ</a>
-                
+                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+                    routerLink="/user/home">Trang chủ</a>
+                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+                    routerLink="/user/store">Cửa hàng</a>
+                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+                    routerLink="/user/news">Tin tức</a>
+                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+                    routerLink="/user/about">Giới thiệu</a>
+                <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
+                    routerLink="/user/contact">Liên hệ</a>
+
                 <!-- Auth Section -->
                 <div *ngIf="!isLoggedIn">
-                    <button (click)="openAuthModal()" 
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200">
+                    <button (click)="openAuthModal()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200">
                         <i class="fas fa-user mr-2"></i>Đăng nhập
                     </button>
                 </div>
 
                 <!-- User Menu (when logged in) -->
                 <div *ngIf="isLoggedIn" class="relative group">
-                    <button class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">
+                    <button
+                        class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">
                         <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                             <i class="fas fa-user text-white text-sm"></i>
                         </div>
-                        <span>{{ displayName }}</span>
+                      <span>{{ username }}</span>
                         <i class="fas fa-chevron-down text-xs"></i>
                     </button>
-                    
+
                     <!-- Dropdown Menu -->
-                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    <div
+                        class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                         <div class="py-2">
                             <!-- User Info Header -->
-                            <div class="px-4 py-2 border-b border-gray-100">
-                                <p class="text-sm font-medium text-gray-800">{{ displayName }}</p>
+                            <!-- <div class="px-4 py-2 border-b border-gray-100">
+                                <p class="text-sm font-medium text-gray-800">{{ currentUser?.username }}</p>
                                 <p class="text-xs text-gray-500">{{ currentUser?.email }}</p>
-                            </div>
-                            
+                            </div> -->
+
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="fas fa-user-circle mr-2"></i>Tài khoản
                             </a>
@@ -55,18 +63,15 @@
                                 <i class="fas fa-heart mr-2"></i>Yêu thích
                             </a>
                             <hr class="my-1">
-                            <button (click)="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                            <button (click)="logout()"
+                                class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                                 <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Cart -->
-                <a href="/user/cart" class="relative text-gray-700 hover:text-blue-600 transition-colors duration-200">
-                    <i class="fas fa-shopping-cart text-xl"></i>
-                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
-                </a>
+
             </div>
 
             <!-- Mobile menu button -->
@@ -78,8 +83,6 @@
 </header>
 
 <!-- Auth Modal -->
-<app-auth-modal 
-    [isVisible]="isAuthModalVisible"
-    (modalClosed)="closeAuthModal()"
+<app-auth-modal [isVisible]="isAuthModalVisible" (modalClosed)="closeAuthModal()"
     (loginSuccess)="onLoginSuccess($event)">
 </app-auth-modal>
