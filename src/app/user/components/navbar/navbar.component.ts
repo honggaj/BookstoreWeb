@@ -14,17 +14,22 @@ export class NavbarComponent implements OnInit {
   isAuthModalVisible = false;
   isLoggedIn = false;
   username: string | null = null;
-constructor(private router: Router) {}
+  isMobileMenuOpen = false;
+
+  constructor(private router: Router) { }
+
   ngOnInit() {
     this.checkAuthStatus();
   }
-
-    onLoginSuccess(userData?: { username?: string }) {
+toggleMobileMenu() {
+  this.isMobileMenuOpen = !this.isMobileMenuOpen;
+}
+  onLoginSuccess(userData?: { username?: string }) {
     this.isLoggedIn = true;
     this.username = userData?.username ?? null;
     console.log('onLoginSuccess:', this.username);
   }
-  
+
   checkAuthStatus() {
     const user = sessionStorage.getItem('user');
     if (user) {
@@ -38,7 +43,7 @@ constructor(private router: Router) {}
     }
   }
 
- logout() {
+  logout() {
     sessionStorage.removeItem('user');
     this.isLoggedIn = false;
     this.username = null;
@@ -49,9 +54,9 @@ constructor(private router: Router) {}
     this.isAuthModalVisible = true;
   }
 
- closeAuthModal() {
-  this.isAuthModalVisible = false;
-  this.checkAuthStatus(); // Thêm dòng này để cập nhật lại username khi modal đóng
-}
+  closeAuthModal() {
+    this.isAuthModalVisible = false;
+    this.checkAuthStatus(); // Thêm dòng này để cập nhật lại username khi modal đóng
+  }
 
 }
