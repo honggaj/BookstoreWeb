@@ -139,55 +139,62 @@ export class AuthModalComponent {
     this.forgotPasswordForm.reset();
     this.resetPasswordForm.reset();
   }
-      // ...existing code...
-    onLogin() {
-      if (this.loginForm.valid) {
-        this.isLoading = true;
-        this.errorMessage = '';
-    
-        const loginData = {
-          email: this.loginForm.value.email,
-          password: this.loginForm.value.password
-        };
-    
-        this.apiService.apiAuthLoginPost({ body: loginData }).subscribe({
-                   // ...existing code...
-          next: (response: any) => {
-            this.isLoading = false;
-            this.successMessage = 'Đăng nhập thành công!';
-          
-            // Nếu response là string, parse nó
-            if (typeof response === 'string') {
-              try {
-                response = JSON.parse(response);
-              } catch (e) {
-                console.error('Không parse được response:', response);
-              }
-            }
-          
-            // Ghi log chi tiết các trường
-            console.log('API login response:', response);
-            console.log('token:', response.token);
-            console.log('username:', response.username);
-            console.log('email:', response.email);
-            console.log('role:', response.role);
-          
-            const username = response.username ?? null;
-            sessionStorage.setItem('user', JSON.stringify({ username }));
-            this.loginSuccess.emit({ username });
-          
-            setTimeout(() => this.closeModal(), 1000);
-          },
-          // ...existing code...
-          error: (error) => {
-            this.isLoading = false;
-            this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+  // ...existing code...
+ onLogin() {
+  if (this.loginForm.valid) {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const loginData = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    };
+
+    this.apiService.apiAuthLoginPost({ body: loginData }).subscribe({
+      next: (response: any) => {
+        this.isLoading = false;
+        this.successMessage = 'Đăng nhập thành công!';
+
+        // ✅ Kiểm tra response trả về
+        console.log('🎯 Full API response:', response);
+
+        // ✅ Nếu là string (trường hợp backend trả text), thì parse
+        if (typeof response === 'string') {
+          try {
+            response = JSON.parse(response);
+          } catch (e) {
+            console.error('❌ Không parse được response JSON:', response);
+            this.errorMessage = 'Phản hồi máy chủ không hợp lệ.';
+            return;
           }
-        });
-      } else {
-        this.markFormGroupTouched(this.loginForm);
+        }
+
+        // ✅ Lưu đầy đủ vào sessionStorage
+        const userData = {
+          userId: response.userId,           // 👈 QUAN TRỌNG
+          username: response.username,
+          email: response.email,
+          role: response.role,
+          token: response.token              // dùng cho các API cần Auth
+        };
+
+        console.log('✅ Lưu user vào sessionStorage:', userData);
+
+        sessionStorage.setItem('user', JSON.stringify(userData));
+        this.loginSuccess.emit(userData);
+        setTimeout(() => this.closeModal(), 1000);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+        console.error('❌ Login error:', error);
       }
-    }
+    });
+  } else {
+    this.markFormGroupTouched(this.loginForm);
+  }
+}
+
   // ...existing code...
   onRegister() {
     if (this.registerForm.valid) {

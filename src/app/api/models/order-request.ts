@@ -4,8 +4,13 @@
 
 import { OrderItemRequest } from '../models/order-item-request';
 export interface OrderRequest {
+  address?: string | null;
+  city?: string | null;
+  country?: string | null;
   items?: Array<OrderItemRequest> | null;
-  shippingAddressId?: number;
-  status?: string | null;
-  userId?: number;
+  phoneNumber?: string | null;
+  postalCode?: string | null;
+  recipientName?: string | null;
+  shippingAddressId?: number | null;
+  userId?: number | null;
 }

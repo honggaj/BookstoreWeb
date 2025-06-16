@@ -19,6 +19,7 @@ import { AuthModule } from '../auth/auth.module';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NewsComponent } from './pages/news/news.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { CartComponent } from './pages/cart/cart.component';
     CarouselModule,
     ButtonModule,
     TagModule,
-    AuthModule
+    AuthModule,
+    FormsModule
 
 
   ]
