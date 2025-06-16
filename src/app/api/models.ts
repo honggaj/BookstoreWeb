@@ -33,4 +33,5 @@ export type { UserRequest } from './models/user-request';
 export type { UserResponse } from './models/user-response';
 export type { UserResponseListResultCustomModel } from './models/user-response-list-result-custom-model';
 export type { UserResponseResultCustomModel } from './models/user-response-result-custom-model';
+export type { UserUpdateRequest } from './models/user-update-request';
 export type { WeatherForecast } from './models/weather-forecast';

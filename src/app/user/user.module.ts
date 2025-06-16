@@ -18,6 +18,7 @@ import { GenreListComponent } from './components/genre-list/genre-list.component
 import { AuthModule } from '../auth/auth.module';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NewsComponent } from './pages/news/news.component';
+import { CartComponent } from './pages/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -31,18 +32,19 @@ import { NewsComponent } from './pages/news/news.component';
     BookDetailComponent,
     GenreListComponent,
     ContactComponent,
-    NewsComponent
+    NewsComponent,
+    CartComponent
   ],
   imports: [
     CommonModule,
     UserRoutingModule,
     SlickCarouselModule,
-      CarouselModule,
+    CarouselModule,
     ButtonModule,
     TagModule,
     AuthModule
-   
-  
+
+
   ]
 })
 export class UserModule { }

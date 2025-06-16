@@ -70,5 +70,11 @@ getRandomBooks(count: number): BookResponse[] {
   goHome(): void {
   this.router.navigate(['/user/home']);
 }
+addToCart(): void {
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  cart.push(this.book);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  alert('🛒 Đã thêm vào giỏ hàng!');
+}
 
 }

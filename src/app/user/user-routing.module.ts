@@ -6,6 +6,7 @@ import { StoreComponent } from './pages/store/store.component';
 import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NewsComponent } from './pages/news/news.component';
+import { CartComponent } from './pages/cart/cart.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,8 @@ const routes: Routes = [
       { path: 'store', component: StoreComponent },
       { path: 'contact', component: ContactComponent },
       { path: 'news', component: NewsComponent },
+      { path: 'cart', component: CartComponent },
+
 
 
       { path: 'book/:id', component: BookDetailComponent },

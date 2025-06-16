@@ -8,11 +8,11 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { UserRequest } from '../../models/user-request';
+import { UserUpdateRequest } from '../../models/user-update-request';
 
 export interface ApiUserUpdateIdPut$Params {
   id: number;
-      body?: UserRequest
+      body?: UserUpdateRequest
 }
 
 export function apiUserUpdateIdPut(http: HttpClient, rootUrl: string, params: ApiUserUpdateIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
