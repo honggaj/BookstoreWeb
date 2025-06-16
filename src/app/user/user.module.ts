@@ -17,6 +17,7 @@ import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { GenreListComponent } from './components/genre-list/genre-list.component';
 import { AuthModule } from '../auth/auth.module';
 import { ContactComponent } from './pages/contact/contact.component';
+import { NewsComponent } from './pages/news/news.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ContactComponent } from './pages/contact/contact.component';
     ProductListComponent,
     BookDetailComponent,
     GenreListComponent,
-    ContactComponent
+    ContactComponent,
+    NewsComponent
   ],
   imports: [
     CommonModule,

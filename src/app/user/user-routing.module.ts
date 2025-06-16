@@ -5,6 +5,7 @@ import { UserLayoutComponent } from './layout/user-layout/user-layout.component'
 import { StoreComponent } from './pages/store/store.component';
 import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { NewsComponent } from './pages/news/news.component';
 
 const routes: Routes = [
   {
@@ -14,9 +15,11 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'store', component: StoreComponent },
-            { path: 'contact', component: ContactComponent },
+      { path: 'contact', component: ContactComponent },
+      { path: 'news', component: NewsComponent },
 
-            { path: 'book/:id', component: BookDetailComponent },
+
+      { path: 'book/:id', component: BookDetailComponent },
 
       // ... các trang khác của user
     ]

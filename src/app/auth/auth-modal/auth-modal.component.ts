@@ -2,17 +2,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../api/services';
+import { ForgotPasswordRequest, LoginRequest, RegisterRequest, ResetPasswordRequest } from '../../api/models';
+// ...tương tự cho các interface khác nếu đã có...
 
-export interface LoginRequest {
-  email?: string | null;
-  password?: string | null;
-}
-
-export interface RegisterRequest {
-  email?: string | null;
-  password?: string | null;
-  username?: string | null;
-}
 
 export interface LoginResponse {
   token?: string;
@@ -25,6 +17,7 @@ export interface LoginResponse {
   message?: string;
 }
 
+
 @Component({
   selector: 'app-auth-modal',
   standalone: false,
@@ -36,13 +29,19 @@ export class AuthModalComponent {
   @Output() modalClosed = new EventEmitter<void>();
   @Output() loginSuccess = new EventEmitter<any>(); // Emit user data
 
-  isLoginMode = true;
+  // Mode states: 'login', 'register', 'forgot-password', 'reset-password'
+  currentMode: 'login' | 'register' | 'forgot-password' | 'reset-password' = 'login';
   isLoading = false;
   errorMessage = '';
   successMessage = '';
 
   loginForm: FormGroup;
   registerForm: FormGroup;
+  forgotPasswordForm: FormGroup;
+  resetPasswordForm: FormGroup;
+
+  // For reset password flow
+  resetToken = '';
 
   constructor(
     private fb: FormBuilder,
@@ -59,6 +58,17 @@ export class AuthModalComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
     }, { validators: this.passwordMatchValidator });
+
+    this.forgotPasswordForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+
+    this.resetPasswordForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      token: ['', [Validators.required]],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmNewPassword: ['', [Validators.required]]
+    }, { validators: this.newPasswordMatchValidator });
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -72,101 +82,147 @@ export class AuthModalComponent {
     return null;
   }
 
+  newPasswordMatchValidator(form: FormGroup) {
+    const newPassword = form.get('newPassword');
+    const confirmNewPassword = form.get('confirmNewPassword');
+
+    if (newPassword && confirmNewPassword && newPassword.value !== confirmNewPassword.value) {
+      confirmNewPassword.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+    return null;
+  }
+
+  // Computed properties for template
+  get isLoginMode() { return this.currentMode === 'login'; }
+  get isRegisterMode() { return this.currentMode === 'register'; }
+  get isForgotPasswordMode() { return this.currentMode === 'forgot-password'; }
+  get isResetPasswordMode() { return this.currentMode === 'reset-password'; }
+
+  setMode(mode: 'login' | 'register' | 'forgot-password' | 'reset-password') {
+    this.currentMode = mode;
+    this.clearMessages();
+    this.resetAllForms();
+  }
+
   toggleMode() {
-    this.isLoginMode = !this.isLoginMode;
-    this.errorMessage = '';
-    this.successMessage = '';
-    this.loginForm.reset();
-    this.registerForm.reset();
+    if (this.currentMode === 'login') {
+      this.setMode('register');
+    } else {
+      this.setMode('login');
+    }
+  }
+
+  showForgotPassword() {
+    this.setMode('forgot-password');
+  }
+
+  showResetPassword(token?: string) {
+    this.setMode('reset-password');
+    if (token) {
+      this.resetToken = token;
+      this.resetPasswordForm.patchValue({ token });
+    }
+  }
+
+  backToLogin() {
+    this.setMode('login');
   }
 
   closeModal() {
     this.isVisible = false;
     this.modalClosed.emit();
+    this.clearMessages();
+    this.resetAllForms();
+    this.setMode('login');
+  }
+
+  private clearMessages() {
     this.errorMessage = '';
     this.successMessage = '';
+  }
+
+  private resetAllForms() {
     this.loginForm.reset();
     this.registerForm.reset();
+    this.forgotPasswordForm.reset();
+    this.resetPasswordForm.reset();
   }
 
-  // Chỉ cần thay thế phần onLogin() method trong auth-modal.component.ts
+  onLogin() {
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
 
-  // Thay thế method onLogin() trong auth-modal.component.ts
-// Thay thế method onLogin() trong auth-modal.component.ts - LOẠI BỎ setTimeout
+      const loginData: LoginRequest = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password
+      };
 
-onLogin() {
-  if (this.loginForm.valid) {
-    this.isLoading = true;
-    this.errorMessage = '';
+      this.apiService.apiAuthLoginPost({ body: loginData }).subscribe({
+        next: (response: any) => {
+          console.log('API Response:', response);
+          
+          this.isLoading = false;
+          this.successMessage = 'Đăng nhập thành công!';
+          
+          // Store token
+          if (response?.token) {
+            sessionStorage.setItem('token', response.token);
+          }
 
-    const loginData: LoginRequest = {
-      email: this.loginForm.value.email,
-      password: this.loginForm.value.password
-    };
+          // API trả về user data trực tiếp ở root level
+          if (response?.username || response?.email) {
+            const userData = {
+              username: response.username,
+              email: response.email,
+              role: response.role,
+              displayName: response.username || response.email || 'User'
+            };
 
-    this.apiService.apiAuthLoginPost({ body: loginData }).subscribe({
-      next: (response: any) => {
-        console.log('API Response:', response);
-        
-        this.isLoading = false;
-        this.successMessage = 'Đăng nhập thành công!';
-        
-        // Store token
-        if (response?.token) {
-          sessionStorage.setItem('token', response.token);
+            sessionStorage.setItem('user', JSON.stringify(userData));
+            sessionStorage.setItem('username', userData.username || userData.email || 'User');
+
+            console.log('Storing user data and emitting:', userData);
+
+            // EMIT NGAY LẬP TỨC - KHÔNG DÙNG setTimeout
+            this.loginSuccess.emit(userData);
+            
+            // Delay chỉ cho việc đóng modal để user thấy success message
+            setTimeout(() => {
+              this.closeModal();
+            }, 1000);
+          } else {
+            // Fallback
+            const userData = {
+              username: loginData.email?.split('@')[0] || 'User',
+              email: loginData.email,
+              displayName: loginData.email?.split('@')[0] || 'User'
+            };
+            sessionStorage.setItem('user', JSON.stringify(userData));
+            sessionStorage.setItem('username', userData.username);
+            
+            console.log('Storing fallback user data and emitting:', userData);
+            
+            // EMIT NGAY LẬP TỨC
+            this.loginSuccess.emit(userData);
+            
+            setTimeout(() => {
+              this.closeModal();
+            }, 1000);
+          }
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+          console.error('Login error:', error);
         }
-
-        // API trả về user data trực tiếp ở root level
-        if (response?.username || response?.email) {
-          const userData = {
-            username: response.username,
-            email: response.email,
-            role: response.role,
-            displayName: response.username || response.email || 'User'
-          };
-
-          sessionStorage.setItem('user', JSON.stringify(userData));
-          sessionStorage.setItem('username', userData.username || userData.email || 'User');
-
-          console.log('Storing user data and emitting:', userData);
-
-          // EMIT NGAY LẬP TỨC - KHÔNG DÙNG setTimeout
-          this.loginSuccess.emit(userData);
-          
-          // Delay chỉ cho việc đóng modal để user thấy success message
-          setTimeout(() => {
-            this.closeModal();
-          }, 1000);
-        } else {
-          // Fallback
-          const userData = {
-            username: loginData.email?.split('@')[0] || 'User',
-            email: loginData.email,
-            displayName: loginData.email?.split('@')[0] || 'User'
-          };
-          sessionStorage.setItem('user', JSON.stringify(userData));
-          sessionStorage.setItem('username', userData.username);
-          
-          console.log('Storing fallback user data and emitting:', userData);
-          
-          // EMIT NGAY LẬP TỨC
-          this.loginSuccess.emit(userData);
-          
-          setTimeout(() => {
-            this.closeModal();
-          }, 1000);
-        }
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
-        console.error('Login error:', error);
-      }
-    });
-  } else {
-    this.markFormGroupTouched(this.loginForm);
+      });
+    } else {
+      this.markFormGroupTouched(this.loginForm);
+    }
   }
-}
+
   onRegister() {
     if (this.registerForm.valid) {
       this.isLoading = true;
@@ -184,9 +240,7 @@ onLogin() {
           this.successMessage = 'Đăng ký thành công! Vui lòng đăng nhập.';
 
           setTimeout(() => {
-            this.isLoginMode = true;
-            this.successMessage = '';
-            this.registerForm.reset();
+            this.setMode('login');
           }, 2000);
         },
         error: (error) => {
@@ -196,6 +250,67 @@ onLogin() {
       });
     } else {
       this.markFormGroupTouched(this.registerForm);
+    }
+  }
+
+  onForgotPassword() {
+    if (this.forgotPasswordForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      const forgotPasswordData: ForgotPasswordRequest = {
+        email: this.forgotPasswordForm.value.email
+      };
+
+      this.apiService.apiAuthForgotPasswordPost({ body: forgotPasswordData }).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          this.successMessage = 'Email khôi phục mật khẩu đã được gửi! Vui lòng kiểm tra hộp thư của bạn.';
+          
+          // Optionally redirect to reset password form after some time
+          setTimeout(() => {
+            this.setMode('reset-password');
+          }, 3000);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error?.message || 'Không thể gửi email khôi phục. Vui lòng thử lại.';
+          console.error('Forgot password error:', error);
+        }
+      });
+    } else {
+      this.markFormGroupTouched(this.forgotPasswordForm);
+    }
+  }
+
+  onResetPassword() {
+    if (this.resetPasswordForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      const resetPasswordData: ResetPasswordRequest = {
+         email: this.resetPasswordForm.value.email, 
+        token: this.resetPasswordForm.value.token,
+        newPassword: this.resetPasswordForm.value.newPassword
+      };
+
+      this.apiService.apiAuthResetPasswordPost({ body: resetPasswordData }).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          this.successMessage = 'Mật khẩu đã được đặt lại thành công! Vui lòng đăng nhập với mật khẩu mới.';
+          
+          setTimeout(() => {
+            this.setMode('login');
+          }, 2000);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error?.message || 'Không thể đặt lại mật khẩu. Token có thể đã hết hạn.';
+          console.error('Reset password error:', error);
+        }
+      });
+    } else {
+      this.markFormGroupTouched(this.resetPasswordForm);
     }
   }
 
@@ -222,7 +337,10 @@ onLogin() {
       'email': 'Email',
       'password': 'Mật khẩu',
       'username': 'Tên đăng nhập',
-      'confirmPassword': 'Xác nhận mật khẩu'
+      'confirmPassword': 'Xác nhận mật khẩu',
+      'token': 'Mã xác thực',
+      'newPassword': 'Mật khẩu mới',
+      'confirmNewPassword': 'Xác nhận mật khẩu mới'
     };
     return labels[fieldName] || fieldName;
   }

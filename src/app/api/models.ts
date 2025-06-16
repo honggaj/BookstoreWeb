@@ -8,6 +8,7 @@ export type { BookResponseResultCustomModel } from './models/book-response-resul
 export type { FavoriteRequest } from './models/favorite-request';
 export type { FavoriteResponse } from './models/favorite-response';
 export type { FavoriteResponseListResultCustomModel } from './models/favorite-response-list-result-custom-model';
+export type { ForgotPasswordRequest } from './models/forgot-password-request';
 export type { GenreRequest } from './models/genre-request';
 export type { GenreResponse } from './models/genre-response';
 export type { GenreResponseListResultCustomModel } from './models/genre-response-list-result-custom-model';
@@ -20,6 +21,7 @@ export type { OrderRequest } from './models/order-request';
 export type { OrderResponse } from './models/order-response';
 export type { OrderResponseListResultCustomModel } from './models/order-response-list-result-custom-model';
 export type { RegisterRequest } from './models/register-request';
+export type { ResetPasswordRequest } from './models/reset-password-request';
 export type { ReviewRequest } from './models/review-request';
 export type { ReviewResponse } from './models/review-response';
 export type { ReviewResponseListResultCustomModel } from './models/review-response-list-result-custom-model';

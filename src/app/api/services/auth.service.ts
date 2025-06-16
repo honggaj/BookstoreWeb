@@ -11,10 +11,14 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { apiAuthForgotPasswordPost } from '../fn/auth/api-auth-forgot-password-post';
+import { ApiAuthForgotPasswordPost$Params } from '../fn/auth/api-auth-forgot-password-post';
 import { apiAuthLoginPost } from '../fn/auth/api-auth-login-post';
 import { ApiAuthLoginPost$Params } from '../fn/auth/api-auth-login-post';
 import { apiAuthRegisterPost } from '../fn/auth/api-auth-register-post';
 import { ApiAuthRegisterPost$Params } from '../fn/auth/api-auth-register-post';
+import { apiAuthResetPasswordPost } from '../fn/auth/api-auth-reset-password-post';
+import { ApiAuthResetPasswordPost$Params } from '../fn/auth/api-auth-reset-password-post';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService extends BaseService {
@@ -68,6 +72,56 @@ export class AuthService extends BaseService {
    */
   apiAuthRegisterPost(params?: ApiAuthRegisterPost$Params, context?: HttpContext): Observable<void> {
     return this.apiAuthRegisterPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `apiAuthForgotPasswordPost()` */
+  static readonly ApiAuthForgotPasswordPostPath = '/api/Auth/ForgotPassword';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiAuthForgotPasswordPost()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiAuthForgotPasswordPost$Response(params?: ApiAuthForgotPasswordPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiAuthForgotPasswordPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiAuthForgotPasswordPost$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiAuthForgotPasswordPost(params?: ApiAuthForgotPasswordPost$Params, context?: HttpContext): Observable<void> {
+    return this.apiAuthForgotPasswordPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `apiAuthResetPasswordPost()` */
+  static readonly ApiAuthResetPasswordPostPath = '/api/Auth/ResetPassword';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiAuthResetPasswordPost()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiAuthResetPasswordPost$Response(params?: ApiAuthResetPasswordPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiAuthResetPasswordPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiAuthResetPasswordPost$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiAuthResetPasswordPost(params?: ApiAuthResetPasswordPost$Params, context?: HttpContext): Observable<void> {
+    return this.apiAuthResetPasswordPost$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

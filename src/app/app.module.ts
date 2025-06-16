@@ -11,7 +11,6 @@ import { AdminModule } from './admin/admin.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { AuthModule } from './auth/auth.module';
-
 @NgModule({
   declarations: [
     AppComponent,

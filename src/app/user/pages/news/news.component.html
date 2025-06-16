@@ -1,0 +1,14 @@
+<div class="max-w-6xl mx-auto p-6">
+  <h2 class="text-2xl font-bold mb-6 text-blue-700">Tin tức về sách 📚</h2>
+
+  <div *ngIf="newsList.length === 0" class="text-gray-500">Đang tải tin tức...</div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let news of newsList" class="border p-4 hover:shadow-md transition">
+      <img *ngIf="news.image" [src]="news.image" alt="img" class="w-full h-40 object-cover mb-3">
+      <h3 class="font-semibold text-lg mb-2">{{ news.title }}</h3>
+      <p class="text-sm text-gray-600 line-clamp-3 mb-3">{{ news.description }}</p>
+      <a [href]="news.url" target="_blank" class="text-blue-500 text-sm hover:underline">Đọc thêm →</a>
+    </div>
+  </div>
+</div>
