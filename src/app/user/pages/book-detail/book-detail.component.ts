@@ -70,11 +70,18 @@ getRandomBooks(count: number): BookResponse[] {
   goHome(): void {
   this.router.navigate(['/user/home']);
 }
-addToCart(): void {
-  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-  cart.push(this.book);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  alert('🛒 Đã thêm vào giỏ hàng!');
-}
+// ...existing code...
+  addToCart(): void {
+    // Lấy username từ sessionStorage
+    const user = sessionStorage.getItem('user');
+    const username = user ? JSON.parse(user).username : null;
+    const cartKey = username ? `cart_${username}` : 'cart_guest';
 
+    // Lấy giỏ hàng hiện tại
+    const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+    cart.push(this.book);
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    alert('🛒 Đã thêm vào giỏ hàng!');
+  }
+  // ...existing code...
 }

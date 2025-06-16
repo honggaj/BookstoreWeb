@@ -11,11 +11,18 @@ interface CartItem extends BookResponse {
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
 })
+// ...existing code...
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
+  cartKey: string = 'cart';
 
   ngOnInit(): void {
-    const stored = localStorage.getItem('cart');
+    // Lấy username từ sessionStorage
+    const user = sessionStorage.getItem('user');
+    const username = user ? JSON.parse(user).username : null;
+    this.cartKey = username ? `cart_${username}` : 'cart_guest';
+
+    const stored = localStorage.getItem(this.cartKey);
     const rawItems: any[] = stored ? JSON.parse(stored) : [];
     this.cartItems = rawItems.map(item => ({
       ...item,
@@ -34,31 +41,32 @@ export class CartComponent implements OnInit {
     this.saveCart();
   }
 
- getTotal(): number {
-  return this.cartItems.reduce((total, item) => {
-    const price = typeof item.price === 'number' ? item.price : parseInt(item.price as any) || 0;
-    return total + (item.quantity * price);
-  }, 0);
-}
-
+  getTotal(): number {
+    return this.cartItems.reduce((total, item) => {
+      const price = typeof item.price === 'number' ? item.price : parseInt(item.price as any) || 0;
+      return total + (item.quantity * price);
+    }, 0);
+  }
 
   clearCart(): void {
     this.cartItems = [];
-    localStorage.removeItem('cart');
+    localStorage.removeItem(this.cartKey);
   }
 
   private saveCart(): void {
-    localStorage.setItem('cart', JSON.stringify(this.cartItems));
+    localStorage.setItem(this.cartKey, JSON.stringify(this.cartItems));
   }
+
   getSubtotal(): number {
-  return this.cartItems.reduce((total, item) => {
-    const price = typeof item.price === 'number' ? item.price : parseInt(item.price as any) || 0;
-    return total + (item.quantity * price);
-  }, 0);
-}
+    return this.cartItems.reduce((total, item) => {
+      const price = typeof item.price === 'number' ? item.price : parseInt(item.price as any) || 0;
+      return total + (item.quantity * price);
+    }, 0);
+  }
 
-getGrandTotal(): number {
-  return this.getSubtotal() + 30000; // phí ship cố định
-}
+  getGrandTotal(): number {
+    return this.getSubtotal() + 30000; // phí ship cố định
+  }
 
+// ...existing code...
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UserResponse } from '../../../api/models';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class NavbarComponent implements OnInit {
   isAuthModalVisible = false;
   isLoggedIn = false;
   username: string | null = null;
-
+constructor(private router: Router) {}
   ngOnInit() {
     this.checkAuthStatus();
   }
@@ -37,12 +38,12 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  logout() {
+ logout() {
     sessionStorage.removeItem('user');
     this.isLoggedIn = false;
     this.username = null;
+    this.router.navigate(['/user/home']); // Điều hướng về trang chủ user
   }
-
 
   openAuthModal() {
     this.isAuthModalVisible = true;
