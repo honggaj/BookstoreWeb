@@ -1,0 +1,35 @@
+<main class="max-w-4xl mx-auto px-4 py-6" *ngIf="!loading && order">
+  <h2 class="text-2xl font-semibold text-gray-900 mb-4">Chi tiết đơn hàng #{{ order.orderId }}</h2>
+
+  <div class="bg-white p-6 rounded-xl shadow space-y-4">
+    <div><strong>Người đặt:</strong> {{ order.username }}</div>
+    <div><strong>Ngày đặt:</strong> {{ order.orderDate | date:'dd/MM/yyyy' }}</div>
+    <div><strong>Tổng tiền:</strong> {{ order.totalAmount | number:'1.0-0' }} VND</div>
+    <div>
+  <strong>Trạng thái:</strong>
+  <span
+    class="px-2 py-1 rounded text-sm font-semibold"
+    [ngClass]="{
+      'bg-blue-100 text-blue-700': order.status === 'Chờ xử lý',
+      'bg-yellow-100 text-yellow-700': order.status === 'Đang giao',
+      'bg-green-100 text-green-700': order.status === 'Đã giao',
+      'bg-red-100 text-red-700': order.status === 'Đã hủy'
+    }"
+  >
+    {{ order.status }}
+  </span>
+</div>
+
+
+    <div>
+      <h3 class="font-semibold mb-2">Sản phẩm:</h3>
+      <ul class="list-disc list-inside text-sm">
+        <li *ngFor="let item of order.items">
+          {{ item.bookTitle }} x{{ item.quantity }} - {{ item.price | number:'1.0-0' }} VND
+        </li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<div *ngIf="loading" class="text-blue-500 text-center p-4">Đang tải chi tiết đơn hàng...</div>

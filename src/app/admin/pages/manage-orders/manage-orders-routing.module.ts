@@ -1,7 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { OrderListComponent } from './order-list/order-list.component';
+import { OrderCreateComponent } from './order-create/order-create.component';
+import { OrderUpdateComponent } from './order-update/order-update.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
+const routes: Routes = [
+  { path: '', component: OrderListComponent },
+  { path: 'order-create', component: OrderCreateComponent },
+  { path: 'order-update/:id', component: OrderUpdateComponent },
+  { path: 'order-detail/:id', component: OrderDetailComponent },
 
-const routes: Routes = [];
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

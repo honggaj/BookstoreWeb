@@ -23,6 +23,10 @@ import { apiOrderGet$Json } from '../fn/order/api-order-get-json';
 import { ApiOrderGet$Json$Params } from '../fn/order/api-order-get-json';
 import { apiOrderGet$Plain } from '../fn/order/api-order-get-plain';
 import { ApiOrderGet$Plain$Params } from '../fn/order/api-order-get-plain';
+import { apiOrderIdGet$Json } from '../fn/order/api-order-id-get-json';
+import { ApiOrderIdGet$Json$Params } from '../fn/order/api-order-id-get-json';
+import { apiOrderIdGet$Plain } from '../fn/order/api-order-id-get-plain';
+import { ApiOrderIdGet$Plain$Params } from '../fn/order/api-order-id-get-plain';
 import { apiOrderUpdateStatusIdPut$Json } from '../fn/order/api-order-update-status-id-put-json';
 import { ApiOrderUpdateStatusIdPut$Json$Params } from '../fn/order/api-order-update-status-id-put-json';
 import { apiOrderUpdateStatusIdPut$Plain } from '../fn/order/api-order-update-status-id-put-plain';
@@ -33,6 +37,7 @@ import { apiOrderUserUserIdGet$Plain } from '../fn/order/api-order-user-user-id-
 import { ApiOrderUserUserIdGet$Plain$Params } from '../fn/order/api-order-user-user-id-get-plain';
 import { ObjectResultCustomModel } from '../models/object-result-custom-model';
 import { OrderResponseListResultCustomModel } from '../models/order-response-list-result-custom-model';
+import { OrderResponseResultCustomModel } from '../models/order-response-result-custom-model';
 import { StringResultCustomModel } from '../models/string-result-custom-model';
 
 @Injectable({ providedIn: 'root' })
@@ -85,6 +90,53 @@ export class OrderService extends BaseService {
   apiOrderGet$Json(params?: ApiOrderGet$Json$Params, context?: HttpContext): Observable<OrderResponseListResultCustomModel> {
     return this.apiOrderGet$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<OrderResponseListResultCustomModel>): OrderResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /** Path part for operation `apiOrderIdGet()` */
+  static readonly ApiOrderIdGetPath = '/api/Order/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiOrderIdGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderIdGet$Plain$Response(params: ApiOrderIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<OrderResponseResultCustomModel>> {
+    return apiOrderIdGet$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiOrderIdGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderIdGet$Plain(params: ApiOrderIdGet$Plain$Params, context?: HttpContext): Observable<OrderResponseResultCustomModel> {
+    return this.apiOrderIdGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<OrderResponseResultCustomModel>): OrderResponseResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiOrderIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderIdGet$Json$Response(params: ApiOrderIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<OrderResponseResultCustomModel>> {
+    return apiOrderIdGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiOrderIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiOrderIdGet$Json(params: ApiOrderIdGet$Json$Params, context?: HttpContext): Observable<OrderResponseResultCustomModel> {
+    return this.apiOrderIdGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<OrderResponseResultCustomModel>): OrderResponseResultCustomModel => r.body)
     );
   }
 

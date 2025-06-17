@@ -20,6 +20,7 @@ export type { OrderItemResponse } from './models/order-item-response';
 export type { OrderRequest } from './models/order-request';
 export type { OrderResponse } from './models/order-response';
 export type { OrderResponseListResultCustomModel } from './models/order-response-list-result-custom-model';
+export type { OrderResponseResultCustomModel } from './models/order-response-result-custom-model';
 export type { RegisterRequest } from './models/register-request';
 export type { ResetPasswordRequest } from './models/reset-password-request';
 export type { ReviewRequest } from './models/review-request';
