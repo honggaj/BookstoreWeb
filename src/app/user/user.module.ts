@@ -19,7 +19,8 @@ import { AuthModule } from '../auth/auth.module';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NewsComponent } from './pages/news/news.component';
 import { CartComponent } from './pages/cart/cart.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AccountComponent } from './pages/account/account.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import { FormsModule } from '@angular/forms';
     GenreListComponent,
     ContactComponent,
     NewsComponent,
-    CartComponent
+    CartComponent,
+    AccountComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -44,7 +47,8 @@ import { FormsModule } from '@angular/forms';
     ButtonModule,
     TagModule,
     AuthModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
 
 
   ]

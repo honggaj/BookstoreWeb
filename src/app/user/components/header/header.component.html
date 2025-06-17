@@ -31,14 +31,17 @@
             </form>
         </div>
 
-        <!-- Cart -->
-        <button routerLink="/user/cart" 
-                
-            class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md px-4 py-2 flex items-center space-x-1 relative">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Giỏ hàng</span>
-            <span
-                class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">1</span>
-        </button>
+    <!-- Cart -->
+<button routerLink="/user/cart"
+  class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md px-4 py-2 flex items-center space-x-1 relative">
+  <i class="fas fa-shopping-cart"></i>
+  <span>Giỏ hàng</span>
+
+  <span *ngIf="cartCount > 0"
+    class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+    {{ cartCount }}
+  </span>
+</button>
+
     </div>
 </header>

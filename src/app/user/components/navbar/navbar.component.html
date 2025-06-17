@@ -53,9 +53,13 @@
                                 <p class="text-xs text-gray-500">{{ currentUser?.email }}</p>
                             </div> -->
 
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-user-circle mr-2"></i>Tài khoản
-                            </a>
+                          <a 
+  *ngIf="isLoggedIn"
+  routerLink="/user/account" 
+  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+  <i class="fas fa-user-circle mr-2"></i>Tài khoản
+</a>
+
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="fas fa-shopping-bag mr-2"></i>Đơn hàng
                             </a>

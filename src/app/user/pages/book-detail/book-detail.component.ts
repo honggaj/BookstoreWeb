@@ -21,14 +21,18 @@ export class BookDetailComponent implements OnInit {
     private bookService: BookService,
   private router:Router  ) {}
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+ ngOnInit(): void {
+  // Lắng nghe khi route param thay đổi
+  this.route.params.subscribe(params => {
+    const id = +params['id'];
     if (id) {
-      this.getBookDetail(+id);
+      this.getBookDetail(id);
     }
+  });
 
-    this.loadBooks();
-  }
+  this.loadBooks(); // chỉ gọi 1 lần, không cần lặp lại khi route thay đổi
+}
+
 
   getBookDetail(id: number): void {
     this.loading = true;

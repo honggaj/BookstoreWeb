@@ -17,12 +17,12 @@ interface CartItem extends BookResponse {
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   cartKey: string = 'cart';
-recipientName = '';
-address = '';
-city = '';
-postalCode = '';
-country = '';
-phoneNumber = '';
+  recipientName = '';
+  address = '';
+  city = '';
+  postalCode = '';
+  country = '';
+  phoneNumber = '';
 
   constructor(private orderService: OrderService, private router: Router) { }
 
@@ -64,8 +64,10 @@ phoneNumber = '';
   }
 
   private saveCart(): void {
-    localStorage.setItem(this.cartKey, JSON.stringify(this.cartItems));
-  }
+  localStorage.setItem(this.cartKey, JSON.stringify(this.cartItems));
+  window.dispatchEvent(new Event('storage')); // 🔥 Cập nhật Header luôn
+}
+
 
   getSubtotal(): number {
     return this.cartItems.reduce((total, item) => {
@@ -79,50 +81,50 @@ phoneNumber = '';
   }
 
   placeOrder(): void {
-  const userStr = sessionStorage.getItem('user');
-  const user = userStr ? JSON.parse(userStr) : null;
+    const userStr = sessionStorage.getItem('user');
+    const user = userStr ? JSON.parse(userStr) : null;
 
-  if (!user) {
-    alert('Vui lòng đăng nhập để đặt hàng!');
-    return;
-  }
-
-  const items: OrderItemRequest[] = this.cartItems.map(item => {
-    const parsedPrice = typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0;
-    return {
-      bookId: item.bookId!,
-      quantity: item.quantity,
-      price: parsedPrice
-    };
-  });
-
- const orderRequest: OrderRequest = {
-  userId: user.userId,
-  recipientName: this.recipientName,
-  address: this.address,
-  city: this.city,
-  postalCode: this.postalCode,
-  country: this.country,
-  phoneNumber: this.phoneNumber,
-  items
-};
-
-
-  console.log('📦 OrderRequest gửi đi:', orderRequest);
-
-  this.orderService.apiOrderCreatePost$Json({ body: orderRequest }).subscribe({
-    next: (res) => {
-      console.log('✅ Đặt hàng thành công:', res);
-      alert('Đặt hàng thành công 🎉');
-      this.clearCart();
-      this.router.navigate(['/']);
-    },
-    error: (err) => {
-      console.error('❌ Lỗi khi tạo đơn hàng:', err);
-      alert('Có lỗi xảy ra khi đặt hàng!');
+    if (!user) {
+      alert('Vui lòng đăng nhập để đặt hàng!');
+      return;
     }
-  });
-}
+
+    const items: OrderItemRequest[] = this.cartItems.map(item => {
+      const parsedPrice = typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0;
+      return {
+        bookId: item.bookId!,
+        quantity: item.quantity,
+        price: parsedPrice
+      };
+    });
+
+    const orderRequest: OrderRequest = {
+      userId: user.userId,
+      recipientName: this.recipientName,
+      address: this.address,
+      city: this.city,
+      postalCode: this.postalCode,
+      country: this.country,
+      phoneNumber: this.phoneNumber,
+      items
+    };
+
+
+    console.log('📦 OrderRequest gửi đi:', orderRequest);
+
+    this.orderService.apiOrderCreatePost$Json({ body: orderRequest }).subscribe({
+      next: (res) => {
+        console.log('✅ Đặt hàng thành công:', res);
+        alert('Đặt hàng thành công 🎉');
+        this.clearCart();
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('❌ Lỗi khi tạo đơn hàng:', err);
+        alert('Có lỗi xảy ra khi đặt hàng!');
+      }
+    });
+  }
 
 
 }

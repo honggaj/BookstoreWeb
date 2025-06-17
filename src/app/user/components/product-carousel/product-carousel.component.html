@@ -18,7 +18,8 @@
                 {{ book.price ? (book.price | number : '1.0-0') : 'Contact' }} VNĐ
             </p>
             <div class="flex justify-center items-center space-x-2">
-                <button class="bg-blue-100 text-blue-600 text-xs font-semibold rounded px-3 py-1 hover:bg-blue-200" >
+                <button (click)="addToCart(book)"
+                 class="bg-blue-100 text-blue-600 text-xs font-semibold rounded px-3 py-1 hover:bg-blue-200" >
                     <i class=" fas fa-eye mr-1"></i> Thêm vào giỏ
                 </button>
                 <button class="bg-blue-100 text-blue-600 text-xs font-semibold rounded px-3 py-1 hover:bg-blue-200"

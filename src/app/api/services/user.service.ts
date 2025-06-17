@@ -11,6 +11,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { apiUserChangePasswordPost } from '../fn/user/api-user-change-password-post';
+import { ApiUserChangePasswordPost$Params } from '../fn/user/api-user-change-password-post';
 import { apiUserCreatePost } from '../fn/user/api-user-create-post';
 import { ApiUserCreatePost$Params } from '../fn/user/api-user-create-post';
 import { apiUserDeleteIdDelete } from '../fn/user/api-user-delete-id-delete';
@@ -226,6 +228,31 @@ export class UserService extends BaseService {
    */
   apiUserSearchGet(params?: ApiUserSearchGet$Params, context?: HttpContext): Observable<void> {
     return this.apiUserSearchGet$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `apiUserChangePasswordPost()` */
+  static readonly ApiUserChangePasswordPostPath = '/api/User/ChangePassword';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiUserChangePasswordPost()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiUserChangePasswordPost$Response(params?: ApiUserChangePasswordPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiUserChangePasswordPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiUserChangePasswordPost$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiUserChangePasswordPost(params?: ApiUserChangePasswordPost$Params, context?: HttpContext): Observable<void> {
+    return this.apiUserChangePasswordPost$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

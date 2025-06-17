@@ -7,6 +7,8 @@ import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NewsComponent } from './pages/news/news.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { AccountComponent } from './pages/account/account.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -19,6 +21,9 @@ const routes: Routes = [
       { path: 'contact', component: ContactComponent },
       { path: 'news', component: NewsComponent },
       { path: 'cart', component: CartComponent },
+      { path: 'account', component: AccountComponent },
+            { path: 'change-password', component: ChangePasswordComponent },
+
 
 
 
