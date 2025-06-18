@@ -22,6 +22,7 @@ import { CartComponent } from './pages/cart/cart.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountComponent } from './pages/account/account.component';
 import { FavoriteComponent } from './pages/favorite/favorite.component';
+import { AboutComponent } from './pages/about/about.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { FavoriteComponent } from './pages/favorite/favorite.component';
     CartComponent,
     AccountComponent,
     FavoriteComponent,
+    AboutComponent,
     
   ],
   imports: [

@@ -10,6 +10,7 @@ import { CartComponent } from './pages/cart/cart.component';
 import { AccountComponent } from './pages/account/account.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { FavoriteComponent } from './pages/favorite/favorite.component';
+import { AboutComponent } from './pages/about/about.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,8 @@ const routes: Routes = [
       { path: 'news', component: NewsComponent },
       { path: 'cart', component: CartComponent },
       { path: 'account', component: AccountComponent },
+      { path: 'about', component: AboutComponent },
+
       { path: 'favorite', component: FavoriteComponent },
       { path: 'change-password', component: ChangePasswordComponent },
 
