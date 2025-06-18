@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { BookService, GenreService } from '../../../api/services';
+import { BookService, FavoriteService, GenreService } from '../../../api/services';
 import { Router } from '@angular/router';
-import { BookResponse } from '../../../api/models';
+import { BookResponse, FavoriteRequest } from '../../../api/models';
 
 @Component({
   selector: 'app-store',
@@ -10,20 +10,88 @@ import { BookResponse } from '../../../api/models';
   styleUrl: './store.component.css'
 })
 export class StoreComponent {
- books: BookResponse[] = [];
+   books: BookResponse[] = [];
   loading = false;
   genres: any[] = [];
- 
+favoriteBookIds: number[] = [];
 
-  constructor(private bookService: BookService, private router: Router, private genreService: GenreService) {
-   
-
-  } // ✅ bookService viết đúng tên
+  constructor(
+    private bookService: BookService,
+    private router: Router,
+    private genreService: GenreService,
+    private favoriteService: FavoriteService,
+    
+  ) {}
 
   ngOnInit(): void {
     this.loadBooks();
     this.loadGenres();
+     this.loadFavorites(); // 👈 Thêm dòng này
   }
+loadFavorites(): void {
+  const userStr = sessionStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : null;
+
+  if (!user) return;
+
+  this.favoriteService.apiFavoriteUserUserIdGet$Json({ userId: user.userId }).subscribe({
+    next: res => {
+     this.favoriteBookIds = (res.data ?? [])
+  .map(f => f.bookId)
+  .filter((id): id is number => id !== undefined);
+
+    },
+    error: err => console.error('Lỗi load yêu thích:', err)
+  });
+}
+  toggleFavorite(book: BookResponse): void {
+  const userStr = sessionStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : null;
+
+  if (!user) {
+    alert('Bạn cần đăng nhập để yêu thích!');
+    return;
+  }
+
+  const bookId = book.bookId;
+
+  // Nếu đã yêu thích → bỏ yêu thích
+  if (this.favoriteBookIds.includes(bookId!)) {
+    this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({
+      userId: user.userId,
+      bookId
+    }).subscribe({
+      next: () => {
+        this.favoriteBookIds = this.favoriteBookIds.filter(id => id !== bookId);
+        alert('❌ Đã xoá khỏi yêu thích');
+      },
+      error: () => alert('Lỗi khi xoá khỏi yêu thích')
+    });
+  }
+  // Nếu chưa yêu thích → thêm
+  else {
+    const request: FavoriteRequest = {
+      userId: user.userId,
+      bookId
+    };
+
+    this.favoriteService.apiFavoriteAddPost$Json({ body: request }).subscribe({
+      next: res => {
+        if (res.success) {
+          this.favoriteBookIds.push(bookId!); // Cập nhật UI
+          alert('❤️ Đã thêm vào yêu thích!');
+        } else {
+          alert(res.message);
+        }
+      },
+      error: err => {
+        console.error('Lỗi thêm yêu thích:', err);
+        alert('❌ Lỗi khi thêm vào yêu thích!');
+      }
+    });
+  }
+}
+
   loadGenres(): void {
     this.loading = true;
     this.genreService.apiGenreGet$Json().subscribe({

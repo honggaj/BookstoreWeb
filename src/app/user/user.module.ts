@@ -21,6 +21,7 @@ import { NewsComponent } from './pages/news/news.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountComponent } from './pages/account/account.component';
+import { FavoriteComponent } from './pages/favorite/favorite.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { AccountComponent } from './pages/account/account.component';
     NewsComponent,
     CartComponent,
     AccountComponent,
+    FavoriteComponent,
     
   ],
   imports: [

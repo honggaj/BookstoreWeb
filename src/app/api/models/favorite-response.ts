@@ -6,6 +6,7 @@ export interface FavoriteResponse {
   addedDate?: string | null;
   bookId?: number;
   bookTitle?: string | null;
+  coverImageUrl?: string | null;
   favoriteId?: number;
   userId?: number;
   username?: string | null;

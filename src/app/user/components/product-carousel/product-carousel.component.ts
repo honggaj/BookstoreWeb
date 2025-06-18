@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { BookResponse } from '../../../api/models';
-import { BookService } from '../../../api/services';
+import { BookService, FavoriteService } from '../../../api/services';
 import { Router } from '@angular/router';
+import { BookResponse, FavoriteRequest } from '../../../api/models';
 
 @Component({
   selector: 'app-product-carousel',
@@ -11,32 +11,24 @@ import { Router } from '@angular/router';
 })
 export class ProductCarouselComponent {
   books: BookResponse[] = [];
-    loading = false;
-responsiveOptions = [
-    {
-      breakpoint: '1024px',
-      numVisible: 3,
-      numScroll: 3
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 2,
-      numScroll: 2
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1,
-      numScroll: 1
-    }
+  favoriteBookIds: number[] = [];
+  loading = false;
+
+  responsiveOptions = [
+    { breakpoint: '1024px', numVisible: 3, numScroll: 3 },
+    { breakpoint: '768px', numVisible: 2, numScroll: 2 },
+    { breakpoint: '560px', numVisible: 1, numScroll: 1 }
   ];
 
-  constructor(private bookService: BookService, private router: Router) {
-    
-
-  } // ✅ bookService viết đúng tên
+  constructor(
+    private bookService: BookService,
+    private favoriteService: FavoriteService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadBooks();
+    this.loadFavorites();
   }
 
   loadBooks(): void {
@@ -52,26 +44,84 @@ responsiveOptions = [
       }
     });
   }
-   goToDetail(bookId: number): void {
+
+  loadFavorites(): void {
+    const userStr = sessionStorage.getItem('user');
+    const user = userStr ? JSON.parse(userStr) : null;
+    if (!user) return;
+
+    this.favoriteService.apiFavoriteUserUserIdGet$Json({ userId: user.userId }).subscribe({
+      next: res => {
+        this.favoriteBookIds = (res.data ?? [])
+          .map(f => f.bookId)
+          .filter((id): id is number => id !== undefined);
+      },
+      error: err => console.error('Lỗi load yêu thích:', err)
+    });
+  }
+
+  toggleFavorite(book: BookResponse): void {
+    const userStr = sessionStorage.getItem('user');
+    const user = userStr ? JSON.parse(userStr) : null;
+
+    if (!user) {
+      alert('Bạn cần đăng nhập để yêu thích!');
+      return;
+    }
+
+    const bookId = book.bookId;
+
+    if (this.favoriteBookIds.includes(bookId!)) {
+      // Đã yêu thích → Xóa
+      this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({
+        userId: user.userId,
+        bookId
+      }).subscribe({
+        next: () => {
+          this.favoriteBookIds = this.favoriteBookIds.filter(id => id !== bookId);
+          alert('❌ Đã xoá khỏi yêu thích');
+        },
+        error: () => alert('Lỗi khi xoá khỏi yêu thích')
+      });
+    } else {
+      // Chưa yêu thích → Thêm
+      const request: FavoriteRequest = { userId: user.userId, bookId };
+      this.favoriteService.apiFavoriteAddPost$Json({ body: request }).subscribe({
+        next: res => {
+          if (res.success) {
+            this.favoriteBookIds.push(bookId!);
+            alert('❤️ Đã thêm vào yêu thích!');
+          } else {
+            alert(res.message);
+          }
+        },
+        error: err => {
+          console.error('Lỗi thêm yêu thích:', err);
+          alert('❌ Lỗi khi thêm vào yêu thích!');
+        }
+      });
+    }
+  }
+
+  goToDetail(bookId: number): void {
     this.router.navigate(['/book', bookId]);
   }
+
   addToCart(book: BookResponse): void {
-  const user = sessionStorage.getItem('user');
-  const username = user ? JSON.parse(user).username : null;
-  const cartKey = username ? `cart_${username}` : 'cart_guest';
+    const user = sessionStorage.getItem('user');
+    const username = user ? JSON.parse(user).username : null;
+    const cartKey = username ? `cart_${username}` : 'cart_guest';
 
-  const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+    const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+    const existing = cart.find((item: any) => item.bookId === book.bookId);
+    if (existing) {
+      existing.quantity = (existing.quantity ?? 1) + 1;
+    } else {
+      cart.push({ ...book, quantity: 1 });
+    }
 
-  // Nếu đã có bookId thì tăng số lượng
-  const existing = cart.find((item: any) => item.bookId === book.bookId);
-  if (existing) {
-    existing.quantity = (existing.quantity ?? 1) + 1;
-  } else {
-    cart.push({ ...book, quantity: 1 });
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    window.dispatchEvent(new Event('storage'));
+    alert('🛒 Đã thêm vào giỏ hàng!');
   }
-
-  localStorage.setItem(cartKey, JSON.stringify(cart));
-  window.dispatchEvent(new Event('storage')); // 🔥 Cập nhật số giỏ hàng trên header
-  alert('🛒 Đã thêm vào giỏ hàng!');
-}
 }

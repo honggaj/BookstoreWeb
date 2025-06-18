@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-import { BookResponse } from '../../../api/models';
-import { BookService } from '../../../api/services';
+import { Component, Input, OnInit } from '@angular/core';
+import { BookResponse, FavoriteRequest } from '../../../api/models';
+import { BookService, FavoriteService } from '../../../api/services';
 import { Router } from '@angular/router';
-import {  Input } from '@angular/core';
 
 @Component({
   selector: 'app-product-list-home',
@@ -10,16 +9,20 @@ import {  Input } from '@angular/core';
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
   loading = false;
- @Input() books: BookResponse[] = []; // 📥 nhận sách từ cha
-  constructor(private bookService: BookService, private router: Router) {
+  @Input() books: BookResponse[] = []; // 📥 nhận sách từ cha
+  favoriteBookIds: number[] = [];
 
-
-  } // ✅ bookService viết đúng tên
+  constructor(
+    private bookService: BookService,
+    private router: Router,
+    private favoriteService: FavoriteService
+  ) {}
 
   ngOnInit(): void {
     this.loadBooks();
+    this.loadFavorites(); // 💖 Load yêu thích
   }
 
   loadBooks(): void {
@@ -35,26 +38,81 @@ export class ProductListComponent {
       }
     });
   }
+
+  loadFavorites(): void {
+    const userStr = sessionStorage.getItem('user');
+    const user = userStr ? JSON.parse(userStr) : null;
+    if (!user) return;
+
+    this.favoriteService.apiFavoriteUserUserIdGet$Json({ userId: user.userId }).subscribe({
+      next: res => {
+        this.favoriteBookIds = (res.data ?? [])
+          .map(f => f.bookId)
+          .filter((id): id is number => id !== undefined);
+      },
+      error: err => console.error('Lỗi load yêu thích:', err)
+    });
+  }
+
+  toggleFavorite(book: BookResponse): void {
+    const userStr = sessionStorage.getItem('user');
+    const user = userStr ? JSON.parse(userStr) : null;
+
+    if (!user) {
+      alert('Bạn cần đăng nhập để yêu thích!');
+      return;
+    }
+
+    const bookId = book.bookId!;
+    if (this.favoriteBookIds.includes(bookId)) {
+      this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({
+        userId: user.userId,
+        bookId
+      }).subscribe({
+        next: () => {
+          this.favoriteBookIds = this.favoriteBookIds.filter(id => id !== bookId);
+          alert('❌ Đã xoá khỏi yêu thích');
+        },
+        error: () => alert('Lỗi khi xoá khỏi yêu thích')
+      });
+    } else {
+      const request: FavoriteRequest = { userId: user.userId, bookId };
+      this.favoriteService.apiFavoriteAddPost$Json({ body: request }).subscribe({
+        next: res => {
+          if (res.success) {
+            this.favoriteBookIds.push(bookId);
+            alert('❤️ Đã thêm vào yêu thích!');
+          } else {
+            alert(res.message);
+          }
+        },
+        error: err => {
+          console.error('Lỗi thêm yêu thích:', err);
+          alert('❌ Lỗi khi thêm vào yêu thích!');
+        }
+      });
+    }
+  }
+
   goToDetail(bookId: number): void {
     this.router.navigate(['/book', bookId]);
   }
-addToCart(book: BookResponse): void {
-  const user = sessionStorage.getItem('user');
-  const username = user ? JSON.parse(user).username : null;
-  const cartKey = username ? `cart_${username}` : 'cart_guest';
 
-  const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+  addToCart(book: BookResponse): void {
+    const user = sessionStorage.getItem('user');
+    const username = user ? JSON.parse(user).username : null;
+    const cartKey = username ? `cart_${username}` : 'cart_guest';
 
-  // Nếu đã có bookId thì tăng số lượng
-  const existing = cart.find((item: any) => item.bookId === book.bookId);
-  if (existing) {
-    existing.quantity = (existing.quantity ?? 1) + 1;
-  } else {
-    cart.push({ ...book, quantity: 1 });
+    const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+    const existing = cart.find((item: any) => item.bookId === book.bookId);
+    if (existing) {
+      existing.quantity = (existing.quantity ?? 1) + 1;
+    } else {
+      cart.push({ ...book, quantity: 1 });
+    }
+
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    window.dispatchEvent(new Event('storage'));
+    alert('🛒 Đã thêm vào giỏ hàng!');
   }
-
-  localStorage.setItem(cartKey, JSON.stringify(cart));
-  window.dispatchEvent(new Event('storage')); // 🔥 Cập nhật số giỏ hàng trên header
-  alert('🛒 Đã thêm vào giỏ hàng!');
-}
 }
