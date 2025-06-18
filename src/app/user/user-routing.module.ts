@@ -11,6 +11,7 @@ import { AccountComponent } from './pages/account/account.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { FavoriteComponent } from './pages/favorite/favorite.component';
 import { AboutComponent } from './pages/about/about.component';
+import { HistoryComponent } from './pages/history/history.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,8 @@ const routes: Routes = [
       { path: 'cart', component: CartComponent },
       { path: 'account', component: AccountComponent },
       { path: 'about', component: AboutComponent },
+            { path: 'history', component: HistoryComponent },
+
 
       { path: 'favorite', component: FavoriteComponent },
       { path: 'change-password', component: ChangePasswordComponent },

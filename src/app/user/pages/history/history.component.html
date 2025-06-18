@@ -1,0 +1,45 @@
+<section class="p-6 bg-white rounded-xl shadow-lg border border-blue-100">
+  <h2 class="text-2xl font-bold text-blue-700 mb-6">🧾 Đơn hàng của bạn</h2>
+
+  <ng-container *ngIf="orders.length > 0; else noOrders">
+    <div *ngFor="let order of orders" class="bg-blue-50 border border-blue-200 rounded-lg p-5 shadow space-y-4 mb-6">
+      
+      <!-- Header đơn -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+        <div class="text-sm space-y-1 text-gray-700">
+          <p><span class="font-semibold text-blue-700">Mã đơn:</span> #{{ order.orderId }}</p>
+          <p><span class="font-semibold text-blue-700">Ngày đặt:</span> {{ order.orderDate | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p><span class="font-semibold text-blue-700">Tổng tiền:</span> {{ order.totalAmount |number:'1.0-0' }} VNĐ</p>
+        </div>
+
+        <!-- Trạng thái -->
+        <span 
+          class="px-3 py-1 rounded-full text-xs font-semibold"
+          [ngClass]="{
+            'bg-blue-100 text-blue-700': order.status === 'Chờ xử lý',
+            'bg-yellow-100 text-yellow-700': order.status === 'Đang giao',
+            'bg-green-100 text-green-700': order.status === 'Đã giao',
+            'bg-red-100 text-red-700': order.status === 'Đã hủy'
+          }">
+          {{ order.status }}
+        </span>
+      </div>
+
+      <!-- Danh sách sách -->
+      <div class="pt-3 border-t border-blue-200">
+        <h3 class="text-sm font-semibold text-blue-800 mb-2">📚 Danh sách sách:</h3>
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li *ngFor="let item of order.items" class="border-l-4 border-blue-400 pl-3">
+            <p><strong>Tên:</strong> {{ item.bookTitle }}</p>
+            <p><strong>Số lượng:</strong> {{ item.quantity }}</p>
+            <p><strong>Giá:</strong> {{ item.price |number:'1.0-0'}} VNĐ</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noOrders>
+    <p class="text-gray-500 text-sm italic">Bạn chưa có đơn hàng nào 😢</p>
+  </ng-template>
+</section>

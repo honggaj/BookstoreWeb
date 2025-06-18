@@ -23,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountComponent } from './pages/account/account.component';
 import { FavoriteComponent } from './pages/favorite/favorite.component';
 import { AboutComponent } from './pages/about/about.component';
+import { HistoryComponent } from './pages/history/history.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AboutComponent } from './pages/about/about.component';
     AccountComponent,
     FavoriteComponent,
     AboutComponent,
+    HistoryComponent,
     
   ],
   imports: [
