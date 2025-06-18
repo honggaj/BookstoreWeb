@@ -12,12 +12,14 @@ import { ObjectResultCustomModel } from '../../models/object-result-custom-model
 
 export interface ApiReviewDeleteIdDelete$Json$Params {
   id: number;
+  userId?: number;
 }
 
 export function apiReviewDeleteIdDelete$Json(http: HttpClient, rootUrl: string, params: ApiReviewDeleteIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
   const rb = new RequestBuilder(rootUrl, apiReviewDeleteIdDelete$Json.PATH, 'delete');
   if (params) {
     rb.path('id', params.id, {});
+    rb.query('userId', params.userId, {});
   }
 
   return http.request(

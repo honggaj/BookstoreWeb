@@ -1,6 +1,6 @@
 <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- LEFT: Book detail + Services -->
+    <!-- LEFT: Book detail + Reviews + Services -->
     <div class="lg:col-span-9 space-y-6">
 
         <!-- Book Detail -->
@@ -28,14 +28,15 @@
 
                     <!-- Buttons -->
                     <div class="flex space-x-4 pt-4">
-                        <button  (click)="addToCart()"
-                        class="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded hover:bg-blue-700">
+                        <button (click)="addToCart()"
+                            class="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded hover:bg-blue-700">
                             <i class="fas fa-cart-plus mr-2"></i> Thêm
                         </button>
-                        <button
+                        <button (click)="goBack()"
                             class="bg-gray-100 text-gray-800 text-sm font-medium px-4 py-2 rounded hover:bg-gray-200">
                             <i class="fas fa-arrow-left mr-2"></i> Quay lại
                         </button>
+
                     </div>
                 </div>
             </div>
@@ -45,38 +46,99 @@
             </ng-template>
         </section>
 
-        <!-- Services -->
-        <section class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Dịch vụ 1 -->
-            <div class="bg-gray-100 rounded-xl shadow-md p-6 text-center hover:bg-gray-200 transition">
-                <div class="text-blue-600 text-4xl mb-3">🔄</div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-1">Đổi trả linh hoạt</h3>
-                <p class="text-sm text-gray-600">Hỗ trợ đổi trả trong 7 ngày nếu lỗi từ nhà sản xuất.</p>
-            </div>
+       <!-- REVIEW SECTION (đưa lên đây) -->
+<section class="bg-white rounded-lg shadow p-6 space-y-6">
+  <div>
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">📝 Đánh giá sách</h2>
 
-            <!-- Dịch vụ 2 -->
-            <div class="bg-gray-100 rounded-xl shadow-md p-6 text-center hover:bg-gray-200 transition">
-                <div class="text-green-600 text-4xl mb-3">🚀</div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-1">Giao hàng siêu tốc</h3>
-                <p class="text-sm text-gray-600">Nhận hàng trong 1-2 ngày làm việc tại nội thành.</p>
-            </div>
+    <form (ngSubmit)="submitReview()" #reviewForm="ngForm" class="space-y-4">
+      <div class="flex items-center space-x-2">
+        <label for="rating" class="text-sm font-medium">Số sao:</label>
+        <select
+          name="rating"
+          [(ngModel)]="review.rating"
+          required
+          class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option [value]="null">-- Chọn sao --</option>
+          <option *ngFor="let r of [1, 2, 3, 4, 5]" [value]="r">{{ r }} ⭐</option>
+        </select>
+      </div>
 
-            <!-- Dịch vụ 3 -->
-            <div class="bg-gray-100 rounded-xl shadow-md p-6 text-center hover:bg-gray-200 transition">
-                <div class="text-yellow-600 text-4xl mb-3">📞</div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-1">Tư vấn miễn phí</h3>
-                <p class="text-sm text-gray-600">Gọi 1900 123 456 để được hỗ trợ chọn sách phù hợp.</p>
-            </div>
+      <div>
+        <textarea
+          name="comment"
+          [(ngModel)]="review.comment"
+          required
+          placeholder="Nhập nhận xét của bạn..."
+          class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          rows="3"
+        ></textarea>
+      </div>
 
-            <!-- Dịch vụ 4 -->
-            <div class="bg-gray-100 rounded-xl shadow-md p-6 text-center hover:bg-gray-200 transition">
-                <div class="text-red-600 text-4xl mb-3">🔐</div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-1">Bảo mật tuyệt đối</h3>
-                <p class="text-sm text-gray-600">Cam kết không chia sẻ thông tin khách hàng cho bên thứ ba.</p>
-            </div>
-        </section>
-        <!-- Random Books -->
-        <!-- Random Books Grid -->
+      <!-- Nút gửi qua phải -->
+      <div class="flex justify-end">
+        <button
+          type="submit"
+          [disabled]="!reviewForm.form.valid"
+          class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 text-sm font-medium flex items-center space-x-1"
+        >
+          <i class="fas fa-paper-plane"></i>
+          <span>Gửi đánh giá</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <h3 class="text-base font-semibold text-gray-800 mb-2">Đánh giá từ người dùng 📢</h3>
+
+    <ng-container *ngIf="reviews.length > 0; else noReview">
+      <div
+        *ngFor="let r of reviews"
+        class="border border-gray-200 rounded-lg p-4 bg-gray-50 shadow-sm space-y-2 mb-4"
+      >
+        <div class="flex items-center justify-between">
+          <span class="font-medium text-blue-600">{{ r.username || 'Ẩn danh' }}</span>
+          <div class="flex space-x-0.5 text-yellow-400 text-sm">
+            <ng-container *ngFor="let s of [1, 2, 3, 4, 5]">
+              <i [class]="s <= r.rating ? 'fas fa-star' : 'far fa-star'"></i>
+            </ng-container>
+          </div>
+        </div>
+        <p class="text-sm text-gray-700">{{ r.comment }}</p>
+
+        <!-- Nút chỉnh sửa & xóa -->
+        <div class="flex justify-end gap-4">
+          <button
+            *ngIf="r.userId === currentUserId"
+            (click)="editReview(r)"
+            class="text-blue-600 text-sm hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            ✏️ Chỉnh sửa
+          </button>
+
+          <button
+            *ngIf="r.userId === currentUserId"
+            (click)="deleteReview(r.reviewId)"
+            class="text-red-600 text-sm hover:underline flex items-center gap-1"
+          >
+            🗑️ Xóa
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #noReview>
+      <p class="text-sm text-gray-500">Chưa có đánh giá nào cho sách này.</p>
+    </ng-template>
+  </div>
+</section>
+
+
+
+
+        <!-- RANDOM BOOKS SECTION -->
         <section>
             <h2 class="text-lg font-semibold text-gray-800 mb-4">Có thể bạn sẽ thích 🔥</h2>
             <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4 gap-6 justify-center pt-2">
@@ -108,15 +170,14 @@
                             class="bg-blue-100 text-blue-600 text-xs font-semibold rounded px-3 py-1 hover:bg-blue-200">
                             <i class="fas fa-cart-plus mr-1"></i> Thêm
                         </button>
-                        <button (click)="addToCart()"
-                            class="bg-blue-100 text-blue-600 text-xs font-semibold rounded px-3 py-1 hover:bg-blue-200"
-                            (click)="goToDetail(book.bookId!)">
+                        <button (click)="goToDetail(book.bookId!)"
+                            class="bg-blue-100 text-blue-600 text-xs font-semibold rounded px-3 py-1 hover:bg-blue-200">
                             <i class="fas fa-eye mr-1"></i> Xem
                         </button>
                     </div>
                 </li>
             </ul>
-            <!-- Nút về trang chủ -->
+
             <div class="pt-6 flex justify-center">
                 <button
                     class="bg-blue-600 text-white text-sm font-medium px-6 py-2 rounded hover:bg-blue-700 transition"
@@ -127,17 +188,14 @@
 
         </section>
 
-
     </div>
 
     <!-- RIGHT: Danh sách sách cùng thể loại -->
     <aside class="lg:col-span-3 space-y-4">
         <h2 class="text-lg font-semibold text-gray-800 mb-3">Sách cùng thể loại</h2>
-
         <div *ngFor="let item of books" class="bg-white rounded-md shadow p-3 flex items-center space-x-3">
-            <img (click)="goToDetail(item.bookId!)"
-            [src]="item.coverImageUrl || 'https://via.placeholder.com/60x80'" alt="Thumb"
-                class="w-14 h-18 object-cover rounded cursor-pointer" />
+            <img (click)="goToDetail(item.bookId!)" [src]="item.coverImageUrl || 'https://via.placeholder.com/60x80'"
+                alt="Thumb" class="w-14 h-18 object-cover rounded cursor-pointer" />
             <div class="flex-1">
                 <h3 class="text-xs font-semibold text-gray-900 truncate">{{ item.title }}</h3>
                 <p class="text-xs text-gray-600 truncate">Tác giả: {{ item.author }}</p>
@@ -145,4 +203,28 @@
             </div>
         </div>
     </aside>
+
 </main>
+<!-- SERVICES SECTION (chuyển xuống đây) -->
+<section class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 pb-6">
+    <div class="bg-gray-100 rounded-xl shadow-md p-6 text-center hover:bg-gray-200 transition">
+        <div class="text-blue-600 text-4xl mb-3">🔄</div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-1">Đổi trả linh hoạt</h3>
+        <p class="text-sm text-gray-600">Hỗ trợ đổi trả trong 7 ngày nếu lỗi từ nhà sản xuất.</p>
+    </div>
+    <div class="bg-gray-100 rounded-xl shadow-md p-6 text-center hover:bg-gray-200 transition">
+        <div class="text-green-600 text-4xl mb-3">🚀</div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-1">Giao hàng siêu tốc</h3>
+        <p class="text-sm text-gray-600">Nhận hàng trong 1-2 ngày làm việc tại nội thành.</p>
+    </div>
+    <div class="bg-gray-100 rounded-xl shadow-md p-6 text-center hover:bg-gray-200 transition">
+        <div class="text-yellow-600 text-4xl mb-3">📞</div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-1">Tư vấn miễn phí</h3>
+        <p class="text-sm text-gray-600">Gọi 1900 123 456 để được hỗ trợ chọn sách phù hợp.</p>
+    </div>
+    <div class="bg-gray-100 rounded-xl shadow-md p-6 text-center hover:bg-gray-200 transition">
+        <div class="text-red-600 text-4xl mb-3">🔐</div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-1">Bảo mật tuyệt đối</h3>
+        <p class="text-sm text-gray-600">Cam kết không chia sẻ thông tin khách hàng cho bên thứ ba.</p>
+    </div>
+</section>
