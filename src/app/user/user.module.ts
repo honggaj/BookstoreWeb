@@ -24,6 +24,7 @@ import { AccountComponent } from './pages/account/account.component';
 import { FavoriteComponent } from './pages/favorite/favorite.component';
 import { AboutComponent } from './pages/about/about.component';
 import { HistoryComponent } from './pages/history/history.component';
+import { PaymentComponent } from './pages/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { HistoryComponent } from './pages/history/history.component';
     FavoriteComponent,
     AboutComponent,
     HistoryComponent,
+    PaymentComponent,
     
   ],
   imports: [

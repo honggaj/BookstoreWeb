@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookResponse, OrderItemRequest, OrderRequest } from '../../../api/models';
 import { OrderService } from '../../../api/services';
 import { Router } from '@angular/router';
+import { loadScript } from '@paypal/paypal-js';
 
 interface CartItem extends BookResponse {
   quantity: number;
@@ -27,6 +28,7 @@ export class CartComponent implements OnInit {
   constructor(private orderService: OrderService, private router: Router) { }
 
   ngOnInit(): void {
+      this.initPayPalButton();
     // Lấy username từ sessionStorage
     const user = sessionStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
@@ -125,6 +127,47 @@ export class CartComponent implements OnInit {
       }
     });
   }
+initPayPalButton() {
+  loadScript({ clientId: 'Aan6EYWneudr0PxCrRJHAPaTD7IcSvup4uOLhQ9IuEMwaNsIAQ16I_DCVVVdvItlDxBUdeI5JP8SK8uM' }).then((paypal) => {
+    if (!paypal || !paypal.Buttons) {
+      console.error('❌ Không load được PayPal SDK');
+      return;
+    }
+
+   paypal.Buttons({
+  createOrder: (data, actions) => {
+    const usdAmount = Math.ceil(this.getGrandTotal() / 24000);
+    return actions.order?.create({
+      intent: 'CAPTURE', // ✅ FIX: thêm intent
+      purchase_units: [{
+        amount: {
+          currency_code: 'USD',
+          value: usdAmount.toString()
+        }
+      }]
+    }) ?? Promise.reject('⚠️ Không tạo được order');
+  },
+
+  onApprove: (data, actions) => {
+    if (!actions.order) return Promise.reject('⚠️ Order action undefined');
+
+    return actions.order.capture().then((details) => {
+      const name = details.payer?.name?.given_name ?? 'bạn';
+      alert('✅ Thanh toán thành công qua PayPal! Cảm ơn ' + name);
+      this.placeOrder();
+    });
+  },
+
+  onError: err => {
+    console.error('❌ Lỗi PayPal:', err);
+    alert('Thanh toán thất bại, thử lại sau.');
+  }
+}).render('#paypal-button-container');
+
+  }).catch(err => {
+    console.error('❌ Lỗi khi load PayPal SDK:', err);
+  });
+}
 
 
 }
