@@ -11,6 +11,10 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { apiBookAdvancedSearchGet$Json } from '../fn/book/api-book-advanced-search-get-json';
+import { ApiBookAdvancedSearchGet$Json$Params } from '../fn/book/api-book-advanced-search-get-json';
+import { apiBookAdvancedSearchGet$Plain } from '../fn/book/api-book-advanced-search-get-plain';
+import { ApiBookAdvancedSearchGet$Plain$Params } from '../fn/book/api-book-advanced-search-get-plain';
 import { apiBookByGenreGenreIdGet$Json } from '../fn/book/api-book-by-genre-genre-id-get-json';
 import { ApiBookByGenreGenreIdGet$Json$Params } from '../fn/book/api-book-by-genre-genre-id-get-json';
 import { apiBookByGenreGenreIdGet$Plain } from '../fn/book/api-book-by-genre-genre-id-get-plain';
@@ -327,6 +331,53 @@ export class BookService extends BaseService {
    */
   apiBookSearchGet$Json(params?: ApiBookSearchGet$Json$Params, context?: HttpContext): Observable<BookResponseListResultCustomModel> {
     return this.apiBookSearchGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseListResultCustomModel>): BookResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /** Path part for operation `apiBookAdvancedSearchGet()` */
+  static readonly ApiBookAdvancedSearchGetPath = '/api/Book/AdvancedSearch';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookAdvancedSearchGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookAdvancedSearchGet$Plain$Response(params?: ApiBookAdvancedSearchGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseListResultCustomModel>> {
+    return apiBookAdvancedSearchGet$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookAdvancedSearchGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookAdvancedSearchGet$Plain(params?: ApiBookAdvancedSearchGet$Plain$Params, context?: HttpContext): Observable<BookResponseListResultCustomModel> {
+    return this.apiBookAdvancedSearchGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookResponseListResultCustomModel>): BookResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookAdvancedSearchGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookAdvancedSearchGet$Json$Response(params?: ApiBookAdvancedSearchGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<BookResponseListResultCustomModel>> {
+    return apiBookAdvancedSearchGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookAdvancedSearchGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookAdvancedSearchGet$Json(params?: ApiBookAdvancedSearchGet$Json$Params, context?: HttpContext): Observable<BookResponseListResultCustomModel> {
+    return this.apiBookAdvancedSearchGet$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<BookResponseListResultCustomModel>): BookResponseListResultCustomModel => r.body)
     );
   }

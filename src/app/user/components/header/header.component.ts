@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,19 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
- cartCount = 0;
+  cartCount = 0;
   cartKey = 'cart_guest';
+  constructor(private router: Router) { }
 
+  onSearch(keyword: string): void {
+    keyword = keyword.trim();
+    if (keyword) {
+      this.router.navigate(['/search'], {
+        queryParams: { keyword: keyword }
+      });
+    }
+
+  }
   ngOnInit() {
     const user = sessionStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;

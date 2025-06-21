@@ -13,6 +13,7 @@ import { FavoriteComponent } from './pages/favorite/favorite.component';
 import { AboutComponent } from './pages/about/about.component';
 import { HistoryComponent } from './pages/history/history.component';
 import { PaymentComponent } from './pages/payment/payment.component';
+import { SearchPageComponent } from './pages/search-page/search-page.component';
 
 const routes: Routes = [
   {
@@ -28,14 +29,13 @@ const routes: Routes = [
       { path: 'account', component: AccountComponent },
       { path: 'about', component: AboutComponent },
       { path: 'history', component: HistoryComponent },
-
-
       { path: 'favorite', component: FavoriteComponent },
       { path: 'change-password', component: ChangePasswordComponent },
-
       { path: 'payment', component: PaymentComponent },
+      { path: 'search', component: SearchPageComponent },
+
       { path: 'book/:id', component: BookDetailComponent },
-      
+
 
       // ... các trang khác của user
     ]

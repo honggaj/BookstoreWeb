@@ -25,6 +25,7 @@ import { FavoriteComponent } from './pages/favorite/favorite.component';
 import { AboutComponent } from './pages/about/about.component';
 import { HistoryComponent } from './pages/history/history.component';
 import { PaymentComponent } from './pages/payment/payment.component';
+import { SearchPageComponent } from './pages/search-page/search-page.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { PaymentComponent } from './pages/payment/payment.component';
     AboutComponent,
     HistoryComponent,
     PaymentComponent,
+    SearchPageComponent,
     
   ],
   imports: [
