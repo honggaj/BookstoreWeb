@@ -14,6 +14,7 @@ import { OrderService } from './services/order.service';
 import { ReviewService } from './services/review.service';
 import { ShippingAddressService } from './services/shipping-address.service';
 import { UserService } from './services/user.service';
+import { VoucherService } from './services/voucher.service';
 import { WeatherForecastService } from './services/weather-forecast.service';
 
 /**
@@ -32,6 +33,7 @@ import { WeatherForecastService } from './services/weather-forecast.service';
     ReviewService,
     ShippingAddressService,
     UserService,
+    VoucherService,
     WeatherForecastService,
     ApiConfiguration
   ],

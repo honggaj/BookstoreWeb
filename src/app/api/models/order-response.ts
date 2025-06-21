@@ -4,9 +4,11 @@
 
 import { OrderItemResponse } from '../models/order-item-response';
 export interface OrderResponse {
+  isPaid?: boolean | null;
   items?: Array<OrderItemResponse> | null;
   orderDate?: string | null;
   orderId?: number;
+  paymentMethod?: string | null;
   shippingAddressId?: number;
   status?: string | null;
   totalAmount?: number | null;

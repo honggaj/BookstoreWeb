@@ -36,4 +36,7 @@ export type { UserResponse } from './models/user-response';
 export type { UserResponseListResultCustomModel } from './models/user-response-list-result-custom-model';
 export type { UserResponseResultCustomModel } from './models/user-response-result-custom-model';
 export type { UserUpdateRequest } from './models/user-update-request';
+export type { VoucherRequest } from './models/voucher-request';
+export type { VoucherResponse } from './models/voucher-response';
+export type { VoucherResponseListResultCustomModel } from './models/voucher-response-list-result-custom-model';
 export type { WeatherForecast } from './models/weather-forecast';

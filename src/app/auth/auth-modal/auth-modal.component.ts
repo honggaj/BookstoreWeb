@@ -194,7 +194,7 @@ export class AuthModalComponent {
     this.markFormGroupTouched(this.loginForm);
   }
 }
-
+  
   // ...existing code...
   onRegister() {
     if (this.registerForm.valid) {

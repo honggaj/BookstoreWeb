@@ -1,5 +1,6 @@
 <div class="bg-[#F4F6FA] min-h-screen flex  justify-center p-4">
-  <main class="bg-white w-full max-w-6xl flex flex-col md:flex-row md:divide-x md:divide-gray-200 rounded-xl shadow-md overflow-hidden">
+  <main
+    class="bg-white w-full max-w-6xl flex flex-col md:flex-row md:divide-x md:divide-gray-200 rounded-xl shadow-md overflow-hidden">
 
     <!-- LEFT: Cart Items -->
     <section class="flex-1 p-4 sm:p-6 md:p-8">
@@ -17,8 +18,7 @@
         <div class="col-span-2 text-right">TỔNG</div>
       </div>
 
-      <div *ngFor="let item of cartItems; let i = index"
-        class="grid grid-cols-12 gap-4 items-center mb-4 px-2 sm:px-0">
+      <div *ngFor="let item of cartItems; let i = index" class="grid grid-cols-12 gap-4 items-center mb-4 px-2 sm:px-0">
         <div class="col-span-12 sm:col-span-6 flex items-center space-x-3">
           <img [src]="item.coverImageUrl" alt="{{ item.title }}" class="w-12 h-12 object-contain" />
           <div>
@@ -29,7 +29,8 @@
         </div>
         <div class="col-span-6 sm:col-span-2 flex justify-center items-center space-x-2 mt-2 sm:mt-0">
           <button (click)="updateQuantity(i, -1)" class="text-gray-600 text-lg">−</button>
-          <input class="w-10 h-8 text-center text-xs border border-gray-300 rounded-md bg-white" [value]="item.quantity" readonly />
+          <input class="w-10 h-8 text-center text-xs border border-gray-300 rounded-md bg-white" [value]="item.quantity"
+            readonly />
           <button (click)="updateQuantity(i, 1)" class="text-gray-600 text-lg">+</button>
         </div>
         <div class="col-span-6 sm:col-span-2 text-right font-semibold text-sm mt-2 sm:mt-0">
@@ -54,8 +55,10 @@
       <hr class="border-gray-200 mb-6" />
 
       <div class="mb-6 px-1">
-        <p class="text-xs font-semibold text-gray-500 mb-1">SỐ SẢN PHẨM <span class="float-right">{{ cartItems.length }}</span></p>
-        <p class="text-xs font-semibold text-gray-500 mb-1">TỔNG TIỀN <span class="float-right">{{ getSubtotal() | number }}đ</span></p>
+        <p class="text-xs font-semibold text-gray-500 mb-1">SỐ SẢN PHẨM <span class="float-right">{{ cartItems.length
+            }}</span></p>
+        <p class="text-xs font-semibold text-gray-500 mb-1">TỔNG TIỀN <span class="float-right">{{ getSubtotal() |
+            number }}đ</span></p>
       </div>
 
       <div class="mb-6 px-1">
@@ -66,11 +69,19 @@
       </div>
 
       <div class="mb-6 px-1">
-        <label class="text-xs font-semibold text-gray-500 mb-1 block">MÃ GIẢM GIÁ</label>
-        <input class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 mb-2 bg-white" placeholder="Nhập mã" type="text" />
-        <button class="w-full bg-[#F16B6B] text-white text-xs font-semibold py-2 rounded-md hover:bg-[#d85a5a]">
-          ÁP DỤNG
-        </button>
+        <label class="text-xs font-semibold text-gray-500 mb-1 block">CHỌN MÃ GIẢM GIÁ</label>
+
+<select [(ngModel)]="voucherCode" (change)="applyVoucher()"
+          class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 bg-white text-gray-700">
+          <option value="">-- Không áp dụng --</option>
+          <option *ngFor="let v of voucherList" [value]="v.code">
+            {{ v.code }} - Giảm {{ v.discountPercent }}%, tối đa {{ v.maxDiscount | number }}đ
+          </option>
+        </select>
+
+        <div *ngIf="voucherDiscount > 0" class="text-green-600 text-xs font-semibold mt-1">
+          ✅ Mã "{{ voucherCode }}" đã áp dụng, giảm {{ voucherDiscount | number }}đ
+        </div>
       </div>
 
       <div class="mb-6 px-1 flex justify-between text-xs font-semibold text-gray-900">
@@ -82,34 +93,63 @@
       <div class="space-y-4 px-1">
         <div>
           <label class="text-xs font-semibold text-gray-500 block mb-1">Tên người nhận</label>
-          <input [(ngModel)]="recipientName" class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 bg-white" type="text" placeholder="Ví dụ: Bé Dâu" />
+          <input [(ngModel)]="recipientName"
+            class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 placeholder:text-gray-400 bg-white"
+            type="text" placeholder="VD: Nguyễn Văn A" />
         </div>
 
         <div>
           <label class="text-xs font-semibold text-gray-500 block mb-1">Địa chỉ</label>
-          <input [(ngModel)]="address" class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 bg-white" type="text" placeholder="123 Đường Lê Lợi" />
+          <input [(ngModel)]="address"
+            class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 placeholder:text-gray-400 bg-white"
+            type="text" placeholder="VD: 123 Đường Lê Lợi" />
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div>
             <label class="text-xs font-semibold text-gray-500 block mb-1">Thành phố</label>
-            <input [(ngModel)]="city" class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 bg-white" type="text" placeholder="Hồ Chí Minh" />
+            <input [(ngModel)]="city"
+              class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 placeholder:text-gray-400 bg-white"
+              type="text" placeholder="VD: Hồ Chí Minh" />
           </div>
           <div>
             <label class="text-xs font-semibold text-gray-500 block mb-1">Mã bưu điện</label>
-            <input [(ngModel)]="postalCode" class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 bg-white" type="text" placeholder="700000" />
+            <input [(ngModel)]="postalCode"
+              class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 placeholder:text-gray-40  bg-white"
+              type="text" placeholder="700000" />
           </div>
         </div>
 
         <div>
           <label class="text-xs font-semibold text-gray-500 block mb-1">Quốc gia</label>
-          <input [(ngModel)]="country" class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 bg-white" type="text" placeholder="Việt Nam" />
+          <input [(ngModel)]="country"
+            class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 placeholder:text-gray-400 bg-white"
+            type="text" placeholder="VD: Việt Nam" />
         </div>
 
         <div>
           <label class="text-xs font-semibold text-gray-500 block mb-1">Số điện thoại</label>
-          <input [(ngModel)]="phoneNumber" class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 bg-white" type="tel" placeholder="0909123456" />
+          <input [(ngModel)]="phoneNumber"
+            class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 placeholder:text-gray-400 bg-white"
+            type="tel" placeholder="VD: 01234567890" />
         </div>
+      </div>
+      <div class="mt-4">
+        <label class="text-xs font-semibold text-gray-500 block mb-1">Phương thức thanh toán</label>
+        <select [(ngModel)]="paymentMethod" class="w-full text-xs border border-gray-300 rounded-md py-2 px-3 bg-white">
+          <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+          <option value="PayPal">Thanh toán bằng PayPal</option>
+        </select>
+      </div>
+      <!-- Nút Đặt hàng chỉ hiển thị nếu chọn COD -->
+      <button *ngIf="paymentMethod === 'COD'" (click)="placeOrder()"
+        class="w-full mt-6 bg-[#4B4B9B] text-white text-xs font-semibold py-3 rounded-md hover:bg-[#3a3a7a] transition">
+        ĐẶT HÀNG
+      </button>
+
+      <!-- PayPal button chỉ hiển thị nếu chọn PayPal -->
+      <div class="mt-4" *ngIf="paymentMethod === 'PayPal'">
+        <div id="paypal-button-container"></div>
       </div>
 
       <button (click)="placeOrder()"
@@ -117,8 +157,8 @@
         THANH TOÁN
       </button>
       <div class="mt-4">
-  <div id="paypal-button-container"></div>
-</div>
+        <div id="paypal-button-container"></div>
+      </div>
 
     </aside>
   </main>

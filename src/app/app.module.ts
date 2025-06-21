@@ -15,18 +15,18 @@ import { AuthModule } from './auth/auth.module';
   declarations: [
     AppComponent,
 
- 
-  
+
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     UserModule,
     AdminModule,
-AuthModule,
+    AuthModule,
     HttpClientModule,
     SlickCarouselModule
-    
+
   ],
   providers: [],
   bootstrap: [AppComponent]

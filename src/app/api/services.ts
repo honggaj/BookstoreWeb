@@ -10,4 +10,5 @@ export { OrderService } from './services/order.service';
 export { ReviewService } from './services/review.service';
 export { ShippingAddressService } from './services/shipping-address.service';
 export { UserService } from './services/user.service';
+export { VoucherService } from './services/voucher.service';
 export { WeatherForecastService } from './services/weather-forecast.service';
