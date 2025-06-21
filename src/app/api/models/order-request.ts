@@ -5,13 +5,10 @@
 import { OrderItemRequest } from '../models/order-item-request';
 export interface OrderRequest {
   address?: string | null;
-  city?: string | null;
-  country?: string | null;
   isPaid?: boolean;
   items?: Array<OrderItemRequest> | null;
   paymentMethod?: string | null;
   phoneNumber?: string | null;
-  postalCode?: string | null;
   recipientName?: string | null;
   shippingAddressId?: number | null;
   userId?: number | null;

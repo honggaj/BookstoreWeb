@@ -19,9 +19,6 @@ export class CartComponent implements OnInit {
   cartKey: string = 'cart';
   recipientName = '';
   address = '';
-  city = '';
-  postalCode = '';
-  country = '';
   phoneNumber = '';
   paymentMethod: 'COD' | 'PayPal' = 'COD';
   voucherCode: string = '';
@@ -41,7 +38,6 @@ export class CartComponent implements OnInit {
     this.watchPaymentMethod();
   }
 
-  // ✅ Load cart từ localStorage
   loadCartItems(): void {
     const user = sessionStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
@@ -55,12 +51,11 @@ export class CartComponent implements OnInit {
     }));
   }
 
-  // ✅ Gọi API voucher và apply luôn nếu có mã đang chọn
   loadVouchers(): void {
     this.voucherService.apiVoucherGet$Json().subscribe({
       next: (res) => {
         this.voucherList = res.data ?? [];
-        this.applyVoucher(); // gọi sau khi có list
+        this.applyVoucher();
       },
       error: (err) => {
         console.error('❌ Không lấy được voucher:', err);
@@ -68,7 +63,6 @@ export class CartComponent implements OnInit {
     });
   }
 
-  // ✅ Áp dụng mã giảm giá
   applyVoucher(): void {
     const now = new Date();
 
@@ -96,7 +90,6 @@ export class CartComponent implements OnInit {
     });
   }
 
-  // ✅ PayPal nút
   initPayPalButton(): void {
     loadScript({ clientId: 'YOUR_CLIENT_ID_HERE' }).then((paypal) => {
       if (!paypal || !paypal.Buttons) {
@@ -113,9 +106,7 @@ export class CartComponent implements OnInit {
           }) ?? Promise.reject('⚠️ Không tạo được order');
         },
         onApprove: (data, actions) => {
-          if (!actions.order) {
-            return Promise.reject(new Error('⚠️ actions.order undefined'));
-          }
+          if (!actions.order) return Promise.reject(new Error('⚠️ actions.order undefined'));
 
           return actions.order.capture().then((details) => {
             const name = details.payer?.name?.given_name ?? 'bạn';
@@ -169,9 +160,6 @@ export class CartComponent implements OnInit {
   isFormValid(): boolean {
     return !!this.recipientName.trim() &&
       !!this.address.trim() &&
-      !!this.city.trim() &&
-      !!this.postalCode.trim() &&
-      !!this.country.trim() &&
       !!this.phoneNumber.trim();
   }
 
@@ -202,9 +190,6 @@ export class CartComponent implements OnInit {
       userId: user.userId,
       recipientName: this.recipientName,
       address: this.address,
-      city: this.city,
-      postalCode: this.postalCode,
-      country: this.country,
       phoneNumber: this.phoneNumber,
       items,
       paymentMethod: this.paymentMethod,

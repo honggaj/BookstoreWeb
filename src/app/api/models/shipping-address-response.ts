@@ -5,10 +5,7 @@
 export interface ShippingAddressResponse {
   address?: string | null;
   addressId?: number;
-  city?: string | null;
-  country?: string | null;
   phoneNumber?: string | null;
-  postalCode?: string | null;
   recipientName?: string | null;
   userId?: number;
   username?: string | null;

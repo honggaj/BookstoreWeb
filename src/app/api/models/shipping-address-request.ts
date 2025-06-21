@@ -4,10 +4,7 @@
 
 export interface ShippingAddressRequest {
   address?: string | null;
-  city?: string | null;
-  country?: string | null;
   phoneNumber?: string | null;
-  postalCode?: string | null;
   recipientName?: string | null;
   userId?: number;
 }
