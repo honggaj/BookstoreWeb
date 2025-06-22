@@ -15,16 +15,21 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/manage-books/manage-books.module').then(m => m.ManageBooksModule)
       },
+        {
+        path: 'combos',
+        loadChildren: () =>
+          import('./pages/manage-combos/manage-combos.module').then(m => m.ManageCombosModule)
+      },
       {
         path: 'genres',
         loadChildren: () =>
           import('./pages/manage-genres/manage-genres.module').then(m => m.ManageGenresModule)
       },
- {
+      {
         path: 'orders',
         loadChildren: () =>
           import('./pages/manage-orders/manage-orders.module').then(m => m.ManageOrdersModule)
-      },      {
+      }, {
         path: 'users',
         loadChildren: () =>
           import('./pages/manage-users/manage-users.module').then(m => m.ManageUsersModule)

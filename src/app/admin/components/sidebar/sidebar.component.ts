@@ -31,8 +31,8 @@ export class SidebarComponent {
       items: [
         { label: 'Tài khoản', icon: 'fas fa-text-height', link: '/users' },
         { label: 'Sách', icon: 'fas fa-palette', link: '/books' },
+        { label: 'Combo sách', icon: 'fas fa-palette', link: '/combos' },
         { label: 'Thể loại sách', icon: 'fas fa-palette', link: '/genres' },
-
         { label: 'Đơn hàng', icon: 'fas fa-icons', link: '/orders' }
       ]
     },

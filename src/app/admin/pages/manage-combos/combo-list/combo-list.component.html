@@ -1,0 +1,55 @@
+<main class="flex-grow max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-2xl font-semibold text-gray-900">Danh sách combo</h1>
+    <button (click)="createCombo()"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-white bg-blue-600 hover:bg-blue-700 shadow-md transition duration-150 ease-in-out">
+      <i class="fas fa-plus"></i>
+      <span>Thêm combo</span>
+    </button>
+  </div>
+
+  <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Ảnh combo</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Tên combo</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Mô tả</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Giá gốc</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Giá giảm</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Sách trong combo</th>
+          <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Hành động</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let combo of combos">
+          <td class="px-6 py-4 whitespace-nowrap">
+            <img [src]="combo.image || 'https://placehold.co/100x100?text=No+Img'" alt="Ảnh combo"
+              class="h-24 w-24 rounded object-cover" />
+          </td>
+          <td class="px-6 py-4 font-medium text-gray-900">{{ combo.name }}</td>
+          <td class="px-6 py-4 text-gray-500 max-w-xs">
+            <div class="max-h-24 overflow-y-auto">
+              {{ combo.description }}
+            </div>
+          </td>
+          <td class="px-6 py-4 text-gray-900">{{ combo.totalPrice | number:'1.0-0' }} VNĐ</td>
+          <td class="px-6 py-4 text-green-600 font-semibold">{{ combo.discountPrice | number:'1.0-0' }} VNĐ</td>
+          <td class="px-6 py-4 text-gray-500 max-w-sm">
+            <ul class="list-disc pl-4">
+              <li *ngFor="let book of combo.books">{{ book.title }}</li>
+            </ul>
+          </td>
+          <td class="px-6 py-4 text-right space-x-2">
+            <button class="text-indigo-600 hover:text-indigo-900" (click)="editCombo(combo.comboId!)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="text-red-600 hover:text-red-900" (click)="deleteCombo(combo.comboId!)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
