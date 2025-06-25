@@ -9,6 +9,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { AuthService } from './services/auth.service';
 import { BookService } from './services/book.service';
 import { ComboService } from './services/combo.service';
+import { DashboardService } from './services/dashboard.service';
 import { FavoriteService } from './services/favorite.service';
 import { GenreService } from './services/genre.service';
 import { OrderService } from './services/order.service';
@@ -29,6 +30,7 @@ import { WeatherForecastService } from './services/weather-forecast.service';
     AuthService,
     BookService,
     ComboService,
+    DashboardService,
     FavoriteService,
     GenreService,
     OrderService,

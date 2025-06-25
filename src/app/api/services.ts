@@ -5,6 +5,7 @@
 export { AuthService } from './services/auth.service';
 export { BookService } from './services/book.service';
 export { ComboService } from './services/combo.service';
+export { DashboardService } from './services/dashboard.service';
 export { FavoriteService } from './services/favorite.service';
 export { GenreService } from './services/genre.service';
 export { OrderService } from './services/order.service';
