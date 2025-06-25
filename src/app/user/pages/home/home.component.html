@@ -5,42 +5,10 @@
     <div class="max-w-7xl mx-auto p-4 lg:p-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
-            <!-- Sidebar - Categories (Hidden on mobile, shown on large screens) -->
-            <aside class="lg:col-span-3 xl:col-span-2">
-                <!-- Mobile Category Toggle -->
-                <div class="lg:hidden mb-4">
-                    <button
-                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2">
-                        <i class="fas fa-filter"></i>
-                        <span>Danh mục sản phẩm</span>
-                    </button>
-                </div>
 
-                <!-- Desktop Sidebar -->
-                <nav class="hidden lg:block bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-list-ul"></i>
-                            <span class="font-semibold">Danh mục sản phẩm</span>
-                        </div>
-                    </div>
-                    <ul class="divide-y divide-gray-100">
-                        <li *ngFor="let genre of genres"
-                            class="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 cursor-pointer">
-                            <div class="px-6 py-4 flex items-center space-x-3">
-                                <div
-                                    class="w-2 h-2 bg-blue-400 rounded-full group-hover:bg-blue-600 transition-colors duration-200">
-                                </div>
-                                <span class="text-gray-700 group-hover:text-blue-700 font-medium">{{ genre.name
-                                    }}</span>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-            </aside>
 
             <!-- Main Content Area -->
-            <main class="lg:col-span-9 xl:col-span-10 space-y-8">
+            <main class="lg:col-span-9 xl:col-span-12 space-y-8">
 
                 <!-- Hero Banner Section -->
                 <section class="bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -159,7 +127,7 @@
                         <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full"></div>
                     </div> <app-product-carousel></app-product-carousel>
                 </section>
-
+                    <app-combo-list></app-combo-list>
 
                 <!-- Additional Content Area -->
                 <section class="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
@@ -185,7 +153,6 @@
                             </div>
                         </div>
                     </div>
-
 
 
                     <!-- TRUYỀN books từ HomeComponent -->

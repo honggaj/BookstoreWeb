@@ -26,6 +26,8 @@ import { AboutComponent } from './pages/about/about.component';
 import { HistoryComponent } from './pages/history/history.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
+import { ComboListComponent } from './components/combo-list/combo-list.component';
+import { ComboDetailComponent } from './components/combo-detail/combo-detail.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
     HistoryComponent,
     PaymentComponent,
     SearchPageComponent,
+    ComboListComponent,
+    ComboDetailComponent,
     
   ],
   imports: [

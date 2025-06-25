@@ -48,7 +48,7 @@
         'text-green-600 font-semibold': order.isPaid,
         'text-red-600 font-semibold': !order.isPaid
       }">
-        {{ order.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán' }}
+        {{ order.isPaid ? 'Đã thanh toán' : 'Chờ thanh toán khi nhận hàng' }}
       </span>
     </div>
 
@@ -57,7 +57,7 @@
       <h3 class="font-semibold mb-2">Sản phẩm:</h3>
       <ul class="list-disc list-inside text-sm">
         <li *ngFor="let item of order.items">
-          {{ item.bookTitle }} x{{ item.quantity }} - {{ item.price | number:'1.0-0' }} VND
+         {{ item.bookTitle || item.comboName }} x{{ item.quantity }} - {{ item.price | number:'1.0-0' }} VND
         </li>
       </ul>
     </div>

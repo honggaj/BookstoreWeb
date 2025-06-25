@@ -1,4 +1,3 @@
-// store.component.ts (bổ sung tìm kiếm nâng cao)
 import { Component } from '@angular/core';
 import { BookService, FavoriteService, GenreService } from '../../../api/services';
 import { Router } from '@angular/router';

@@ -48,8 +48,9 @@
                     <td class="px-6 py-4">
                         <ul class="list-disc list-inside text-sm text-gray-700" *ngIf="order.items?.length">
                             <li *ngFor="let item of order.items">
-                                {{ item.bookTitle }} x{{ item.quantity }} - {{ item.price | number:'1.0-0' }} VND
-                            </li>
+  {{ item.bookTitle || item.comboName }} x{{ item.quantity }} - {{ item.price | number:'1.0-0' }} VND
+</li>
+
                         </ul>
                     </td>
                     <td class="px-6 py-4">

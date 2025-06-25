@@ -20,10 +20,10 @@
 
       <div *ngFor="let item of cartItems; let i = index" class="grid grid-cols-12 gap-4 items-center mb-4 px-2 sm:px-0">
         <div class="col-span-12 sm:col-span-6 flex items-center space-x-3">
-          <img [src]="item.coverImageUrl" alt="{{ item.title }}" class="w-12 h-12 object-contain" />
-          <div>
-            <p class="text-gray-900 font-semibold text-sm">{{ item.title }}</p>
-            <p class="text-[#E94F4F] text-xs font-semibold mt-0.5">{{ item.author }}</p>
+         <img [src]="item['coverImageUrl']" alt="{{ item['title'] }}" class="w-12 h-12 object-contain" />
+<div>
+  <p class="text-gray-900 font-semibold text-sm">{{ item['title'] }}</p>
+  <p class="text-[#E94F4F] text-xs font-semibold mt-0.5">{{ item['author'] }}</p>
             <button class="text-xs text-gray-400 mt-1 hover:underline" (click)="removeItem(i)">Xóa</button>
           </div>
         </div>

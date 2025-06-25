@@ -14,6 +14,8 @@ import { AboutComponent } from './pages/about/about.component';
 import { HistoryComponent } from './pages/history/history.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
+import { ComboListComponent } from './components/combo-list/combo-list.component';
+import { ComboDetailComponent } from './components/combo-detail/combo-detail.component';
 
 const routes: Routes = [
   {
@@ -33,8 +35,10 @@ const routes: Routes = [
       { path: 'change-password', component: ChangePasswordComponent },
       { path: 'payment', component: PaymentComponent },
       { path: 'search', component: SearchPageComponent },
-
       { path: 'book/:id', component: BookDetailComponent },
+      { path: 'combo', component: ComboListComponent },
+      { path: 'combo/:id', component: ComboDetailComponent }, // nếu có
+
 
 
       // ... các trang khác của user

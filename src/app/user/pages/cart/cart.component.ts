@@ -4,8 +4,12 @@ import { OrderService, VoucherService } from '../../../api/services';
 import { Router } from '@angular/router';
 import { loadScript } from '@paypal/paypal-js';
 
-interface CartItem extends BookResponse {
+interface CartItem {
   quantity: number;
+  isCombo?: boolean; // 👈 Nhận biết item là combo
+  bookId?: number;
+  price?: number;
+  [key: string]: any; // Cho phép combo có các field khác
 }
 
 @Component({
@@ -29,7 +33,7 @@ export class CartComponent implements OnInit {
     private orderService: OrderService,
     private router: Router,
     private voucherService: VoucherService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadCartItems();
@@ -45,6 +49,7 @@ export class CartComponent implements OnInit {
 
     const stored = localStorage.getItem(this.cartKey);
     const rawItems: any[] = stored ? JSON.parse(stored) : [];
+
     this.cartItems = rawItems.map(item => ({
       ...item,
       quantity: item.quantity ?? 1,
@@ -162,51 +167,58 @@ export class CartComponent implements OnInit {
       !!this.address.trim() &&
       !!this.phoneNumber.trim();
   }
+placeOrder(): void {
+  const userStr = sessionStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : null;
 
-  placeOrder(): void {
-    const userStr = sessionStorage.getItem('user');
-    const user = userStr ? JSON.parse(userStr) : null;
-
-    if (!user) {
-      alert('Vui lòng đăng nhập để đặt hàng!');
-      return;
-    }
-
-    if (!this.isFormValid()) {
-      alert('⚠️ Vui lòng điền đầy đủ thông tin!');
-      return;
-    }
-
-    const items: OrderItemRequest[] = this.cartItems.map(item => {
-      const parsedPrice = typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0;
-      return {
-        bookId: item.bookId!,
-        quantity: item.quantity,
-        price: parsedPrice
-      };
-    });
-
-    const orderRequest: OrderRequest = {
-      userId: user.userId,
-      recipientName: this.recipientName,
-      address: this.address,
-      phoneNumber: this.phoneNumber,
-      items,
-      paymentMethod: this.paymentMethod,
-      isPaid: this.paymentMethod === 'PayPal',
-      voucherCode: this.voucherCode || null
-    };
-
-    this.orderService.apiOrderCreatePost$Json({ body: orderRequest }).subscribe({
-      next: (res) => {
-        alert('✅ Đặt hàng thành công!');
-        this.clearCart();
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        console.error('❌ Đặt hàng lỗi:', err);
-        alert('Có lỗi xảy ra!');
-      }
-    });
+  if (!user) {
+    alert('Vui lòng đăng nhập để đặt hàng!');
+    return;
   }
+
+  if (!this.isFormValid()) {
+    alert('⚠️ Vui lòng điền đầy đủ thông tin!');
+    return;
+  }
+
+  // ✅ Map toàn bộ cartItems gồm cả combo và book
+  const allItems: OrderItemRequest[] = this.cartItems.map(item => {
+    const price = typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0;
+    return {
+      bookId: item.isCombo ? null : item.bookId ?? null,
+comboId: item['comboId'] ?? null,
+      quantity: item.quantity,
+      price: price
+    };
+  });
+
+  if (allItems.length === 0) {
+    alert('🛑 Không có sản phẩm nào trong giỏ!');
+    return;
+  }
+
+  const orderRequest: OrderRequest = {
+    userId: user.userId,
+    recipientName: this.recipientName,
+    address: this.address,
+    phoneNumber: this.phoneNumber,
+    items: allItems,
+    paymentMethod: this.paymentMethod,
+    isPaid: this.paymentMethod === 'PayPal',
+    voucherCode: this.voucherCode || null
+  };
+
+  this.orderService.apiOrderCreatePost$Json({ body: orderRequest }).subscribe({
+    next: (res) => {
+      alert('✅ Đặt hàng thành công!');
+      this.clearCart();
+      this.router.navigate(['/']);
+    },
+    error: (err) => {
+      console.error('❌ Đặt hàng lỗi:', err);
+      alert('Có lỗi xảy ra!');
+    }
+  });
+}
+
 }

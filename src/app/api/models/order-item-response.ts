@@ -5,6 +5,8 @@
 export interface OrderItemResponse {
   bookId?: number;
   bookTitle?: string | null;
+  comboId?: number | null;
+  comboName?: string | null;
   orderItemId?: number;
   price?: number;
   quantity?: number;
