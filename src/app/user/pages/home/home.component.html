@@ -7,142 +7,136 @@
 
 
 
-            <!-- Main Content Area -->
-            <main class="lg:col-span-9 xl:col-span-12 space-y-8">
+            <main class="lg:col-span-9 xl:col-span-12 space-y-10 lg:space-y-12">
 
                 <!-- Hero Banner Section -->
-                <section class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-0 min-h-[300px] lg:min-h-[400px]">
-
-                        <!-- Main Banner (Large Image) -->
-                        <div class="md:col-span-8 relative group overflow-hidden">
-                            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                src="https://i.pinimg.com/736x/f2/1e/3b/f21e3bb7773622e945aad2375224c93c.jpg"
-                                alt="Main Banner" />
-
-                            <!-- Overlay Content -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent flex items-center">
-                                <div class="text-white p-6 lg:p-12 max-w-lg">
-                                    <h2 class="text-2xl lg:text-4xl font-bold mb-4">Khám phá thế giới sách</h2>
-                                    <p class="text-lg lg:text-xl mb-6 opacity-90">Hàng ngàn cuốn sách hay đang chờ bạn
-                                    </p>
-                                    <button
-                                        class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
-                                        Khám phá ngay
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Side Banners (Small Images) -->
-                        <div class="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-0">
-
-                            <!-- Top Small Banner -->
-                            <div class="relative group overflow-hidden bg-gradient-to-br from-orange-100 to-red-100">
-                                <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                    src="https://static.vecteezy.com/system/resources/previews/023/107/446/original/promo-sale-banner-with-reading-stack-of-books-wooden-letter-tiles-school-books-pile-world-book-day-bookstore-bookshop-library-book-lover-bibliophile-education-a4-for-poster-cover-vector.jpg"
-                                    alt="Promo 1" />
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-orange-600/80 to-transparent flex items-end">
-                                    <div class="text-white p-4 w-full">
-                                        <h3 class="font-bold text-lg mb-1">Sách mới</h3>
-                                        <p class="text-sm opacity-90">Cập nhật hàng tuần</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Bottom Small Banner -->
-                            <div class="relative group overflow-hidden bg-gradient-to-br from-green-100 to-blue-100">
-                                <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                    src="https://thietkewebchuyen.com/wp-content/uploads/thiet-ke-banner-website-anh-bia-Facebook-nha-sach-7.jpg"
-                                    alt="Promo 2" />
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-green-600/80 to-transparent flex items-end">
-                                    <div class="text-white p-4 w-full">
-                                        <h3 class="font-bold text-lg mb-1">Giảm giá</h3>
-                                        <p class="text-sm opacity-90">Lên đến 50%</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <section class="overflow-hidden shadow-md">
+                    <p-carousel [value]="bookBanners" [numVisible]="1" [numScroll]="1" [circular]="true"
+                        [autoplayInterval]="3000" styleClass="custom-carousel" [responsiveOptions]="responsiveOptions">
+                        <ng-template let-banner pTemplate="item">
+                            <img [src]="banner.image" [alt]="banner.title" class="w-full h-auto object-contain" />
+                        </ng-template>
+                    </p-carousel>
                 </section>
 
-                <!-- Quick Stats Cards -->
+                <!-- Dịch vụ Bookstore -->
                 <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <!-- Dịch vụ 1 -->
+                    <div class="bg-white p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-book text-blue-600 text-xl"></i>
+                            <div class="w-12 h-12 bg-blue-100  flex items-center justify-center">
+                                <i class="fas fa-headset text-blue-600 text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-2xl font-bold text-gray-800">1,200</p>
-                                <p class="text-gray-600 text-sm">Sách có sẵn</p>
+                                <p class="text-lg font-bold text-gray-800">Hỗ trợ 24/7</p>
+                                <p class="text-gray-600 text-sm">Tư vấn & CSKH nhiệt tình</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <!-- Dịch vụ 2 -->
+                    <div class="bg-white p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-users text-green-600 text-xl"></i>
+                            <div class="w-12 h-12 bg-green-100  flex items-center justify-center">
+                                <i class="fas fa-truck-moving text-green-600 text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-2xl font-bold text-gray-800">5,600</p>
-                                <p class="text-gray-600 text-sm">Khách hàng</p>
+                                <p class="text-lg font-bold text-gray-800">Giao nhanh</p>
+                                <p class="text-gray-600 text-sm">Giao hàng toàn quốc 2-3 ngày</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <!-- Dịch vụ 3 -->
+                    <div class="bg-white p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-star text-purple-600 text-xl"></i>
+                            <div class="w-12 h-12 bg-purple-100  flex items-center justify-center">
+                                <i class="fas fa-gift text-purple-600 text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-2xl font-bold text-gray-800">4.8</p>
-                                <p class="text-gray-600 text-sm">Đánh giá</p>
+                                <p class="text-lg font-bold text-gray-800">Gói quà miễn phí</p>
+                                <p class="text-gray-600 text-sm">Hỗ trợ gói quà dịp đặc biệt</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <!-- Dịch vụ 4 -->
+                    <div class="bg-white p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-shipping-fast text-orange-600 text-xl"></i>
+                            <div class="w-12 h-12 bg-yellow-100  flex items-center justify-center">
+                                <i class="fas fa-undo text-yellow-600 text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-2xl font-bold text-gray-800">24h</p>
-                                <p class="text-gray-600 text-sm">Giao hàng</p>
+                                <p class="text-lg font-bold text-gray-800">Đổi trả dễ dàng</p>
+                                <p class="text-gray-600 text-sm">Đổi trả trong 7 ngày nếu lỗi</p>
                             </div>
                         </div>
                     </div>
                 </section>
+
+                <!-- <section class="grid grid-cols-4 grid-rows-2 gap-4">
+                    <div class="col-span-2 row-span-2">
+                        <img src="https://giamgiatructuyen.com/wp-content/uploads/2018/12/ma-giam-gia-sach.png"
+                            alt="Ảnh 1" class="w-full h-full object-cover  shadow" />
+                    </div>
+
+                    <div class="col-start-3 row-start-1">
+                        <img src="https://tse3.mm.bing.net/th/id/OIP.Key5QWeC5F0PlAdSCZMWaQHaFa?pid=Api&P=0&h=180"
+                            alt="Ảnh 2" class="w-full h-full object-cover  shadow" />
+                    </div>
+
+                    <div class="col-start-4 row-start-1">
+                        <img src="https://stc.shopiness.vn/deal/2019/06/24/7/e/4/c/1561364736506_540.png" alt="Ảnh 3"
+                            class="w-full h-full object-cover  shadow" />
+                    </div>
+
+
+                    <div class="col-span-2 col-start-3 row-start-2">
+                        <img src="assets/images/sale image-4.png" alt="Ảnh 4"
+                            class="w-full h-full object-cover  shadow" />
+                    </div>
+                </section> -->
+
+
 
                 <!-- Book Carousel -->
-                <section class="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
+                <section class="bg-white  shadow-lg p-6 lg:p-8">
                     <div class="text-center mb-8">
                         <h2 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Sản phẩm mới</h2>
-                        <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full"></div>
-                    </div> <app-product-carousel></app-product-carousel>
+                        <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto -full"></div>
+                    </div>
+                    <app-product-carousel></app-product-carousel>
                 </section>
-                    <app-combo-list></app-combo-list>
+
+
+                <section class="grid grid-cols-2 grid-rows-1 gap-4 ">
+                    <!-- Ảnh 1 -->
+                    <div>
+                        <img src="assets/images/sale-1.png" alt="Ảnh 1" class="w-full h-full object-cover shadow" />
+                    </div>
+
+                    <!-- Ảnh 2 -->
+                    <div>
+                        <img src="assets/images/sale-2.png" alt="Ảnh 2" class="w-full h-full object-cover  shadow" />
+                    </div>
+                </section>
+
+                <app-combo-list></app-combo-list>
 
                 <!-- Additional Content Area -->
-                <section class="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
+                <!-- <section class="bg-white  shadow-lg p-6 lg:p-8">
                     <div class="text-center mb-8">
                         <h2 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Danh mục phổ biến</h2>
-                        <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full"></div>
+                        <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto -full"></div>
                     </div>
 
                     <div class="overflow-x-auto">
                         <div class="flex flex-nowrap gap-4 px-2">
                             <div *ngFor="let genre of genres" (click)="loadBooksByGenre(genre.genreId)"
-                                class="min-w-[120px] shrink-0 group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg p-4 text-center hover:border-blue-300 hover:shadow-md transition-all duration-300 cursor-pointer">
+                                class="min-w-[120px] shrink-0 group bg-gradient-to-br from-gray-50 to-white border border-gray-200  p-4 text-center hover:border-blue-300 hover:shadow-md transition-all duration-300 cursor-pointer">
 
                                 <div
-                                    class="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-md mx-auto mb-2 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                    class="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500  mx-auto mb-2 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                                     <i class="fas fa-book-open text-white text-xs"></i>
                                 </div>
 
@@ -155,9 +149,9 @@
                     </div>
 
 
-                    <!-- TRUYỀN books từ HomeComponent -->
+                    TRUYỀN books từ HomeComponent
                     <app-product-list-home [books]="books"></app-product-list-home>
-                </section>
+                </section> -->
 
 
 

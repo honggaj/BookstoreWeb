@@ -11,15 +11,21 @@ import { BookResponse, FavoriteRequest } from '../../../api/models';
 })
 export class StoreComponent {
   books: BookResponse[] = [];
+  pagedBooks: BookResponse[] = [];
   genres: any[] = [];
   favoriteBookIds: number[] = [];
   loading = false;
 
-  // 🔍 Các trường tìm kiếm nâng cao
+  // 🔍 Tìm kiếm nâng cao
   searchTitle: string = '';
   searchAuthor: string = '';
   searchMinPrice?: number;
   searchMaxPrice?: number;
+
+  // 📄 Phân trang
+  currentPage: number = 1;
+  pageSize: number = 8;
+  totalPages: number = 1;
 
   constructor(
     private bookService: BookService,
@@ -39,6 +45,7 @@ export class StoreComponent {
     this.bookService.apiBookGet$Json().subscribe({
       next: (res) => {
         this.books = res.data ?? [];
+        this.updatePagedBooks();
         this.loading = false;
       },
       error: (err) => {
@@ -77,6 +84,8 @@ export class StoreComponent {
     this.bookService.apiBookByGenreGenreIdGet$Json({ genreId }).subscribe({
       next: (res) => {
         this.books = res.data ?? [];
+        this.currentPage = 1;
+        this.updatePagedBooks();
         this.loading = false;
       },
       error: (err) => {
@@ -86,31 +95,31 @@ export class StoreComponent {
     });
   }
 
- searchAdvanced(): void {
-  this.loading = true;
+  searchAdvanced(): void {
+    this.loading = true;
+    const keywordParts = [];
+    if (this.searchTitle) keywordParts.push(this.searchTitle);
+    if (this.searchAuthor) keywordParts.push(this.searchAuthor);
 
-  const keywordParts = [];
-  if (this.searchTitle) keywordParts.push(this.searchTitle);
-  if (this.searchAuthor) keywordParts.push(this.searchAuthor);
+    this.bookService.apiBookAdvancedSearchGet$Json({
+      keyword: keywordParts.join(' '),
+      minPrice: this.searchMinPrice,
+      maxPrice: this.searchMaxPrice
+    }).subscribe({
+      next: res => {
+        this.books = res.data ?? [];
+        this.currentPage = 1;
+        this.updatePagedBooks();
+        this.loading = false;
+      },
+      error: err => {
+        console.error('Lỗi tìm kiếm nâng cao:', err);
+        this.loading = false;
+      }
+    });
+  }
 
-  this.bookService.apiBookAdvancedSearchGet$Json({
-    keyword: keywordParts.join(' '),   // ✅ Gộp title + author
-    minPrice: this.searchMinPrice,
-    maxPrice: this.searchMaxPrice
-    // Bạn có thể thêm genreId, sortBy nếu cần
-  }).subscribe({
-    next: res => {
-      this.books = res.data ?? [];
-      this.loading = false;
-    },
-    error: err => {
-      console.error('Lỗi tìm kiếm nâng cao:', err);
-      this.loading = false;
-    }
-  });
-}
-
-
+  // ❤️ Yêu thích
   toggleFavorite(book: BookResponse): void {
     const userStr = sessionStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
@@ -147,10 +156,12 @@ export class StoreComponent {
     }
   }
 
+  // 🔎 Chi tiết
   goToDetail(bookId: number): void {
     this.router.navigate(['/book', bookId]);
   }
 
+  // 🛒 Giỏ hàng
   addToCart(book: BookResponse): void {
     const user = sessionStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
@@ -167,5 +178,21 @@ export class StoreComponent {
     localStorage.setItem(cartKey, JSON.stringify(cart));
     window.dispatchEvent(new Event('storage'));
     alert('🛒 Đã thêm vào giỏ hàng!');
+  }
+
+  // 📄 Phân trang
+  updatePagedBooks(): void {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedBooks = this.books.slice(start, end);
+    this.totalPages = Math.ceil(this.books.length / this.pageSize);
+  }
+
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagedBooks();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 }

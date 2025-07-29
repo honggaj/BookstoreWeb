@@ -2,13 +2,13 @@
   <div class="flex items-center justify-between mb-4">
     <h1 class="text-2xl font-semibold text-gray-900">Danh sách combo</h1>
     <button (click)="createCombo()"
-      class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-white bg-blue-600 hover:bg-blue-700 shadow-md transition duration-150 ease-in-out">
+      class="inline-flex items-center gap-2 px-4 py-2 -2xl text-white bg-blue-600 hover:bg-blue-700 shadow-md transition duration-150 ease-in-out">
       <i class="fas fa-plus"></i>
       <span>Thêm combo</span>
     </button>
   </div>
 
-  <div class="overflow-x-auto bg-white rounded-lg shadow">
+  <div class="overflow-x-auto bg-white  shadow">
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-gray-50">
         <tr>
@@ -25,7 +25,7 @@
         <tr *ngFor="let combo of combos">
           <td class="px-6 py-4 whitespace-nowrap">
             <img [src]="combo.image || 'https://placehold.co/100x100?text=No+Img'" alt="Ảnh combo"
-              class="h-24 w-24 rounded object-cover" />
+              class="h-24 w-24  object-cover" />
           </td>
           <td class="px-6 py-4 font-medium text-gray-900">{{ combo.name }}</td>
           <td class="px-6 py-4 text-gray-500 max-w-xs">

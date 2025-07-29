@@ -11,6 +11,7 @@ import { AdminModule } from './admin/admin.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { AuthModule } from './auth/auth.module';
+import { PaginatorModule } from 'primeng/paginator';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +26,8 @@ import { AuthModule } from './auth/auth.module';
     AdminModule,
     AuthModule,
     HttpClientModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    PaginatorModule
 
   ],
   providers: [],

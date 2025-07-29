@@ -21,25 +21,27 @@
                 src="https://phuongnamvina.com/img_data/images/mau-logo-nha-sach.jpg" />
 
             <!-- Search -->
+            <!-- Search -->
             <form (submit)="onSearch(searchInput.value); $event.preventDefault()" class="relative flex-1">
                 <input #searchInput type="text" placeholder="Bạn muốn mua gì?"
-                    class="border border-gray-300 rounded-l-md py-2 px-3 w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                    class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-2.5 text-sm placeholder-gray-400 " />
                 <button type="submit"
-                    class="absolute right-0 top-0 bottom-0 bg-blue-500 hover:bg-blue-600 text-white px-3 rounded-r-md">
+                    class="absolute right-0 top-0 bottom-0 bg-blue-500 hover:bg-blue-600 text-white px-3 ">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
+
 
         </div>
 
         <!-- Cart -->
         <button routerLink="/user/cart"
-            class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md px-4 py-2 flex items-center space-x-1 relative">
+            class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold  px-4 py-2 flex items-center space-x-1 relative">
             <i class="fas fa-shopping-cart"></i>
             <span>Giỏ hàng</span>
 
             <span *ngIf="cartCount > 0"
-                class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold -full w-5 h-5 flex items-center justify-center">
                 {{ cartCount }}
             </span>
         </button>

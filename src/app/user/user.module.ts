@@ -28,6 +28,7 @@ import { PaymentComponent } from './pages/payment/payment.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { ComboListComponent } from './components/combo-list/combo-list.component';
 import { ComboDetailComponent } from './components/combo-detail/combo-detail.component';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,9 @@ import { ComboDetailComponent } from './components/combo-detail/combo-detail.com
     TagModule,
     AuthModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+        PaginatorModule
+
 
 
   ]
