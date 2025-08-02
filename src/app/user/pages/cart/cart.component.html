@@ -1,5 +1,6 @@
 <div class="bg-[#F4F6FA] min-h-screen flex justify-center p-4">
-  <main class="bg-white w-full max-w-6xl flex flex-col md:flex-row md:divide-x md:divide-gray-200 shadow-md overflow-hidden">
+  <main
+    class="bg-white w-full max-w-6xl flex flex-col md:flex-row md:divide-x md:divide-gray-200 shadow-md overflow-hidden">
 
     <!-- LEFT: Cart Items -->
     <section class="flex-1 p-4 sm:p-6 md:p-8">
@@ -27,9 +28,11 @@
           </div>
         </div>
         <div class="col-span-6 sm:col-span-2 flex justify-center items-center space-x-2 mt-2 sm:mt-0">
-          <button (click)="updateQuantity(i, -1)" class="text-gray-600 text-lg">−</button>
-          <input class="w-10 h-8 text-center text-xs border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" [value]="item.quantity" readonly />
-          <button (click)="updateQuantity(i, 1)" class="text-gray-600 text-lg">+</button>
+          <button (click)="changeQuantity(i, -1)" class="text-gray-600 text-lg">−</button>
+          <input
+            class="w-10 h-8 text-center text-xs border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            [value]="item.quantity" readonly />
+          <button (click)="changeQuantity(i, 1)" class="text-gray-600 text-lg">+</button>
         </div>
         <div class="col-span-6 sm:col-span-2 text-right font-semibold text-sm mt-2 sm:mt-0">
           {{ item.price | number }}đ
@@ -53,20 +56,24 @@
       <hr class="border-gray-200 mb-6" />
 
       <div class="mb-6 px-1">
-        <p class="text-xs font-semibold text-gray-500 mb-1">SỐ SẢN PHẨM <span class="float-right">{{ cartItems.length }}</span></p>
-        <p class="text-xs font-semibold text-gray-500 mb-1">TỔNG TIỀN <span class="float-right">{{ getSubtotal() | number }}đ</span></p>
+        <p class="text-xs font-semibold text-gray-500 mb-1">SỐ SẢN PHẨM <span class="float-right">{{ cartItems.length
+            }}</span></p>
+        <p class="text-xs font-semibold text-gray-500 mb-1">TỔNG TIỀN <span class="float-right">{{ getSubtotal() |
+            number }}đ</span></p>
       </div>
 
       <div class="mb-6 px-1">
         <label class="text-xs font-semibold text-gray-500 mb-1 block">PHÍ GIAO HÀNG</label>
-        <select class="w-full text-xs border border-gray-300 py-2 px-3 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <select
+          class="w-full text-xs border border-gray-300 py-2 px-3 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           <option>Giao hàng tiêu chuẩn - 30.000đ</option>
         </select>
       </div>
 
       <div class="mb-6 px-1">
         <label class="text-xs font-semibold text-gray-500 mb-1 block">CHỌN MÃ GIẢM GIÁ</label>
-        <select [(ngModel)]="voucherCode" (change)="applyVoucher()" class="w-full text-xs border border-gray-300 py-2 px-3 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <select [(ngModel)]="voucherCode" (change)="applyVoucher()"
+          class="w-full text-xs border border-gray-300 py-2 px-3 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           <option value="">-- Không áp dụng --</option>
           <option *ngFor="let v of voucherList" [value]="v.code">
             {{ v.code }} - Giảm {{ v.discountPercent }}%, tối đa {{ v.maxDiscount | number }}đ
@@ -82,34 +89,71 @@
         <span>TỔNG CỘNG</span>
         <span>{{ getGrandTotal() | number }}đ</span>
       </div>
+<!-- Chỉ phần address section cần thay đổi trong template -->
+<div class="space-y-4 px-1">
+  <div>
+    <label class="text-xs font-semibold text-gray-500 block mb-1">Tên người nhận</label>
+    <input [(ngModel)]="recipientName"
+      class="w-full text-xs border border-gray-300 py-2 px-3 placeholder:text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      type="text" placeholder="VD: Nguyễn Văn A" />
+  </div>
 
-      <!-- FORM INPUTS -->
-      <div class="space-y-4 px-1">
-        <div>
-          <label class="text-xs font-semibold text-gray-500 block mb-1">Tên người nhận</label>
-          <input [(ngModel)]="recipientName" class="w-full text-xs border border-gray-300 py-2 px-3 placeholder:text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" placeholder="VD: Nguyễn Văn A" />
-        </div>
+  <div>
+    <label class="text-xs font-semibold text-gray-500 block mb-1">Địa chỉ</label>
+    <input [(ngModel)]="address"
+      class="w-full text-xs border border-gray-300 py-2 px-3 placeholder:text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      type="text" placeholder="VD: 123 Đường Lê Lợi" />
+  </div>
 
-        <div>
-          <label class="text-xs font-semibold text-gray-500 block mb-1">Địa chỉ</label>
-          <input [(ngModel)]="address" class="w-full text-xs border border-gray-300 py-2 px-3 placeholder:text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" placeholder="VD: 123 Đường Lê Lợi" />
-        </div>
+  <div>
+    <label class="text-xs font-semibold text-gray-500 block mb-1">Số điện thoại</label>
+    <input [(ngModel)]="phoneNumber"
+      class="w-full text-xs border border-gray-300 py-2 px-3 placeholder:text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      type="tel" placeholder="VD: 01234567890" />
+  </div>
 
-        <div>
-          <label class="text-xs font-semibold text-gray-500 block mb-1">Số điện thoại</label>
-          <input [(ngModel)]="phoneNumber" class="w-full text-xs border border-gray-300 py-2 px-3 placeholder:text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="tel" placeholder="VD: 01234567890" />
-        </div>
-      </div>
+  <!-- Tỉnh -->
+  <div>
+    <label class="text-xs font-semibold text-gray-500 block mb-1">Tỉnh / Thành phố</label>
+    <select [(ngModel)]="selectedProvinceId" (change)="onProvinceChange()"
+      class="w-full text-xs border border-gray-300 py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      <option value="">-- Chọn tỉnh --</option>
+      <option *ngFor="let p of provinces" [value]="p.id">{{ p.name }}</option>
+    </select>
+  </div>
+
+  <!-- Huyện -->
+  <div>
+    <label class="text-xs font-semibold text-gray-500 block mb-1">Quận / Huyện</label>
+    <select [(ngModel)]="selectedDistrictId" (change)="onDistrictChange()"
+      class="w-full text-xs border border-gray-300 py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      <option value="">-- Chọn huyện --</option>
+      <option *ngFor="let d of districts" [value]="d.id">{{ d.name }}</option>
+    </select>
+  </div>
+
+  <!-- Xã -->
+  <div>
+    <label class="text-xs font-semibold text-gray-500 block mb-1">Phường / Xã</label>
+    <select [(ngModel)]="selectedWardName" 
+      class="w-full text-xs border border-gray-300 py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      <option value="">-- Chọn xã --</option>
+      <option *ngFor="let w of wards" [value]="w.name">{{ w.name }}</option>
+    </select>
+  </div>
+</div>
 
       <div class="mt-4">
         <label class="text-xs font-semibold text-gray-500 block mb-1">Phương thức thanh toán</label>
-        <select [(ngModel)]="paymentMethod" class="w-full text-xs border border-gray-300 py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <select [(ngModel)]="paymentMethod"
+          class="w-full text-xs border border-gray-300 py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           <option value="COD">Thanh toán khi nhận hàng (COD)</option>
           <option value="PayPal">Thanh toán bằng PayPal</option>
         </select>
       </div>
 
-      <button *ngIf="paymentMethod === 'COD'" (click)="placeOrder()" class="w-full mt-6 bg-[#4B4B9B] text-white text-xs font-semibold py-3 hover:bg-[#3a3a7a] transition">
+      <button *ngIf="paymentMethod === 'COD'" (click)="submitOrder()"
+        class="w-full mt-6 bg-[#4B4B9B] text-white text-xs font-semibold py-3 hover:bg-[#3a3a7a] transition">
         ĐẶT HÀNG
       </button>
 
@@ -117,7 +161,8 @@
         <div id="paypal-button-container"></div>
       </div>
 
-      <button (click)="placeOrder()" class="w-full mt-6 bg-[#4B4B9B] text-white text-xs font-semibold py-3 hover:bg-[#3a3a7a] transition">
+      <button (click)="submitOrder()"
+        class="w-full mt-6 bg-[#4B4B9B] text-white text-xs font-semibold py-3 hover:bg-[#3a3a7a] transition">
         THANH TOÁN
       </button>
 

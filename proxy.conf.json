@@ -1,4 +1,10 @@
 {
+  "/api/vietnamprovince": {
+    "target": "https://vietnamlabs.com",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
   "/api": {
     "target": "http://localhost:5206",
     "secure": false,

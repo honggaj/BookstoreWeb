@@ -1,48 +1,91 @@
 import { Component, OnInit } from '@angular/core';
-import { BookResponse, OrderItemRequest, OrderRequest } from '../../../api/models';
-import { OrderService, VoucherService } from '../../../api/services';
 import { Router } from '@angular/router';
 import { loadScript } from '@paypal/paypal-js';
 
+import { BookResponse, OrderItemRequest, OrderRequest } from '../../../api/models';
+import { OrderService, VoucherService } from '../../../api/services';
+import { AddressService } from '../../../../services/address.service';
+
 interface CartItem {
   quantity: number;
-  isCombo?: boolean; // 👈 Nhận biết item là combo
+  isCombo?: boolean;
   bookId?: number;
   price?: number;
-  [key: string]: any; // Cho phép combo có các field khác
+  [key: string]: any;
 }
 
 @Component({
   selector: 'app-cart',
   standalone: false,
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css'],
+  styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
-  cartKey: string = 'cart';
+
+  cartKey = 'cart';
   recipientName = '';
   address = '';
   phoneNumber = '';
   paymentMethod: 'COD' | 'PayPal' = 'COD';
-  voucherCode: string = '';
-  voucherDiscount: number = 0;
+  voucherCode = '';
+  voucherDiscount = 0;
   voucherList: any[] = [];
+
+  provinces: any[] = [];
+  districts: any[] = [];
+  wards: any[] = [];
+
+  selectedProvinceId = '';
+  selectedDistrictId = '';
+  selectedWardName = '';
 
   constructor(
     private orderService: OrderService,
     private router: Router,
-    private voucherService: VoucherService
-  ) {}
+    private voucherService: VoucherService,
+    private addressService: AddressService
+  ) { }
 
   ngOnInit(): void {
-    this.loadCartItems();
+    this.loadCart();
     this.loadVouchers();
-    this.initPayPalButton();
-    this.watchPaymentMethod();
+    this.setupPayPal();
+    this.loadProvinces();
   }
 
-  loadCartItems(): void {
+  loadProvinces(): void {
+    this.addressService.getProvinces().subscribe({
+      next: (res) => (this.provinces = res),
+      error: (err) => console.error('Load provinces error:', err)
+    });
+  }
+
+  onProvinceChange(): void {
+    this.selectedDistrictId = this.selectedWardName = '';
+    this.districts = this.wards = [];
+
+    if (this.selectedProvinceId) {
+      this.addressService.getDistricts(this.selectedProvinceId).subscribe({
+        next: (res) => (this.districts = res),
+        error: (err) => console.error('Load districts error:', err)
+      });
+    }
+  }
+
+  onDistrictChange(): void {
+    this.selectedWardName = '';
+    this.wards = [];
+
+    if (this.selectedDistrictId) {
+      this.addressService.getWards(this.selectedDistrictId).subscribe({
+        next: (res) => (this.wards = res),
+        error: (err) => console.error('Load wards error:', err)
+      });
+    }
+  }
+
+  loadCart(): void {
     const user = sessionStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
     this.cartKey = username ? `cart_${username}` : 'cart_guest';
@@ -52,7 +95,7 @@ export class CartComponent implements OnInit {
 
     this.cartItems = rawItems.map(item => ({
       ...item,
-      quantity: item.quantity ?? 1,
+      quantity: item.quantity ?? 1
     }));
   }
 
@@ -62,78 +105,65 @@ export class CartComponent implements OnInit {
         this.voucherList = res.data ?? [];
         this.applyVoucher();
       },
-      error: (err) => {
-        console.error('❌ Không lấy được voucher:', err);
-      }
+      error: (err) => console.error('Load vouchers error:', err)
     });
   }
 
   applyVoucher(): void {
     const now = new Date();
-
-    const voucher = this.voucherList.find(v =>
+    const matchedVoucher = this.voucherList.find(v =>
       v.code?.toLowerCase() === this.voucherCode.toLowerCase() &&
       new Date(v.expiryDate ?? '') >= now &&
       ((v.usageLimit ?? 0) === 0 || (v.usedCount ?? 0) < (v.usageLimit ?? 0)) &&
       this.getSubtotal() >= (v.minOrderAmount ?? 0)
     );
 
-    if (!voucher) {
+    if (!matchedVoucher) {
       this.voucherDiscount = 0;
       return;
     }
 
-    const discount = (this.getSubtotal() * (voucher.discountPercent ?? 0)) / 100;
-    this.voucherDiscount = Math.min(discount, voucher.maxDiscount ?? discount);
+
+    const discount = (this.getSubtotal() * (matchedVoucher.discountPercent ?? 0)) / 100;
+    this.voucherDiscount = Math.min(discount, matchedVoucher.maxDiscount ?? discount);
   }
 
-  watchPaymentMethod(): void {
-    setTimeout(() => {
-      if (this.paymentMethod === 'PayPal') {
-        this.initPayPalButton();
-      }
-    });
-  }
+  setupPayPal(): void {
+    if (this.paymentMethod !== 'PayPal') return;
 
-  initPayPalButton(): void {
-    loadScript({ clientId: 'YOUR_CLIENT_ID_HERE' }).then((paypal) => {
-      if (!paypal || !paypal.Buttons) {
-        console.error('❌ Không load được PayPal SDK');
-        return;
-      }
+    loadScript({ clientId: 'YOUR_CLIENT_ID_HERE' })
+      .then((paypal) => {
+        if (!paypal?.Buttons) return;
 
-      paypal.Buttons({
-        createOrder: (data, actions) => {
-          const usdAmount = Math.ceil(this.getGrandTotal() / 24000);
-          return actions.order?.create({
-            intent: 'CAPTURE',
-            purchase_units: [{ amount: { currency_code: 'USD', value: usdAmount.toString() } }]
-          }) ?? Promise.reject('⚠️ Không tạo được order');
-        },
-        onApprove: (data, actions) => {
-          if (!actions.order) return Promise.reject(new Error('⚠️ actions.order undefined'));
+        paypal.Buttons({
+          createOrder: (data, actions) => {
+            const usd = Math.ceil(this.getGrandTotal() / 24000);
+            return actions.order?.create({
+              intent: 'CAPTURE',
+              purchase_units: [{ amount: { currency_code: 'USD', value: usd.toString() } }]
+            }) ?? Promise.reject('Create order failed');
+          },
+          onApprove: (data, actions) => {
+            if (actions.order) {
+              return actions.order.capture().then(details => {
+                alert(`✅ Thanh toán thành công! Cảm ơn ${details.payer?.name?.given_name ?? 'bạn'}`);
+                this.submitOrder();
+              });
+            }
 
-          return actions.order.capture().then((details) => {
-            const name = details.payer?.name?.given_name ?? 'bạn';
-            alert('✅ Thanh toán thành công qua PayPal! Cảm ơn ' + name);
-            this.placeOrder();
-          });
-        },
+            // ✅ Luôn trả về Promise<void>
+            return Promise.resolve();
+          }
 
-        onError: (err) => {
-          console.error('❌ Lỗi PayPal:', err);
-          alert('Thanh toán thất bại!');
-        }
-      }).render('#paypal-button-container');
-    }).catch(err => {
-      console.error('❌ Lỗi load SDK PayPal:', err);
-    });
+        }).render('#paypal-button-container');
+      })
+      .catch((err) => console.error('PayPal SDK load error:', err));
   }
 
   getSubtotal(): number {
     return this.cartItems.reduce((total, item) => {
-      const price = typeof item.price === 'number' ? item.price : parseInt(item.price as any) || 0;
-      return total + (item.quantity * price);
+      const price = typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0;
+      return total + item.quantity * price;
     }, 0);
   }
 
@@ -141,14 +171,13 @@ export class CartComponent implements OnInit {
     return this.getSubtotal() - this.voucherDiscount + 30000;
   }
 
-  removeItem(index: number): void {
-    this.cartItems.splice(index, 1);
+  removeItem(i: number): void {
+    this.cartItems.splice(i, 1);
     this.saveCart();
   }
 
-  updateQuantity(index: number, change: number): void {
-    const item = this.cartItems[index];
-    item.quantity = Math.max(1, item.quantity + change);
+  changeQuantity(i: number, delta: number): void {
+    this.cartItems[i].quantity = Math.max(1, this.cartItems[i].quantity + delta);
     this.saveCart();
   }
 
@@ -165,60 +194,56 @@ export class CartComponent implements OnInit {
   isFormValid(): boolean {
     return !!this.recipientName.trim() &&
       !!this.address.trim() &&
-      !!this.phoneNumber.trim();
-  }
-placeOrder(): void {
-  const userStr = sessionStorage.getItem('user');
-  const user = userStr ? JSON.parse(userStr) : null;
-
-  if (!user) {
-    alert('Vui lòng đăng nhập để đặt hàng!');
-    return;
+      !!this.phoneNumber.trim() &&
+      !!this.selectedProvinceId &&
+      !!this.selectedDistrictId &&
+      !!this.selectedWardName;
   }
 
-  if (!this.isFormValid()) {
-    alert('⚠️ Vui lòng điền đầy đủ thông tin!');
-    return;
-  }
 
-  // ✅ Map toàn bộ cartItems gồm cả combo và book
-  const allItems: OrderItemRequest[] = this.cartItems.map(item => {
-    const price = typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0;
-    return {
+  submitOrder(): void {
+    const user = JSON.parse(sessionStorage.getItem('user') || 'null');
+    if (!user) return alert('Vui lòng đăng nhập để đặt hàng!');
+    if (!this.isFormValid()) return alert('⚠️ Điền đủ thông tin giao hàng!');
+
+    const items: OrderItemRequest[] = this.cartItems.map(item => ({
       bookId: item.isCombo ? null : item.bookId ?? null,
-comboId: item['comboId'] ?? null,
+      comboId: item['comboId'] ?? null,
       quantity: item.quantity,
-      price: price
-    };
-  });
+      price: typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0
+    }));
 
-  if (allItems.length === 0) {
-    alert('🛑 Không có sản phẩm nào trong giỏ!');
-    return;
+    if (!items.length) return alert('🛑 Giỏ hàng trống!');
+
+    const order: OrderRequest = {
+      userId: user.userId,
+      recipientName: this.recipientName,
+      address: `${this.address}, ${this.selectedWardName}, ${this.getDistrictName()}, ${this.getProvinceName()}`,
+      phoneNumber: this.phoneNumber,
+      items,
+      paymentMethod: this.paymentMethod,
+      isPaid: this.paymentMethod === 'PayPal',
+      voucherCode: this.voucherCode || null
+    };
+
+    this.orderService.apiOrderCreatePost$Json({ body: order }).subscribe({
+      next: () => {
+        alert('✅ Đặt hàng thành công!');
+        this.clearCart();
+        this.router.navigate(['/user/history']);
+      },
+      error: (err) => {
+        console.error('Đặt hàng lỗi:', err);
+        alert('Có lỗi xảy ra khi đặt hàng!');
+      }
+    });
   }
 
-  const orderRequest: OrderRequest = {
-    userId: user.userId,
-    recipientName: this.recipientName,
-    address: this.address,
-    phoneNumber: this.phoneNumber,
-    items: allItems,
-    paymentMethod: this.paymentMethod,
-    isPaid: this.paymentMethod === 'PayPal',
-    voucherCode: this.voucherCode || null
-  };
+  getProvinceName(): string {
+    return this.provinces.find(p => p.id === this.selectedProvinceId)?.name || '';
+  }
 
-  this.orderService.apiOrderCreatePost$Json({ body: orderRequest }).subscribe({
-    next: (res) => {
-      alert('✅ Đặt hàng thành công!');
-      this.clearCart();
-      this.router.navigate(['/']);
-    },
-    error: (err) => {
-      console.error('❌ Đặt hàng lỗi:', err);
-      alert('Có lỗi xảy ra!');
-    }
-  });
-}
-
+  getDistrictName(): string {
+    return this.districts.find(d => d.id === this.selectedDistrictId)?.name || '';
+  }
 }
