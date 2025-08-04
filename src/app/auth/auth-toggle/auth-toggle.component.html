@@ -1,0 +1,15 @@
+<!-- mode-toggle.component.html -->
+<div class="flex bg-gray-100  p-1 mb-6">
+  <button 
+    (click)="setMode('login')" 
+    [class]="isLoginMode ? 'bg-blue-600 text-white' : 'text-gray-600'"
+    class="flex-1 py-2 px-4 rounded-md font-medium transition-all duration-200">
+    Đăng nhập
+  </button>
+  <button 
+    (click)="setMode('register')" 
+    [class]="isRegisterMode ? 'bg-blue-600 text-white' : 'text-gray-600'"
+    class="flex-1 py-2 px-4 rounded-md font-medium transition-all duration-200">
+    Đăng ký
+  </button>
+</div>

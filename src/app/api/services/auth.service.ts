@@ -13,12 +13,17 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { apiAuthForgotPasswordPost } from '../fn/auth/api-auth-forgot-password-post';
 import { ApiAuthForgotPasswordPost$Params } from '../fn/auth/api-auth-forgot-password-post';
+import { apiAuthGoogleLoginPost$Json } from '../fn/auth/api-auth-google-login-post-json';
+import { ApiAuthGoogleLoginPost$Json$Params } from '../fn/auth/api-auth-google-login-post-json';
+import { apiAuthGoogleLoginPost$Plain } from '../fn/auth/api-auth-google-login-post-plain';
+import { ApiAuthGoogleLoginPost$Plain$Params } from '../fn/auth/api-auth-google-login-post-plain';
 import { apiAuthLoginPost } from '../fn/auth/api-auth-login-post';
 import { ApiAuthLoginPost$Params } from '../fn/auth/api-auth-login-post';
 import { apiAuthRegisterPost } from '../fn/auth/api-auth-register-post';
 import { ApiAuthRegisterPost$Params } from '../fn/auth/api-auth-register-post';
 import { apiAuthResetPasswordPost } from '../fn/auth/api-auth-reset-password-post';
 import { ApiAuthResetPasswordPost$Params } from '../fn/auth/api-auth-reset-password-post';
+import { LoginResponse } from '../models/login-response';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService extends BaseService {
@@ -123,6 +128,53 @@ export class AuthService extends BaseService {
   apiAuthResetPasswordPost(params?: ApiAuthResetPasswordPost$Params, context?: HttpContext): Observable<void> {
     return this.apiAuthResetPasswordPost$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `apiAuthGoogleLoginPost()` */
+  static readonly ApiAuthGoogleLoginPostPath = '/api/Auth/GoogleLogin';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiAuthGoogleLoginPost$Plain()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiAuthGoogleLoginPost$Plain$Response(params?: ApiAuthGoogleLoginPost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<LoginResponse>> {
+    return apiAuthGoogleLoginPost$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiAuthGoogleLoginPost$Plain$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiAuthGoogleLoginPost$Plain(params?: ApiAuthGoogleLoginPost$Plain$Params, context?: HttpContext): Observable<LoginResponse> {
+    return this.apiAuthGoogleLoginPost$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<LoginResponse>): LoginResponse => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiAuthGoogleLoginPost$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiAuthGoogleLoginPost$Json$Response(params?: ApiAuthGoogleLoginPost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<LoginResponse>> {
+    return apiAuthGoogleLoginPost$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiAuthGoogleLoginPost$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiAuthGoogleLoginPost$Json(params?: ApiAuthGoogleLoginPost$Json$Params, context?: HttpContext): Observable<LoginResponse> {
+    return this.apiAuthGoogleLoginPost$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<LoginResponse>): LoginResponse => r.body)
     );
   }
 

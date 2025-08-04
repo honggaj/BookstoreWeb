@@ -1,0 +1,5 @@
+ <div [ngClass]="type === 'success' ? 'bg-green-100 border-green-300 text-green-700' : 'bg-red-100 border-red-300 text-red-700'"
+         class="mb-4 p-3 border  text-sm flex items-center">
+      <i class="mr-2" [ngClass]="type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'"></i>
+      <span>{{ message }}</span>
+    </div>

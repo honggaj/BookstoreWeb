@@ -15,33 +15,38 @@ export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   username: string | null = null;
   isMobileMenuOpen = false;
-
+currentUser: any = null;
   constructor(private router: Router) { }
 
-  ngOnInit() {
+ngOnInit() {
+  this.checkAuthStatus();
+
+  // Lắng nghe sự kiện login từ AuthModal
+  window.addEventListener('user-logged-in', () => {
+    console.log('📣 Đã nhận được sự kiện user-logged-in');
     this.checkAuthStatus();
-  }
-toggleMobileMenu() {
-  this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  });
 }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
   onLoginSuccess(userData?: { username?: string }) {
+    console.log('📌 Navbar received loginSuccess:', userData);
     this.isLoggedIn = true;
     this.username = userData?.username ?? null;
-    console.log('onLoginSuccess:', this.username);
+  }checkAuthStatus() {
+  const userData = sessionStorage.getItem('user');
+  if (userData) {
+    this.currentUser = JSON.parse(userData);
+    console.log('✅ User from session:', this.currentUser);
+  } else {
+    this.currentUser = null;
+    console.log('⚠️ Không có user trong session');
   }
+}
 
-  checkAuthStatus() {
-    const user = sessionStorage.getItem('user');
-    if (user) {
-      const userObj = JSON.parse(user);
-      this.username = userObj.username;
-      this.isLoggedIn = !!this.username;
-      console.log('checkAuthStatus:', this.username);
-    } else {
-      this.isLoggedIn = false;
-      this.username = null;
-    }
-  }
+
 
   logout() {
     sessionStorage.removeItem('user');

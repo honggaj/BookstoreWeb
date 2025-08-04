@@ -6,12 +6,12 @@ import { AppComponent } from './app.component';
 
 
 
-import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { AuthModule } from './auth/auth.module';
 import { PaginatorModule } from 'primeng/paginator';
+import { UserModule } from './user/user.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,12 +22,13 @@ import { PaginatorModule } from 'primeng/paginator';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    UserModule,
     AdminModule,
     AuthModule,
     HttpClientModule,
     SlickCarouselModule,
-    PaginatorModule
+    PaginatorModule,
+    AuthModule,
+    UserModule
 
   ],
   providers: [],
