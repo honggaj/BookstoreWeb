@@ -65,7 +65,7 @@ export class StoreComponent {
   }
 
   loadFavorites(): void {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = localStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
     if (!user) return;
 
@@ -121,7 +121,7 @@ export class StoreComponent {
 
   // ❤️ Yêu thích
   toggleFavorite(book: BookResponse): void {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = localStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
     if (!user) {
       alert('Bạn cần đăng nhập để yêu thích!');
@@ -158,12 +158,12 @@ export class StoreComponent {
 
   // 🔎 Chi tiết
   goToDetail(bookId: number): void {
-    this.router.navigate(['/book', bookId]);
+    this.router.navigate(['/user/book-detail', bookId]);
   }
 
   // 🛒 Giỏ hàng
   addToCart(book: BookResponse): void {
-    const user = sessionStorage.getItem('user');
+    const user = localStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
     const cartKey = username ? `cart_${username}` : 'cart_guest';
 

@@ -15,18 +15,21 @@ export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   username: string | null = null;
   isMobileMenuOpen = false;
-currentUser: any = null;
+  currentUser: any = null;
+  
+
+
   constructor(private router: Router) { }
 
-ngOnInit() {
-  this.checkAuthStatus();
-
-  // Lắng nghe sự kiện login từ AuthModal
-  window.addEventListener('user-logged-in', () => {
-    console.log('📣 Đã nhận được sự kiện user-logged-in');
+  ngOnInit() {
     this.checkAuthStatus();
-  });
-}
+
+    // Lắng nghe sự kiện login từ AuthModal
+    window.addEventListener('user-logged-in', () => {
+      console.log('📣 Đã nhận được sự kiện user-logged-in');
+      this.checkAuthStatus();
+    });
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -35,21 +38,27 @@ ngOnInit() {
     console.log('📌 Navbar received loginSuccess:', userData);
     this.isLoggedIn = true;
     this.username = userData?.username ?? null;
-  }checkAuthStatus() {
-  const userData = sessionStorage.getItem('user');
+  } 
+  checkAuthStatus() {
+  const userData = localStorage.getItem('user');
   if (userData) {
     this.currentUser = JSON.parse(userData);
+    this.username = this.currentUser.username; // 💥 Gán username ở đây
+    this.isLoggedIn = true; // cũng nên set luôn để hiển thị đúng
     console.log('✅ User from session:', this.currentUser);
   } else {
     this.currentUser = null;
+    this.username = null;
+    this.isLoggedIn = false;
     console.log('⚠️ Không có user trong session');
   }
 }
 
 
 
+
   logout() {
-    sessionStorage.removeItem('user');
+    localStorage.removeItem('user');
     this.isLoggedIn = false;
     this.username = null;
     this.router.navigate(['/user/home']); // Điều hướng về trang chủ user

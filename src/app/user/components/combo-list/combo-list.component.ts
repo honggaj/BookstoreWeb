@@ -37,7 +37,7 @@ export class ComboListComponent implements OnInit {
   }
 
   addToCart(combo: ComboResponse): void {
-  const user = sessionStorage.getItem('user');
+  const user = localStorage.getItem('user');
   const username = user ? JSON.parse(user).username : null;
   const cartKey = username ? `cart_${username}` : 'cart_guest';
 
@@ -65,6 +65,6 @@ export class ComboListComponent implements OnInit {
 
 
   goToDetail(comboId: number): void {
-    this.router.navigate(['/combo', comboId]);
+    this.router.navigate(['/user/combo', comboId]);
   }
 }

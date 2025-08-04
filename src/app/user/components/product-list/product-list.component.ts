@@ -40,7 +40,7 @@ export class ProductListComponent implements OnInit {
   }
 
   loadFavorites(): void {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = localStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
     if (!user) return;
 
@@ -55,7 +55,7 @@ export class ProductListComponent implements OnInit {
   }
 
   toggleFavorite(book: BookResponse): void {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = localStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
 
     if (!user) {
@@ -99,7 +99,7 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(book: BookResponse): void {
-    const user = sessionStorage.getItem('user');
+    const user = localStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
     const cartKey = username ? `cart_${username}` : 'cart_guest';
 

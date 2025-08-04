@@ -1,30 +1,17 @@
-<!-- Top bar -->
-<div class="text-xs text-gray-500 flex justify-between px-4 py-1 border-b border-gray-200 bg-white">
-    <div class="flex items-center space-x-1">
-        <span>BookStore - Nhà sách online uy tín</span>
-        <i class="fas fa-phone-alt"></i>
-        <span class="text-red-600 font-semibold">Hotline: 0911 233 455</span>
-    </div>
-    <div class="flex space-x-4 text-gray-400">
-        <a class="hover:text-gray-600" href="#">Điều khoản</a>
-        <a class="hover:text-gray-600" href="#">Thanh toán</a>
-        <a class="hover:text-gray-600" href="#">Liên hệ</a>
-    </div>
-</div>
+
 
 <!-- Header -->
 <header class="border-b border-gray-200 bg-white">
-    <div class="w-full mx-auto flex items-center justify-between gap-4 px-4 py-3">
+    <div class="w-full mx-auto flex items-center justify-between gap-4 px-8 py-3 ">
         <!-- Logo + Search -->
         <div class="flex items-center gap-4 flex-1">
-            <img alt="BookStore logo" class="h-12 w-auto"
-                src="https://phuongnamvina.com/img_data/images/mau-logo-nha-sach.jpg" />
+            <!-- <img alt="BookStore logo" class="h-12 w-auto"
+                src="https://phuongnamvina.com/img_data/images/mau-logo-nha-sach.jpg" /> -->
 
-            <!-- Search -->
             <!-- Search -->
             <form (submit)="onSearch(searchInput.value); $event.preventDefault()" class="relative flex-1">
                 <input #searchInput type="text" placeholder="Bạn muốn mua gì?"
-                    class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-2.5 text-sm placeholder-gray-400 " />
+                    class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-2 text-sm placeholder-gray-400 " />
                 <button type="submit"
                     class="absolute right-0 top-0 bottom-0 bg-blue-500 hover:bg-blue-600 text-white px-3 ">
                     <i class="fas fa-search"></i>

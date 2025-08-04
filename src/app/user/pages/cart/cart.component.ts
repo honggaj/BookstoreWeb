@@ -39,6 +39,10 @@ export class CartComponent implements OnInit {
   selectedProvinceId = '';
   selectedDistrictId = '';
   selectedWardName = '';
+  paymentCompleted: boolean = false;
+
+  private _paymentMethod: 'COD' | 'PayPal' = 'COD';
+
 
   constructor(
     private orderService: OrderService,
@@ -53,6 +57,7 @@ export class CartComponent implements OnInit {
     this.setupPayPal();
     this.loadProvinces();
   }
+
 
   loadProvinces(): void {
     this.addressService.getProvinces().subscribe({
@@ -86,7 +91,7 @@ export class CartComponent implements OnInit {
   }
 
   loadCart(): void {
-    const user = sessionStorage.getItem('user');
+    const user = localStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
     this.cartKey = username ? `cart_${username}` : 'cart_guest';
 
@@ -127,11 +132,23 @@ export class CartComponent implements OnInit {
     const discount = (this.getSubtotal() * (matchedVoucher.discountPercent ?? 0)) / 100;
     this.voucherDiscount = Math.min(discount, matchedVoucher.maxDiscount ?? discount);
   }
+ngOnChanges(): void {
+  if (this.paymentMethod === 'PayPal') {
+    setTimeout(() => this.setupPayPal(), 0); // gọi lại khi thay đổi phương thức thanh toán
+  }
+}
+
+onPaymentMethodChange(method: 'COD' | 'PayPal'): void {
+  this.paymentMethod = method;
+  if (method === 'PayPal') {
+    setTimeout(() => this.setupPayPal(), 0);
+  }
+}
 
   setupPayPal(): void {
     if (this.paymentMethod !== 'PayPal') return;
 
-    loadScript({ clientId: 'YOUR_CLIENT_ID_HERE' })
+    loadScript({ clientId: 'Aan6EYWneudr0PxCrRJHAPaTD7IcSvup4uOLhQ9IuEMwaNsIAQ16I_DCVVVdvItlDxBUdeI5JP8SK8uM' })
       .then((paypal) => {
         if (!paypal?.Buttons) return;
 
@@ -147,14 +164,16 @@ export class CartComponent implements OnInit {
             if (actions.order) {
               return actions.order.capture().then(details => {
                 alert(`✅ Thanh toán thành công! Cảm ơn ${details.payer?.name?.given_name ?? 'bạn'}`);
+                this.paymentCompleted = true;
                 this.submitOrder();
               });
             }
-
-            // ✅ Luôn trả về Promise<void>
             return Promise.resolve();
+          },
+          onCancel: () => {
+            this.paymentCompleted = false;
+            alert('❌ Bạn đã huỷ thanh toán PayPal');
           }
-
         }).render('#paypal-button-container');
       })
       .catch((err) => console.error('PayPal SDK load error:', err));
@@ -200,9 +219,13 @@ export class CartComponent implements OnInit {
       !!this.selectedWardName;
   }
 
-
   submitOrder(): void {
-    const user = JSON.parse(sessionStorage.getItem('user') || 'null');
+    if (!this.paymentCompleted) {
+      alert('⚠️ Vui lòng hoàn tất thanh toán trước khi đặt hàng.');
+      return;
+    }
+
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
     if (!user) return alert('Vui lòng đăng nhập để đặt hàng!');
     if (!this.isFormValid()) return alert('⚠️ Điền đủ thông tin giao hàng!');
 
@@ -238,6 +261,7 @@ export class CartComponent implements OnInit {
       }
     });
   }
+
 
   getProvinceName(): string {
     return this.provinces.find(p => p.id === this.selectedProvinceId)?.name || '';

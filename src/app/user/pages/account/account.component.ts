@@ -34,7 +34,7 @@ export class AccountComponent {
   }
 
   ngOnInit() {
-    const storedUser = sessionStorage.getItem('user');
+    const storedUser = localStorage.getItem('user');
     if (storedUser) {
       this.user = JSON.parse(storedUser);
     }
@@ -80,7 +80,7 @@ export class AccountComponent {
 }
 
   logout() { 
-    sessionStorage.clear();
+    localStorage.clear();
     this.isLoggedIn = false;
     this.username = null;
     this.router.navigate(['/user/home']).then(() => location.reload());

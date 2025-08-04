@@ -54,15 +54,23 @@
         <div *ngFor="let book of pagedBooks"
           class="bg-white border border-gray-200  p-4 flex flex-col text-center shadow-sm h-full transition hover:shadow-md hover:-translate-y-1">
 
-          <!-- Header -->
-          <div class="mb-2 flex justify-between items-center w-full">
-            <span class="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 ">13%</span>
-            <button (click)="toggleFavorite(book)" class="text-xl transition hover:scale-125">
-              <i
-                [ngClass]="favoriteBookIds.includes(book.bookId!) ? 'fas fa-heart text-red-500' : 'far fa-heart text-gray-400 hover:text-red-400'"></i>
-            </button>
-          </div>
+         <!-- Top bar: Rating + Favorite -->
+      <div class="flex justify-between items-center w-full mb-2">
+        <!-- ⭐ Rating -->
+        <div class="text-sm text-yellow-500 font-semibold">
+          <span *ngIf="book.averageRating != null; else noRating">
+            ⭐ {{ book.averageRating | number:'1.1-1' }}
+          </span>
+          <ng-template #noRating>
+            ⭐ 0 đánh giá
+          </ng-template>
+        </div>
 
+        <!-- ❤️ Tim -->
+        <button (click)="toggleFavorite(book)" class="text-red-500 text-lg">
+          <i [ngClass]="favoriteBookIds.includes(book.bookId!) ? 'fas fa-heart' : 'far fa-heart'"></i>
+        </button>
+      </div>
           <!-- Ảnh sách -->
           <img [src]="book.coverImageUrl" alt="Book Image" class="w-full h-36 object-contain mb-3" />
 

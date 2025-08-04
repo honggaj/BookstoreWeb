@@ -35,7 +35,7 @@ const routes: Routes = [
       { path: 'change-password', component: ChangePasswordComponent },
       { path: 'payment', component: PaymentComponent },
       { path: 'search', component: SearchPageComponent },
-      { path: 'book/:id', component: BookDetailComponent },
+      { path: 'book-detail/:id', component: BookDetailComponent },
       { path: 'combo', component: ComboListComponent },
       { path: 'combo/:id', component: ComboDetailComponent }, // nếu có
 

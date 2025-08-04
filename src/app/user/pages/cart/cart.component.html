@@ -145,11 +145,12 @@
 
       <div class="mt-4">
         <label class="text-xs font-semibold text-gray-500 block mb-1">Phương thức thanh toán</label>
-        <select [(ngModel)]="paymentMethod"
-          class="w-full text-xs border border-gray-300 py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-          <option value="COD">Thanh toán khi nhận hàng (COD)</option>
-          <option value="PayPal">Thanh toán bằng PayPal</option>
-        </select>
+       <select [(ngModel)]="paymentMethod" (ngModelChange)="onPaymentMethodChange($event)"
+  class="w-full text-xs border border-gray-300 py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+  <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+  <option value="PayPal">Thanh toán bằng PayPal</option>
+</select>
+
       </div>
 
       <button *ngIf="paymentMethod === 'COD'" (click)="submitOrder()"
@@ -166,9 +167,7 @@
         THANH TOÁN
       </button>
 
-      <div class="mt-4">
-        <div id="paypal-button-container"></div>
-      </div>
+
     </aside>
   </main>
 </div>

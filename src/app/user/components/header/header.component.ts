@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
   selector: 'app-header',
   standalone: false,
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
 })
 export class HeaderComponent {
   cartCount = 0;
@@ -15,14 +14,14 @@ export class HeaderComponent {
   onSearch(keyword: string): void {
     keyword = keyword.trim();
     if (keyword) {
-      this.router.navigate(['/search'], {
+      this.router.navigate(['/user/search'], {
         queryParams: { keyword: keyword }
       });
     }
 
   }
   ngOnInit() {
-    const user = sessionStorage.getItem('user');
+    const user = localStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
     this.cartKey = username ? `cart_${username}` : 'cart_guest';
     this.updateCartCount();

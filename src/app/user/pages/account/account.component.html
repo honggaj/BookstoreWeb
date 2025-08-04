@@ -1,28 +1,27 @@
 <div class="max-w-2xl mx-auto bg-white shadow-lg  p-6 mt-8 border border-blue-100">
-    <h1 class="text-3xl font-bold text-blue-600 mb-6 text-center">👤 Thông Tin Tài Khoản</h1>
+  <h1 class="text-3xl font-bold text-blue-600 mb-6 text-center">👤 Thông Tin Tài Khoản</h1>
 
-    <div class="space-y-4 text-gray-700 text-lg">
-        <p><strong class="text-blue-700">Tên đăng nhập:</strong> {{ user?.username }}</p>
-        <p><strong class="text-blue-700">Email:</strong> {{ user?.email }}</p>
-        <p><strong class="text-blue-700">Vai trò:</strong> {{ user?.role }}</p>
-    </div>
+  <div class="space-y-4 text-gray-700 text-lg">
+    <p><strong class="text-blue-700">Tên đăng nhập:</strong> {{ user?.username }}</p>
+    <p><strong class="text-blue-700">Email:</strong> {{ user?.email }}</p>
+    <!-- <p><strong class="text-blue-700">Vai trò:</strong> {{ user?.role }}</p> -->
+  </div>
 
-    <div class="flex justify-center gap-4 mt-8">
-       <button (click)="showChangePasswordModal = true"
-  class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2  shadow transition">
-  🔐 Đổi mật khẩu
-</button>
-        <button (click)="logout()"
-            class="bg-red-500 hover:bg-red-600 text-white px-5 py-2  shadow transition">
-            🚪 Đăng xuất
-        </button>
-    </div>
+  <div class="flex justify-center gap-4 mt-8">
+    <button (click)="showChangePasswordModal = true"
+      class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2  shadow transition">
+      🔐 Đổi mật khẩu
+    </button>
+    <button (click)="logout()" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2  shadow transition">
+      🚪 Đăng xuất
+    </button>
+  </div>
 </div>
 
 
 <!-- Modal -->
 <div *ngIf="showChangePasswordModal" class="modal-backdrop">
-      <div class="bg-white  p-6 max-w-md w-full relative">
+  <div class="bg-white  p-6 max-w-md w-full relative mx-6">
     <button (click)="showChangePasswordModal = false"
       class="absolute top-2 right-3 text-gray-500 hover:text-red-500 text-xl font-bold">&times;</button>
 
@@ -30,21 +29,21 @@
 
     <form (ngSubmit)="changePassword()" [formGroup]="changePasswordForm" class="space-y-3">
       <input type="password" formControlName="oldPassword" placeholder="Mật khẩu cũ"
-        class="w-full border  px-4 py-2" />
+        class="w-full border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 px-4 py-2 rounded transition" />
 
       <input type="password" formControlName="newPassword" placeholder="Mật khẩu mới"
-        class="w-full border  px-4 py-2" />
+        class="w-full border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 px-4 py-2 rounded transition" />
 
       <input type="password" formControlName="confirmPassword" placeholder="Xác nhận mật khẩu mới"
-        class="w-full border  px-4 py-2" />
+        class="w-full border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 px-4 py-2 rounded transition" />
 
       <div *ngIf="errorMessage" class="text-red-500 text-sm text-center">{{ errorMessage }}</div>
       <div *ngIf="successMessage" class="text-green-600 text-sm text-center">{{ successMessage }}</div>
 
-      <button type="submit" [disabled]="isLoading"
-        class="w-full bg-blue-500 hover:bg-blue-600 text-white  py-2">
+      <button type="submit" [disabled]="isLoading" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded">
         {{ isLoading ? 'Đang xử lý...' : 'Xác nhận' }}
       </button>
     </form>
+
   </div>
 </div>

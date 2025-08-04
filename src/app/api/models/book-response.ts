@@ -4,6 +4,7 @@
 
 export interface BookResponse {
   author?: string | null;
+  averageRating?: number | null;
   bookId?: number;
   coverImageUrl?: string | null;
   description?: string | null;

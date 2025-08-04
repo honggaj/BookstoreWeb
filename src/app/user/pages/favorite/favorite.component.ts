@@ -15,7 +15,7 @@ export class FavoriteComponent {
   constructor(private favoriteService: FavoriteService, private router:Router) {}
 
   ngOnInit(): void {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = localStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
 
     if (!user) {
@@ -32,7 +32,7 @@ export class FavoriteComponent {
       this.router.navigate(['/book', bookId]);
     }
      addToCart(book: BookResponse): void {
-    const user = sessionStorage.getItem('user');
+    const user = localStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
     const cartKey = username ? `cart_${username}` : 'cart_guest';
   
@@ -54,7 +54,7 @@ export class FavoriteComponent {
   if (!confirm('Bạn có chắc muốn xoá khỏi danh sách yêu thích?')) return;
 
   this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({
-    userId: JSON.parse(sessionStorage.getItem('user')!).userId,
+    userId: JSON.parse(localStorage.getItem('user')!).userId,
     bookId
   }).subscribe({
     next: () => {

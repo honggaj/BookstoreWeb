@@ -15,7 +15,7 @@ export class HistoryComponent {
   constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
-    const user = sessionStorage.getItem('user');
+    const user = localStorage.getItem('user');
     this.currentUserId = user ? JSON.parse(user).userId : null;
 
     if (this.currentUserId) {

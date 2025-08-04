@@ -30,12 +30,15 @@
       <p class="text-xs text-gray-500 truncate">{{ combo.description || 'Không có mô tả' }}</p>
 
       <!-- Giá -->
-      <p class="text-blue-600 font-semibold mb-3">
-        {{ combo.discountPrice ? (combo.discountPrice | number:'1.0-0') + ' VNĐ' : 'Contact' }}
-        <span *ngIf="combo.totalPrice" class="line-through text-gray-400 text-sm ml-1">
-          {{ combo.totalPrice | number:'1.0-0' }} VNĐ
-        </span>
-      </p>
+<div class="text-blue-600 font-semibold mb-3">
+  <p>
+    {{ combo.discountPrice ? (combo.discountPrice | number:'1.0-0') + ' VNĐ' : 'Contact' }}
+  </p>
+  <p *ngIf="combo.totalPrice" class="line-through text-gray-400 text-sm">
+    {{ combo.totalPrice | number:'1.0-0' }} VNĐ
+  </p>
+</div>
+
 
       <!-- Nút -->
       <div class="flex justify-center items-center space-x-2 mt-auto pt-3">

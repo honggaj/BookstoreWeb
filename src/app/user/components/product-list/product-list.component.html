@@ -4,7 +4,7 @@
 
     <!-- Header -->
     <div class="mb-2 flex justify-between items-center w-full">
-      <span class="bg-blue-600 text-white text-xs font-semibold  px-2 py-0.5">13%</span>
+      <span class="bg-blue-600 text-white text-xs font-semibold  px-2 py-0.5">{{book.averageRating}}</span>
       <!-- ❤️ Trái tim -->
       <button (click)="toggleFavorite(book)" class="text-red-500 text-xl">
         <i [ngClass]="favoriteBookIds.includes(book.bookId!) ? 'fas fa-heart' : 'far fa-heart'"></i>

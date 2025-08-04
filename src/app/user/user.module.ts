@@ -29,6 +29,7 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { ComboListComponent } from './components/combo-list/combo-list.component';
 import { ComboDetailComponent } from './components/combo-detail/combo-detail.component';
 import { PaginatorModule } from 'primeng/paginator';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { PaginatorModule } from 'primeng/paginator';
     SearchPageComponent,
     ComboListComponent,
     ComboDetailComponent,
+    FooterComponent,
     
   ],
   imports: [

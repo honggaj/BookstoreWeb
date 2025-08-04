@@ -1,8 +1,9 @@
-// auth-login-form.component.ts
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { AuthService } from '../../api/services';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginRequest, GoogleLoginRequest } from '../../api/models';
+import { Router } from '@angular/router';
+import { AuthService as ApiAuthService } from '../../api/services'; // đây là service được gen từ backend
+import { AuthService } from '../../../services/auth.service';
 
 declare const google: any;
 
@@ -10,8 +11,9 @@ declare const google: any;
   selector: 'app-auth-login-form',
   standalone: false,
   templateUrl: './auth-login-form.component.html',
-  styleUrls: ['./auth-login-form.component.css']
+  styleUrl: './auth-login-form.component.css'
 })
+
 export class AuthLoginFormComponent implements OnInit {
 
   @Output() loginSuccess = new EventEmitter<any>();
@@ -21,10 +23,12 @@ export class AuthLoginFormComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
   successMessage = '';
-  googleClientId = '122717583346-i8onvl4v3ntfd6v7dc05j1dmhv3auiib.apps.googleusercontent.com'; // Thay thế bằng Google Client ID của bạn
 
+  // Sử dụng ApiAuthService cho các cuộc gọi API và AuthService mới cho quản lý trạng thái
   constructor(
     private fb: FormBuilder,
+    private apiAuthService: ApiAuthService,
+    private router: Router,
     private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
@@ -32,137 +36,156 @@ export class AuthLoginFormComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
-
-  ngOnInit(): void {
-    // Khởi tạo Google Identity Services
-    google.accounts.id.initialize({
-      client_id: this.googleClientId,
-      callback: this.handleGoogleLogin.bind(this)
-    });
-
-    // Render nút Google Login vào div có id="google-btn"
-    google.accounts.id.renderButton(
-      document.getElementById('google-btn'),
-      { theme: 'outline', size: 'large', type: 'standard' }
-    );
+ngOnInit(): void {
+  // ✅ BƯỚC 1: Lấy user từ localStorage nếu có
+  const userJson = localStorage.getItem('user');
+  if (userJson) {
+    const user = JSON.parse(userJson);
+    this.authService.login(user); // hoặc this.authService.setCurrentUser(user);
   }
 
-  // --- Getters cho Form Controls để code HTML gọn hơn ---
-  get emailFormControl(): AbstractControl | null {
-    return this.loginForm.get('email');
-  }
+  // ✅ BƯỚC 2: Khởi tạo Google Login
+  google.accounts.id.initialize({
+    client_id: '122717583346-i8onvl4v3ntfd6v7dc05j1dmhv3auiib.apps.googleusercontent.com',
+    callback: this.handleGoogleLogin.bind(this),
+  });
 
-  get passwordFormControl(): AbstractControl | null {
-    return this.loginForm.get('password');
-  }
+  // ✅ BƯỚC 3: Render nút Google vào div
+  google.accounts.id.renderButton(
+    document.getElementById('google-btn'),
+    { theme: 'outline', size: 'large', type: 'standard' }
+  );
+}
 
-  get isEmailInvalid(): boolean {
-    return !!(this.emailFormControl?.touched && this.emailFormControl?.errors);
-  }
 
-  get isPasswordInvalid(): boolean {
-    return !!(this.passwordFormControl?.touched && this.passwordFormControl?.errors);
-  }
-  
-  // --- Phương thức xử lý đăng nhập Email/Password ---
-  handleEmailPasswordLogin(): void {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
-      this.successMessage = '';
-
-      const loginData: LoginRequest = {
-        email: this.loginForm.value.email,
-        password: this.loginForm.value.password
-      };
-
-      this.authService.apiAuthLoginPost({ body: loginData }).subscribe({
-        next: (response) => this._handleLoginSuccess(response, 'Đăng nhập thành công!'),
-        error: (error) => this._handleLoginError(error, 'Đăng nhập thất bại. Vui lòng thử lại.')
-      });
-    } else {
-      this.loginForm.markAllAsTouched();
-    }
-  }
-
-  // --- Phương thức xử lý đăng nhập Google ---
-  handleGoogleLogin(response: any): void {
+  // Phương thức xử lý phản hồi từ Google sau khi đăng nhập thành công
+  handleGoogleLogin(response: any) {
     if (response.credential) {
       this.isLoading = true;
       this.errorMessage = '';
       this.successMessage = '';
-      this.handleGoogleLoginApiCall(response.credential);
+
+      // Gọi phương thức để gửi ID Token đến backend
+      this.googleLogin(response.credential);
     } else {
-      this._handleLoginError(null, 'Đăng nhập Google thất bại.');
+      this.errorMessage = 'Đăng nhập Google thất bại.';
       console.error('❌ Google login error: No credential received');
     }
   }
 
-  // --- Phương thức gọi API backend GoogleLogin ---
-  handleGoogleLoginApiCall(idToken: string): void {
-    const googleLoginRequest: GoogleLoginRequest = { idToken: idToken };
+  // Phương thức gọi API backend GoogleLogin
+  googleLogin(idToken: string) {
+    const googleLoginRequest: GoogleLoginRequest = {
+      idToken: idToken
+    };
+    
+    this.apiAuthService.apiAuthGoogleLoginPost$Json({ body: googleLoginRequest }).subscribe({
+      next: (response: any) => {
+        this.isLoading = false;
+        this.successMessage = 'Đăng nhập Google thành công!';
 
-    this.authService.apiAuthGoogleLoginPost$Json({ body: googleLoginRequest }).subscribe({
-      next: (response) => this._handleLoginSuccess(response, 'Đăng nhập Google thành công!'),
-      error: (error) => this._handleLoginError(error, 'Đăng nhập Google thất bại. Vui lòng thử lại.')
+        const userData = {
+          userId: response.userId,
+          username: response.username,
+          email: response.email,
+          role: response.role,
+          token: response.token
+        };
+
+        // Sử dụng service để lưu thông tin người dùng
+        this.authService.login(userData);
+
+        this.loginSuccess.emit(userData);
+        
+        // Chuyển trang theo role
+        const rolePath = userData.role?.toLowerCase() === 'admin' ? '/admin' : '/user/home';
+        this.router.navigateByUrl(rolePath);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.error?.message || 'Đăng nhập Google thất bại. Vui lòng thử lại.';
+        console.error('❌ Google login API error:', error);
+      }
     });
   }
 
-  // --- Xử lý sự kiện "Quên mật khẩu" ---
-  handleForgotPasswordClick(): void {
+  // Phương thức đăng nhập thông thường
+  onLogin() {
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      const loginData = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password
+      };
+
+      this.apiAuthService.apiAuthLoginPost({ body: loginData }).subscribe({
+        next: (response: any) => {
+          this.isLoading = false;
+          this.successMessage = 'Đăng nhập thành công!';
+          
+          // Thêm kiểm tra nếu response là string thì parse JSON
+          if (typeof response === 'string') {
+            try {
+              response = JSON.parse(response);
+            } catch (e) {
+              console.error('❌ Không parse được response JSON:', response);
+              this.errorMessage = 'Phản hồi máy chủ không hợp lệ.';
+              return;
+            }
+          }
+
+          const userData = {
+            userId: response.userId,
+            username: response.username,
+            email: response.email,
+            role: response.role,
+            token: response.token
+          };
+
+          // Sử dụng service để lưu thông tin người dùng
+          this.authService.login(userData);
+
+          this.loginSuccess.emit(userData);
+          
+          // Chuyển trang theo role
+          const rolePath = userData.role?.toLowerCase() === 'admin' ? '/admin' : '/user/home';
+          this.router.navigateByUrl(rolePath);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+          console.error('❌ Login error:', error);
+        }
+      });
+    } else {
+      this.markFormGroupTouched(this.loginForm);
+    }
+  }
+
+  onForgotPassword() {
     this.forgotPasswordClicked.emit();
   }
 
-  // --- Hàm hỗ trợ lấy lỗi validation ---
-  getFieldError(control: AbstractControl | null, fieldName: string): string {
-    if (!control || !control.touched || !control.errors) {
-      return '';
-    }
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+    });
+  }
 
-    if (control.errors['required']) {
-      return `${this._getFieldLabel(fieldName)} là bắt buộc`;
-    }
-    if (control.errors['email']) {
-      return 'Email không hợp lệ';
-    }
-    if (control.errors['minlength']) {
-      const requiredLength = control.errors['minlength'].requiredLength;
-      return `${this._getFieldLabel(fieldName)} tối thiểu ${requiredLength} ký tự`;
+  getFieldError(form: FormGroup, fieldName: string): string {
+    const field = form.get(fieldName);
+    if (field?.touched && field?.errors) {
+      if (field.errors['required']) return `${this.getFieldLabel(fieldName)} là bắt buộc`;
+      if (field.errors['email']) return 'Email không hợp lệ';
+      if (field.errors['minlength']) return `${this.getFieldLabel(fieldName)} tối thiểu ${field.errors['minlength'].requiredLength} ký tự`;
     }
     return '';
   }
 
-  // --- Private helpers ---
-  private _handleLoginSuccess(response: any, successMsg: string): void {
-    this.isLoading = false;
-    this.successMessage = successMsg;
-    this._saveUserData(response);
-  }
-
-  private _handleLoginError(error: any, defaultMsg: string): void {
-    this.isLoading = false;
-    this.errorMessage = error?.error?.message || defaultMsg;
-    console.error('❌ Login API error:', error);
-  }
-
-  private _saveUserData(response: any): void {
-    const userData = {
-      userId: response.userId,
-      username: response.username,
-      email: response.email,
-      role: response.role,
-      token: response.token
-    };
-    sessionStorage.setItem('user', JSON.stringify(userData));
-    this.loginSuccess.emit(userData);
-    
-    // Sử dụng Observable/Service để giao tiếp là tốt hơn, nhưng đây là cách hiện tại
-    setTimeout(() => {
-      window.dispatchEvent(new Event('user-logged-in'));
-    }, 100);
-  }
-
-  private _getFieldLabel(fieldName: string): string {
+  private getFieldLabel(fieldName: string): string {
     const labels: { [key: string]: string } = {
       'email': 'Email',
       'password': 'Mật khẩu'

@@ -46,7 +46,7 @@ export class ProductCarouselComponent {
   }
 
   loadFavorites(): void {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = localStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
     if (!user) return;
 
@@ -61,7 +61,7 @@ export class ProductCarouselComponent {
   }
 
   toggleFavorite(book: BookResponse): void {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = localStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
 
     if (!user) {
@@ -104,11 +104,11 @@ export class ProductCarouselComponent {
   }
 
   goToDetail(bookId: number): void {
-    this.router.navigate(['/book', bookId]);
+    this.router.navigate(['/user/book-detail', bookId]);
   }
 
   addToCart(book: BookResponse): void {
-    const user = sessionStorage.getItem('user');
+    const user = localStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
     const cartKey = username ? `cart_${username}` : 'cart_guest';
 
@@ -124,4 +124,35 @@ export class ProductCarouselComponent {
     window.dispatchEvent(new Event('storage'));
     alert('🛒 Đã thêm vào giỏ hàng!');
   }
+  filterBooks(type: 'latest' | 'top-rated' | 'best-seller'): void {
+  this.loading = true;
+
+  let request$;
+
+  switch (type) {
+    case 'latest':
+      request$ = this.bookService.apiBookLatestGet$Json();
+      break;
+    case 'top-rated':
+      request$ = this.bookService.apiBookTopRatedGet$Json();
+      break;
+    case 'best-seller':
+      request$ = this.bookService.apiBookBestSellersGet$Json();
+      break;
+    default:
+      request$ = this.bookService.apiBookGet$Json();
+  }
+
+  request$.subscribe({
+    next: (res) => {
+      this.books = res.data ?? [];
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error('Lỗi khi lọc sách:', err);
+      this.loading = false;
+    }
+  });
+}
+
 }

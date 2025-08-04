@@ -1,17 +1,17 @@
-<!-- navbar.component.html -->
 <header class="bg-white shadow-lg sticky top-0 z-50">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600  flex items-center justify-center">
-                    <i class="fas fa-book text-white text-lg"></i>
-                </div>
-                <span class="text-xl font-bold text-gray-800">BookStore</span>
+                <div class="w-10 h-10  flex items-center justify-center">
+<img src="assets/images/logo_tatsumaki.png">                </div>
+<span class="text-xl font-bold bg-gradient-to-r from-blue-700 to-blue-300 bg-clip-text text-transparent">
+  Nhà sách Tatsumaki
+</span>
             </div>
 
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center space-x-6 ">
+            <div class="hidden md:flex items-center space-x-6">
                 <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
                     routerLink="/user/home">Trang chủ</a>
                 <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200"
@@ -26,37 +26,30 @@
                 <!-- Auth Section -->
                 <div *ngIf="!isLoggedIn">
                     <button (click)="openAuthModal()"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2  transition-colors duration-200">
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 transition-colors duration-200">
                         <i class="fas fa-user mr-2"></i>Đăng nhập
                     </button>
                 </div>
 
-                <!-- User Menu (when logged in) -->
+                <!-- User Menu -->
                 <div *ngIf="isLoggedIn" class="relative group">
                     <button
                         class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">
-                        <div class="w-8 h-8 bg-blue-600 -full flex items-center justify-center">
+                        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                             <i class="fas fa-user text-white text-sm"></i>
                         </div>
-                       {{ currentUser.username }}
+                        {{ currentUser.username }}
                         <i class="fas fa-chevron-down text-xs"></i>
                     </button>
 
-                    <!-- Dropdown Menu -->
+                    <!-- Dropdown -->
                     <div
-                        class="absolute right-0 mt-2 w-48 bg-white  shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                        class="absolute right-0 mt-2 w-48 bg-white shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                         <div class="py-2">
-                            <!-- User Info Header -->
-                            <!-- <div class="px-4 py-2 border-b border-gray-100">
-                                <p class="text-sm font-medium text-gray-800">{{ currentUser?.username }}</p>
-                                <p class="text-xs text-gray-500">{{ currentUser?.email }}</p>
-                            </div> -->
-
-                            <a *ngIf="isLoggedIn" routerLink="/user/account"
+                            <a routerLink="/user/account"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="fas fa-user-circle mr-2"></i>Tài khoản
                             </a>
-
                             <a routerLink="/user/history"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="fas fa-shopping-bag mr-2"></i>Đơn hàng
@@ -65,7 +58,7 @@
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="fas fa-heart mr-2"></i>Yêu thích
                             </a>
-                            <hr class="my-1">
+                            <hr class="my-1" />
                             <button (click)="logout()"
                                 class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                                 <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất
@@ -73,57 +66,90 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
             <!-- Mobile menu button -->
-            <button (click)="toggleMobileMenu()"
-                class="md:hidden p-2  hover:bg-gray-100 transition-colors duration-200">
+            <button (click)="toggleMobileMenu()" class="md:hidden p-2 hover:bg-gray-100 transition-colors duration-200">
                 <i class="fas fa-bars text-gray-700"></i>
             </button>
-
-        </div>
-        <!-- Mobile Navigation -->
-        <div class="md:hidden mt-2 space-y-2 transition-all duration-300"
-            [ngClass]="{ 'block': isMobileMenuOpen, 'hidden': !isMobileMenuOpen }">
-
-            <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" routerLink="/user/home">Trang chủ</a>
-            <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" routerLink="/user/store">Cửa hàng</a>
-            <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" routerLink="/user/news">Tin tức</a>
-            <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" routerLink="/user/about">Giới
-                thiệu</a>
-            <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" routerLink="/user/contact">Liên
-                hệ</a>
-
-            <ng-container *ngIf="!isLoggedIn">
-                <button (click)="openAuthModal()"
-                    class="w-full text-left px-4 py-2 text-blue-600 font-medium hover:bg-gray-100">
-                    Đăng nhập
-                </button>
-            </ng-container>
-
-            <ng-container *ngIf="isLoggedIn">
-                <hr />
-                <a routerLink="/user/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    <i class="fas fa-user-circle mr-2"></i>Tài khoản
-                </a>
-                <a routerLink="/user/history" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    <i class="fas fa-shopping-bag mr-2"></i>Đơn hàng
-                </a>
-                <a routerLink="/user/favorite" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    <i class="fas fa-heart mr-2"></i>Yêu thích
-                </a>
-                <button (click)="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                    <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất
-                </button>
-            </ng-container>
         </div>
 
+      <!-- Mobile Menu với styling được cải thiện -->
+<div class="md:hidden mobile-menu" [class.open]="isMobileMenuOpen">
+  <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" 
+     routerLink="/user/home" 
+     (click)="toggleMobileMenu()">
+    <i class="fas fa-home mr-3"></i>Trang chủ
+  </a>
+  <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" 
+     routerLink="/user/store" 
+     (click)="toggleMobileMenu()">
+    <i class="fas fa-store mr-3"></i>Cửa hàng
+  </a>
+  <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" 
+     routerLink="/user/news" 
+     (click)="toggleMobileMenu()">
+    <i class="fas fa-newspaper mr-3"></i>Tin tức
+  </a>
+  <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" 
+     routerLink="/user/about" 
+     (click)="toggleMobileMenu()">
+    <i class="fas fa-info-circle mr-3"></i>Giới thiệu
+  </a>
+  <a class="block text-gray-700 px-4 py-2 hover:bg-gray-100 font-medium" 
+     routerLink="/user/contact" 
+     (click)="toggleMobileMenu()">
+    <i class="fas fa-envelope mr-3"></i>Liên hệ
+  </a>
+
+  <ng-container *ngIf="!isLoggedIn">
+    <hr class="my-2">
+    <button (click)="openAuthModal(); toggleMobileMenu()" 
+            class="w-full text-left px-4 py-2 text-blue-600 font-medium hover:bg-gray-100">
+      <i class="fas fa-sign-in-alt mr-3"></i>Đăng nhập
+    </button>
+  </ng-container>
+
+  <ng-container *ngIf="isLoggedIn">
+    <hr class="my-2">
+    <div class="px-4 py-2 bg-gray-50 border-b">
+      <div class="flex items-center space-x-2">
+        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+          <i class="fas fa-user text-white text-sm"></i>
+        </div>
+        <span class="text-sm font-medium text-gray-700">{{ currentUser.username }}</span>
+      </div>
+    </div>
+    
+    <a routerLink="/user/account" 
+       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+       (click)="toggleMobileMenu()">
+      <i class="fas fa-user-circle mr-3"></i>Tài khoản
+    </a>
+    <a routerLink="/user/history" 
+       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+       (click)="toggleMobileMenu()">
+      <i class="fas fa-shopping-bag mr-3"></i>Đơn hàng
+    </a>
+    <a routerLink="/user/favorite" 
+       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+       (click)="toggleMobileMenu()">
+      <i class="fas fa-heart mr-3"></i>Yêu thích
+    </a>
+    
+    <hr class="my-2">
+    <button (click)="logout(); toggleMobileMenu()" 
+            class="logout w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+      <i class="fas fa-sign-out-alt mr-3"></i>Đăng xuất
+    </button>
+  </ng-container>
+</div>
     </nav>
+
+    <!-- Overlay đen mờ -->
+    <div *ngIf="isMobileMenuOpen" class="mobile-overlay show" (click)="toggleMobileMenu()"></div>
 </header>
 
 <!-- Auth Modal -->
 <app-auth-modal [isVisible]="isAuthModalVisible" (modalClosed)="closeAuthModal()"
-    (loginSuccess)="onLoginSuccess($event)">
-</app-auth-modal>
+    (loginSuccess)="onLoginSuccess($event)"></app-auth-modal>

@@ -8,9 +8,9 @@ import { AuthForgotPasswordFormComponent } from './auth-forgot-password-form/aut
 const routes: Routes = [
   { path: 'login', component: AuthLoginFormComponent },
   { path: 'register', component: AuthRegisterFormComponent },
-    { path: 'reset-password', component: AuthResetPasswordComponent },
+  { path: 'reset-password', component: AuthResetPasswordComponent },
 
-      { path: 'forrgot-password', component: AuthForgotPasswordFormComponent },
+  { path: 'forrgot-password', component: AuthForgotPasswordFormComponent },
 
   { path: '**', redirectTo: '' } // fallback nếu URL không khớp
 ];

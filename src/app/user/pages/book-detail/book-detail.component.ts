@@ -47,8 +47,8 @@ editingReviewId: number | null = null;
 
   this.loadBooks();
 
-  // 🔐 Gán userId hiện tại từ sessionStorage
-  const user = sessionStorage.getItem('user');
+  // 🔐 Gán userId hiện tại từ localStorage
+  const user = localStorage.getItem('user');
   this.currentUserId = user ? JSON.parse(user).userId : null;
 }
 
@@ -102,7 +102,7 @@ goBack(): void {
     return shuffled.slice(0, count);
   }
   goToDetail(bookId: number): void {
-    this.router.navigate(['/book', bookId]);
+    this.router.navigate(['/user/book-detail', bookId]);
   }
 
   goHome(): void {
@@ -110,8 +110,8 @@ goBack(): void {
   }
   // ...existing code...
   addToCart(): void {
-    // Lấy username từ sessionStorage
-    const user = sessionStorage.getItem('user');
+    // Lấy username từ localStorage
+    const user = localStorage.getItem('user');
     const username = user ? JSON.parse(user).username : null;
     const cartKey = username ? `cart_${username}` : 'cart_guest';
 
@@ -122,7 +122,7 @@ goBack(): void {
     alert('🛒 Đã thêm vào giỏ hàng!');
   }
  submitReview(): void {
-  const user = sessionStorage.getItem('user');
+  const user = localStorage.getItem('user');
   if (!user) return alert('Bạn cần đăng nhập để đánh giá!');
 
   const userData = JSON.parse(user);
@@ -185,7 +185,7 @@ afterReviewSubmit(userId: number): void {
 
 
 deleteReview(reviewId: number): void {
-  const user = sessionStorage.getItem('user');
+  const user = localStorage.getItem('user');
   if (!user) return alert('Bạn chưa đăng nhập!');
   const userId = JSON.parse(user).userId;
 
