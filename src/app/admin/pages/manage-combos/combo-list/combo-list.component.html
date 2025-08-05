@@ -2,13 +2,13 @@
   <div class="flex items-center justify-between mb-4">
     <h1 class="text-2xl font-semibold text-gray-900">Danh sách combo</h1>
     <button (click)="createCombo()"
-      class="inline-flex items-center gap-2 px-4 py-2 -2xl text-white bg-blue-600 hover:bg-blue-700 shadow-md transition duration-150 ease-in-out">
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-white bg-blue-600 hover:bg-blue-700 shadow-md transition duration-150 ease-in-out">
       <i class="fas fa-plus"></i>
       <span>Thêm combo</span>
     </button>
   </div>
 
-  <div class="overflow-x-auto bg-white  shadow">
+  <div class="overflow-x-auto bg-white shadow">
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-gray-50">
         <tr>
@@ -22,16 +22,14 @@
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let combo of combos">
+        <tr *ngFor="let combo of pagedCombos">
           <td class="px-6 py-4 whitespace-nowrap">
             <img [src]="combo.image || 'https://placehold.co/100x100?text=No+Img'" alt="Ảnh combo"
-              class="h-24 w-24  object-cover" />
+              class="h-24 w-24 object-cover" />
           </td>
           <td class="px-6 py-4 font-medium text-gray-900">{{ combo.name }}</td>
           <td class="px-6 py-4 text-gray-500 max-w-xs">
-            <div class="max-h-24 overflow-y-auto">
-              {{ combo.description }}
-            </div>
+            <div class="max-h-24 overflow-y-auto">{{ combo.description }}</div>
           </td>
           <td class="px-6 py-4 text-gray-900">{{ combo.totalPrice | number:'1.0-0' }} VNĐ</td>
           <td class="px-6 py-4 text-green-600 font-semibold">{{ combo.discountPrice | number:'1.0-0' }} VNĐ</td>
@@ -51,5 +49,26 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- PHÂN TRANG -->
+  <div class="flex justify-center pt-6">
+    <nav class="inline-flex -space-x-px text-sm">
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+        class="px-3 py-2 border border-gray-300 bg-white hover:bg-gray-100">«</button>
+
+      <button *ngFor="let page of [].constructor(totalPages); let i = index"
+        (click)="changePage(i + 1)"
+        [ngClass]="{
+          'bg-blue-500 text-white': currentPage === i + 1,
+          'bg-white text-gray-700 hover:bg-gray-100': currentPage !== i + 1
+        }"
+        class="px-3 py-2 border border-gray-300">
+        {{ i + 1 }}
+      </button>
+
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages"
+        class="px-3 py-2 border border-gray-300 bg-white hover:bg-gray-100">»</button>
+    </nav>
   </div>
 </main>

@@ -10,8 +10,12 @@ import { Router } from '@angular/router';
   styleUrl: './order-list.component.css'
 })
 export class OrderListComponent {
-  orders: OrderResponse[] = [];
+   orders: OrderResponse[] = [];
   loading = false;
+
+  currentPage = 1;
+  pageSize = 5;
+  totalPages = 1;
 
   constructor(private orderService: OrderService, private router: Router) { }
 
@@ -19,19 +23,21 @@ export class OrderListComponent {
     this.fetchOrders();
   }
 
-  fetchOrders() {
-    this.loading = true;
-    this.orderService.apiOrderGet$Json().subscribe({
-      next: (res) => {
-        this.orders = res.data || []; // nếu bạn dùng kiểu CustomModel
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Lỗi gọi API order:', err);
-        this.loading = false;
-      }
-    });
-  }
+ fetchOrders() {
+  this.loading = true;
+  this.orderService.apiOrderGet$Json().subscribe({
+    next: (res) => {
+      this.orders = res.data || [];
+      this.totalPages = Math.ceil(this.orders.length / this.pageSize);
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error('Lỗi gọi API order:', err);
+      this.loading = false;
+    }
+  });
+}
+
   goToDetail(order: OrderResponse): void {
     this.router.navigate(['/orders/order-detail', order.orderId]);
     console.log('TODO: Mở form sửa sách', order);
@@ -50,6 +56,18 @@ updateStatus(orderId: number, newStatus: string): void {
       alert('Cập nhật trạng thái thất bại!');
     }
   });
+}
+get paginatedOrders(): OrderResponse[] {
+  const start = (this.currentPage - 1) * this.pageSize;
+  const end = start + this.pageSize;
+  return this.orders.slice(start, end);
+}
+
+changePage(page: number): void {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+    // ❌ Không cần gọi lại fetchOrders() nữa
+  }
 }
 
 

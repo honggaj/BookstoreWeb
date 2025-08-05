@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200" *ngIf="!loading">
-                <tr *ngFor="let order of orders">
+                <tr *ngFor="let order of paginatedOrders">
                     <td class="px-6 py-4 text-gray-900 font-medium">{{ order.orderId }}</td>
                     <td class="px-6 py-4">{{ order.orderDate | date: 'dd/MM/yyyy' }}</td>
                     <td class="px-6 py-4">{{ order.username }}</td>
@@ -88,8 +88,29 @@
                 </tr>
             </tbody>
         </table>
-
         <div *ngIf="loading" class="p-4 text-blue-500">Đang tải dữ liệu đơn hàng...</div>
         <div *ngIf="!loading && orders.length === 0" class="p-4 text-gray-500">Không có đơn hàng nào.</div>
     </div>
+    
+<!-- Pagination -->
+<div class="flex justify-center pt-6" *ngIf="totalPages > 1">
+  <nav class="inline-flex -space-x-px text-sm">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+      class="px-3 py-2 border border-gray-300 bg-white hover:bg-gray-100">«</button>
+
+    <button *ngFor="let page of [].constructor(totalPages); let i = index"
+      (click)="changePage(i + 1)"
+      [ngClass]="{
+        'bg-blue-500 text-white': currentPage === i + 1,
+        'bg-white text-gray-700 hover:bg-gray-100': currentPage !== i + 1
+      }"
+      class="px-3 py-2 border border-gray-300">
+      {{ i + 1 }}
+    </button>
+
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages"
+      class="px-3 py-2 border border-gray-300 bg-white hover:bg-gray-100">»</button>
+  </nav>
+</div>
+
 </main>

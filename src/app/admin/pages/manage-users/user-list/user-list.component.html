@@ -21,7 +21,7 @@
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let user of users">
+        <tr *ngFor="let user of paginatedUsers">
           <td class="px-6 py-4 text-gray-900 font-medium">{{ user.userId }}</td>
           <td class="px-6 py-4 text-gray-500">{{ user.username }}</td>
           <td class="px-6 py-4 text-gray-500">{{ user.email }}</td>
@@ -38,4 +38,25 @@
       </tbody>
     </table>
   </div>
+  <!-- Pagination -->
+<div class="flex justify-center pt-6" *ngIf="totalPages > 1">
+  <nav class="inline-flex -space-x-px text-sm">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+      class="px-3 py-2 border border-gray-300 bg-white hover:bg-gray-100">«</button>
+
+    <button *ngFor="let page of [].constructor(totalPages); let i = index"
+      (click)="changePage(i + 1)"
+      [ngClass]="{
+        'bg-blue-500 text-white': currentPage === i + 1,
+        'bg-white text-gray-700 hover:bg-gray-100': currentPage !== i + 1
+      }"
+      class="px-3 py-2 border border-gray-300">
+      {{ i + 1 }}
+    </button>
+
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages"
+      class="px-3 py-2 border border-gray-300 bg-white hover:bg-gray-100">»</button>
+  </nav>
+</div>
+
 </main>
