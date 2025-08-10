@@ -9,6 +9,7 @@ export type { ChangePasswordRequest } from './models/change-password-request';
 export type { ComboResponse } from './models/combo-response';
 export type { ComboResponseListResultCustomModel } from './models/combo-response-list-result-custom-model';
 export type { ComboResponseResultCustomModel } from './models/combo-response-result-custom-model';
+export type { ContactFormDto } from './models/contact-form-dto';
 export type { DashboardStatsResponse } from './models/dashboard-stats-response';
 export type { FavoriteRequest } from './models/favorite-request';
 export type { FavoriteResponse } from './models/favorite-response';

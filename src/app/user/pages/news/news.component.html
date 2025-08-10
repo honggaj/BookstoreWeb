@@ -1,14 +1,46 @@
-<div class="max-w-6xl mx-auto p-6">
-  <h2 class="text-2xl font-bold mb-6 text-blue-700">Tin tức về sách 📚</h2>
+<div class="p-6 bg-blue-50">
+  <h1 class="text-3xl font-bold text-blue-700 mb-6 text-center">
+    Lợi ích của việc đọc sách & động lực từ người thành công
+  </h1>
 
-  <div *ngIf="newsList.length === 0" class="text-gray-500">Đang tải tin tức...</div>
+  <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <!-- Lợi ích đọc sách -->
+    <div class="bg-white shadow-md border border-blue-100 p-4 hover:shadow-lg transition  overflow-hidden">
+      <img src="https://americastarbooks.com/wp-content/uploads/2018/10/loi-ich-cua-viec-doc-sach-2-1.jpg" 
+           alt="Lợi ích đọc sách" class="w-full h-40 object-cover mb-3">
+      <h2 class="text-xl font-semibold text-blue-600 mb-2">11 lợi ích khi đọc sách</h2>
+      <p class="text-gray-700 text-sm">
+        Theo bài trên America Star Books, lợi ích gồm: giảm stress, cải thiện tâm trạng, tăng vốn từ, tốt cho mắt, thúc
+        đẩy sáng tạo, nuôi dưỡng sự đồng cảm, giữ não hoạt động…
+      </p>
+      <a href="https://americastarbooks.com/2019/11/nhung-loi-ich-tuyet-voi-tu-viec-doc-sach/" target="_blank"
+        class="text-blue-500 hover:underline block mt-2">Xem chi tiết</a>
+    </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let news of newsList" class="border p-4 hover:shadow-md transition">
-      <img *ngIf="news.image" [src]="news.image" alt="img" class="w-full h-40 object-cover mb-3">
-      <h3 class="font-semibold text-lg mb-2">{{ news.title }}</h3>
-      <p class="text-sm text-gray-600 line-clamp-3 mb-3">{{ news.description }}</p>
-      <a [href]="news.url" target="_blank" class="text-blue-500 text-sm hover:underline">Đọc thêm →</a>
+    <!-- Người thành công nhờ đọc sách -->
+    <div class="bg-white shadow-md border border-blue-100 p-4 hover:shadow-lg transition  overflow-hidden">
+      <img src="https://giatricuocsong.org/wp-content/uploads/2021/08/nguoi-thanh-cong.jpg.webp" 
+           alt="Người thành công" class="w-full h-40 object-cover mb-3">
+      <h2 class="text-xl font-semibold text-blue-600 mb-2">Người thành công nhờ đọc sách</h2>
+      <p class="text-gray-700 text-sm">
+        Giatricuocsong chia sẻ nhiều tấm gương thành công nhờ đọc sách — họ không chỉ học mà còn thay đổi tư duy và hành
+        động từ ấy.
+      </p>
+      <a href="https://giatricuocsong.org/nhung-nguoi-thanh-cong-nho-doc-sach/" target="_blank"
+        class="text-blue-500 hover:underline block mt-2">Xem chi tiết</a>
+    </div>
+
+    <!-- Bí quyết của ông Hoàng Nam Tiến -->
+    <div class="bg-white shadow-md border border-blue-100 p-4 hover:shadow-lg transition  overflow-hidden">
+      <img src="https://www.vietnamworks.com/hrinsider/wp-content/uploads/2024/08/HRINSIDER_-Mentor-sharing-1200_900-3.jpg" 
+           alt="Bí quyết đọc sách" class="w-full h-40 object-cover mb-3">
+      <h2 class="text-xl font-semibold text-blue-600 mb-2">Bí quyết đọc nhanh từ Hoàng Nam Tiến</h2>
+      <p class="text-gray-700 text-sm">
+        Theo VietnamWorks, ông Hoàng Nam Tiến khuyên dùng AI để đọc nhanh dành cho người “lười đọc” — tối ưu thời gian,
+        vẫn thu nhận kiến thức hiệu quả.
+      </p>
+      <a href="https://www.vietnamworks.com/hrinsider/ong-hoang-nam-tien-bi-quyet-doc-nhanh-cung-ai-danh-cho-nguoi-luoi-doc-sach.html"
+        target="_blank" class="text-blue-500 hover:underline block mt-2">Xem chi tiết</a>
     </div>
   </div>
 </div>

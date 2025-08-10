@@ -66,7 +66,7 @@ import { FooterComponent } from './components/footer/footer.component';
     AuthModule,
     FormsModule,
     ReactiveFormsModule,
-        PaginatorModule
+      PaginatorModule
 
 
 

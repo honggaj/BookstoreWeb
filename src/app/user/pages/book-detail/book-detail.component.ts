@@ -18,7 +18,7 @@ export class BookDetailComponent implements OnInit {
   isEditing = false;
   currentUserId: number | null = null;
 
-editingReviewId: number | null = null;
+  editingReviewId: number | null = null;
 
   loading = false;
   randomBooks: BookResponse[] = [];
@@ -34,23 +34,23 @@ editingReviewId: number | null = null;
     private route: ActivatedRoute,
     private bookService: BookService,
     private reviewService: ReviewService,
-     private location: Location, // 👈 thêm nè
+    private location: Location, // 👈 thêm nè
     private router: Router) { }
 
   ngOnInit(): void {
-  this.route.params.subscribe(params => {
-    const id = +params['id'];
-    if (id) {
-      this.getBookDetail(id);
-    }
-  });
+    this.route.params.subscribe(params => {
+      const id = +params['id'];
+      if (id) {
+        this.getBookDetail(id);
+      }
+    });
 
-  this.loadBooks();
+    this.loadBooks();
 
-  // 🔐 Gán userId hiện tại từ localStorage
-  const user = localStorage.getItem('user');
-  this.currentUserId = user ? JSON.parse(user).userId : null;
-}
+    // 🔐 Gán userId hiện tại từ localStorage
+    const user = localStorage.getItem('user');
+    this.currentUserId = user ? JSON.parse(user).userId : null;
+  }
 
   loadReviews(): void {
     if (!this.book?.bookId) return;
@@ -63,7 +63,7 @@ editingReviewId: number | null = null;
       }
     });
   }
-   getBookDetail(id: number): void {
+  getBookDetail(id: number): void {
     this.loading = true;
     this.bookService.apiBookIdGet$Json({ id }).subscribe({
       next: (res) => {
@@ -77,9 +77,9 @@ editingReviewId: number | null = null;
       }
     });
   }
-goBack(): void {
-  this.location.back();
-}
+  goBack(): void {
+    this.location.back();
+  }
 
 
   loadBooks(): void {
@@ -105,8 +105,8 @@ goBack(): void {
     this.router.navigate(['/user/book-detail', bookId]);
   }
 
-  goHome(): void {
-    this.router.navigate(['/user/home']);
+  goToStore(): void {
+    this.router.navigate(['/user/store']);
   }
   // ...existing code...
   addToCart(): void {
@@ -121,86 +121,86 @@ goBack(): void {
     localStorage.setItem(cartKey, JSON.stringify(cart));
     alert('🛒 Đã thêm vào giỏ hàng!');
   }
- submitReview(): void {
-  const user = localStorage.getItem('user');
-  if (!user) return alert('Bạn cần đăng nhập để đánh giá!');
+  submitReview(): void {
+    const user = localStorage.getItem('user');
+    if (!user) return alert('Bạn cần đăng nhập để đánh giá!');
 
-  const userData = JSON.parse(user);
-  if (!userData.userId || !this.book) return alert('Thiếu thông tin người dùng hoặc sách!');
+    const userData = JSON.parse(user);
+    if (!userData.userId || !this.book) return alert('Thiếu thông tin người dùng hoặc sách!');
 
-  const review: ReviewRequest = {
-    bookId: this.book.bookId,
-    userId: userData.userId,
-    comment: this.review.comment ?? '',
-    rating: this.review.rating ?? 0
-  };
+    const review: ReviewRequest = {
+      bookId: this.book.bookId,
+      userId: userData.userId,
+      comment: this.review.comment ?? '',
+      rating: this.review.rating ?? 0
+    };
 
-  if (this.isEditing && this.editingReviewId) {
-    // 👉 Cập nhật
-    this.reviewService.apiReviewUpdateIdPut$Json({
-      id: this.editingReviewId,
-      body: review
-    }).subscribe({
+    if (this.isEditing && this.editingReviewId) {
+      // 👉 Cập nhật
+      this.reviewService.apiReviewUpdateIdPut$Json({
+        id: this.editingReviewId,
+        body: review
+      }).subscribe({
+        next: () => {
+          alert('🛠️ Đã cập nhật đánh giá!');
+          this.afterReviewSubmit(userData.userId);
+        },
+        error: (err) => {
+          console.error('Lỗi update:', err);
+          alert('❌ Cập nhật thất bại!');
+        }
+      });
+    } else {
+      // 👉 Tạo mới
+      this.reviewService.apiReviewCreatePost$Json({ body: review }).subscribe({
+        next: () => {
+          alert('✅ Đánh giá đã được gửi!');
+          this.afterReviewSubmit(userData.userId);
+        },
+        error: (err) => {
+          console.error('Lỗi tạo review:', err);
+          alert('❌ Gửi đánh giá thất bại!');
+        }
+      });
+    }
+  }
+
+  editReview(r: any): void {
+    this.isEditing = true;
+    this.editingReviewId = r.reviewId;
+    this.review.comment = r.comment;
+    this.review.rating = r.rating;
+  }
+  afterReviewSubmit(userId: number): void {
+    this.review = {
+      bookId: this.book?.bookId,
+      userId: userId,
+      comment: '',
+      rating: 0
+    };
+    this.editingReviewId = null;
+    this.isEditing = false;
+    this.loadReviews();
+  }
+
+
+  deleteReview(reviewId: number): void {
+    const user = localStorage.getItem('user');
+    if (!user) return alert('Bạn chưa đăng nhập!');
+    const userId = JSON.parse(user).userId;
+
+    if (!confirm('Bạn chắc chắn muốn xóa đánh giá này?')) return;
+
+    this.reviewService.apiReviewDeleteIdDelete$Json({ id: reviewId, userId }).subscribe({
       next: () => {
-        alert('🛠️ Đã cập nhật đánh giá!');
-        this.afterReviewSubmit(userData.userId);
+        alert('🗑️ Đã xóa đánh giá!');
+        this.loadReviews();
       },
       error: (err) => {
-        console.error('Lỗi update:', err);
-        alert('❌ Cập nhật thất bại!');
-      }
-    });
-  } else {
-    // 👉 Tạo mới
-    this.reviewService.apiReviewCreatePost$Json({ body: review }).subscribe({
-      next: () => {
-        alert('✅ Đánh giá đã được gửi!');
-        this.afterReviewSubmit(userData.userId);
-      },
-      error: (err) => {
-        console.error('Lỗi tạo review:', err);
-        alert('❌ Gửi đánh giá thất bại!');
+        console.error('Lỗi khi xóa:', err);
+        alert('❌ Không thể xóa đánh giá!');
       }
     });
   }
-}
-
-  editReview(r: any): void {
-  this.isEditing = true;
-  this.editingReviewId = r.reviewId;
-  this.review.comment = r.comment;
-  this.review.rating = r.rating;
-}
-afterReviewSubmit(userId: number): void {
-  this.review = {
-    bookId: this.book?.bookId,
-    userId: userId,
-    comment: '',
-    rating: 0
-  };
-  this.editingReviewId = null;
-  this.isEditing = false;
-  this.loadReviews();
-}
-
-
-deleteReview(reviewId: number): void {
-  const user = localStorage.getItem('user');
-  if (!user) return alert('Bạn chưa đăng nhập!');
-  const userId = JSON.parse(user).userId;
-
-  if (!confirm('Bạn chắc chắn muốn xóa đánh giá này?')) return;
-
-  this.reviewService.apiReviewDeleteIdDelete$Json({ id: reviewId, userId }).subscribe({
-    next: () => {
-      alert('🗑️ Đã xóa đánh giá!');
-      this.loadReviews();
-    },
-    error: (err) => {
-      console.error('Lỗi khi xóa:', err);
-      alert('❌ Không thể xóa đánh giá!');
-    }
-  });
-}
 
 }

@@ -43,6 +43,8 @@ import { apiBookLatestGet$Json } from '../fn/book/api-book-latest-get-json';
 import { ApiBookLatestGet$Json$Params } from '../fn/book/api-book-latest-get-json';
 import { apiBookLatestGet$Plain } from '../fn/book/api-book-latest-get-plain';
 import { ApiBookLatestGet$Plain$Params } from '../fn/book/api-book-latest-get-plain';
+import { apiBookPingGet } from '../fn/book/api-book-ping-get';
+import { ApiBookPingGet$Params } from '../fn/book/api-book-ping-get';
 import { apiBookSearchGet$Json } from '../fn/book/api-book-search-get-json';
 import { ApiBookSearchGet$Json$Params } from '../fn/book/api-book-search-get-json';
 import { apiBookSearchGet$Plain } from '../fn/book/api-book-search-get-plain';
@@ -63,6 +65,31 @@ import { ObjectResultCustomModel } from '../models/object-result-custom-model';
 export class BookService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `apiBookPingGet()` */
+  static readonly ApiBookPingGetPath = '/api/Book/ping';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiBookPingGet()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookPingGet$Response(params?: ApiBookPingGet$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiBookPingGet(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiBookPingGet$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiBookPingGet(params?: ApiBookPingGet$Params, context?: HttpContext): Observable<void> {
+    return this.apiBookPingGet$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
   }
 
   /** Path part for operation `apiBookGet()` */

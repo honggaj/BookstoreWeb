@@ -1,112 +1,143 @@
-<!-- Wrapper Layout -->
+<!-- store.component.html -->
 <div class="bg-[#F4F6FA] min-h-screen flex justify-center p-6">
   <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-4 gap-6">
 
     <!-- LEFT: Thể loại sách -->
-    <aside class="md:col-span-1 bg-white -2xl shadow p-6 border border-gray-100 h-fit">
+    <aside class="md:col-span-1 bg-white shadow p-6 border border-gray-100 h-fit md:sticky md:top-6">
+      <!-- Tiêu đề cố định -->
       <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
         <i class="fas fa-tags text-blue-600 mr-2"></i> Danh mục sách
       </h2>
-      <ul class="space-y-3">
-        <li *ngFor="let genre of genres" (click)="loadBooksByGenre(genre.genreId)"
-          class="cursor-pointer px-3 py-2 -lg hover:bg-blue-50 hover:text-blue-700 text-gray-700 font-medium transition-all">
-          <i class="fas fa-book mr-2 text-sm text-blue-500"></i> {{ genre.name }}
-        </li>
-      </ul>
+      <!-- List scroll ngang ở mobile -->
+      <div class="overflow-x-auto md:overflow-visible whitespace-nowrap">
+        <ul class="flex md:flex-col space-x-3 md:space-x-0 md:space-y-3">
+          <ng-container *ngIf="loading">
+            <li *ngFor="let i of [1,2,3,4,5,6]" class="px-3 py-2 bg-gray-200 animate-pulse w-full h-8"></li>
+          </ng-container>
+          <li *ngFor="let genre of genres" (click)="selectGenre(genre.genreId)" [ngClass]="{
+              'bg-blue-50 text-blue-700 scale-95': selectedGenreId === genre.genreId
+            }" class="cursor-pointer px-3 py-2 hover:bg-blue-50 hover:text-blue-700 
+                    text-gray-700 font-medium transition-all duration-200 active:scale-95 inline-block">
+            <i class="fas fa-book mr-2 text-sm text-blue-500"></i> {{ genre.name }}
+          </li>
+        </ul>
+      </div>
     </aside>
 
     <!-- RIGHT: Sản phẩm & Search -->
     <section class="md:col-span-3 space-y-6">
 
       <!-- Advanced Search -->
-    <div>
-  <form (ngSubmit)="searchAdvanced()" class="bg-white -2xl shadow p-6 border border-gray-100">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-      <input [(ngModel)]="searchTitle" name="title" type="text" placeholder="Tiêu đề sách"
-        class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-3 text-sm placeholder-gray-400" />
+      <div>
+        <form (ngSubmit)="searchBooks()" class="bg-white shadow p-6 border border-gray-100">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <input [(ngModel)]="searchTitle" name="title" type="text" placeholder="Tiêu đề sách"
+              class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-3 text-sm placeholder-gray-400" />
 
-      <input [(ngModel)]="searchAuthor" name="author" type="text" placeholder="Tên tác giả"
-        class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-3 text-sm placeholder-gray-400" />
+            <input [(ngModel)]="searchAuthor" name="author" type="text" placeholder="Tên tác giả"
+              class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-3 text-sm placeholder-gray-400" />
 
-      <input [(ngModel)]="searchMinPrice" name="minPrice" type="number" placeholder="Giá từ"
-        class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-3 text-sm placeholder-gray-400" />
+            <input [(ngModel)]="searchMinPrice" name="minPrice" type="number" placeholder="Giá từ"
+              class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-3 text-sm placeholder-gray-400" />
 
-      <input [(ngModel)]="searchMaxPrice" name="maxPrice" type="number" placeholder="Giá đến"
-        class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-3 text-sm placeholder-gray-400" />
+            <input [(ngModel)]="searchMaxPrice" name="maxPrice" type="number" placeholder="Giá đến"
+              class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-3 text-sm placeholder-gray-400" />
 
-      <button type="submit"
-        class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-4 py-3 hover:shadow-lg hover:scale-105 transition">
-        <i class="fas fa-search mr-1"></i> Tìm kiếm
-      </button>
-    </div>
-  </form>
-</div>
+            <button type="submit"
+              class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-4 py-3 hover:shadow-lg hover:scale-105 transition">
+              <i class="fas fa-search mr-1"></i> Tìm kiếm
+            </button>
+          </div>
+        </form>
+      </div>
 
       <a href="/combo">
-        <img src="assets/images/sale-1.png" alt="Mua combo sách giảm 20%"
-          class="rounded shadow border border-yellow-300 hover:opacity-90 transition" />
+        <img src="assets/images/sale-1.png" alt="Mua combo sách giảm 20%" class="shadow" />
       </a>
 
+      <!-- Skeleton Loading -->
+      <section *ngIf="loading"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6 justify-center pt-4 items-stretch">
+        <div *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8]"
+          class="bg-white border border-gray-200 p-4 flex flex-col text-center shadow-sm h-full animate-pulse">
+          <div class="flex justify-between items-center w-full mb-2">
+            <div class="w-1/4 h-4 bg-gray-200"></div>
+            <div class="w-6 h-6 bg-gray-200"></div>
+          </div>
+          <div class="w-full h-36 bg-gray-200 mb-3"></div>
+          <div class="w-full h-4 bg-gray-200 mb-2"></div>
+          <div class="flex items-center justify-center mb-1 space-x-1">
+            <div class="w-12 h-3 bg-gray-200"></div>
+            <div class="w-8 h-3 bg-gray-200"></div>
+          </div>
+          <div class="w-3/4 h-3 bg-gray-200 mx-auto mb-1"></div>
+          <div class="w-1/2 h-4 bg-gray-200 mx-auto mb-3"></div>
+          <div class="flex justify-center items-center space-x-2 mt-auto pt-3">
+            <div class="w-1/2 h-8 bg-gray-200"></div>
+            <div class="w-1/2 h-8 bg-gray-200"></div>
+          </div>
+        </div>
+      </section>
 
-      <!-- Sách hiển thị - section dạng grid -->
-      <section
+      <!-- Nội dung sách -->
+      <section *ngIf="!loading && hasBooks"
         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6 justify-center pt-4 items-stretch">
         <div *ngFor="let book of pagedBooks"
-          class="bg-white border border-gray-200  p-4 flex flex-col text-center shadow-sm h-full transition hover:shadow-md hover:-translate-y-1">
+          class="bg-white border border-gray-200 p-4 flex flex-col text-center shadow-sm h-full transition hover:shadow-md hover:-translate-y-1">
 
-         <!-- Top bar: Rating + Favorite -->
-      <div class="flex justify-between items-center w-full mb-2">
-        <!-- ⭐ Rating -->
-        <div class="text-sm text-yellow-500 font-semibold">
-          <span *ngIf="book.averageRating != null; else noRating">
-            ⭐ {{ book.averageRating | number:'1.1-1' }}
-          </span>
-          <ng-template #noRating>
-            ⭐ 0 đánh giá
-          </ng-template>
-        </div>
+          <div class="flex justify-between items-center w-full mb-2">
+            <div class="text-sm text-yellow-500 font-semibold">
+              <span *ngIf="book.averageRating != null; else noRating">
+                ⭐ {{ book.averageRating | number:'1.1-1' }}
+              </span>
+              <ng-template #noRating>
+                ⭐ 0 đánh giá
+              </ng-template>
+            </div>
 
-        <!-- ❤️ Tim -->
-        <button (click)="toggleFavorite(book)" class="text-red-500 text-lg">
-          <i [ngClass]="favoriteBookIds.includes(book.bookId!) ? 'fas fa-heart' : 'far fa-heart'"></i>
-        </button>
-      </div>
-          <!-- Ảnh sách -->
-          <img [src]="book.coverImageUrl" alt="Book Image" class="w-full h-36 object-contain mb-3" />
+            <button (click)="toggleFavorite(book)" class="text-red-500 text-lg">
+              <i [ngClass]="favoriteBookIds.includes(book.bookId!) ? 'fas fa-heart' : 'far fa-heart'"></i>
+            </button>
+          </div>
 
-          <!-- Tiêu đề -->
+          <img [src]="book.coverImageUrl" [alt]="'Bìa sách ' + book.title" loading="lazy" class="w-full h-36 object-contain mb-3" />
+
           <h3 class="text-sm font-semibold text-gray-900 line-clamp-2">{{ book.title || 'Chưa có tiêu đề' }}</h3>
 
-          <!-- Đánh giá -->
           <div class="flex items-center justify-center text-yellow-400 text-xs mb-1">
             <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
             <i class="far fa-star"></i><i class="far fa-star"></i>
             <span class="ml-1 text-gray-400">(2)</span>
           </div>
 
-          <!-- Tác giả -->
           <p class="text-xs text-gray-500 mb-1">Tác giả: {{ book.author || 'Không rõ' }}</p>
 
-          <!-- Giá -->
           <p class="text-blue-600 font-bold text-sm mb-3">
             {{ book.price ? ((book.price | number : '1.0-0')) + ' VNĐ' : 'Liên hệ' }}
           </p>
 
-          <!-- Nút hành động -->
           <div class="flex justify-center items-center space-x-2 mt-auto pt-3">
             <button (click)="addToCart(book)"
-              class="bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1  hover:bg-blue-200">
+              class="bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 hover:bg-blue-200">
               <i class="fas fa-cart-plus mr-1"></i> Thêm
             </button>
-            <button (click)="goToDetail(book.bookId!)"
-              class="bg-gray-100 text-gray-700 text-xs font-semibold px-3 py-1  hover:bg-gray-200">
+            <button (click)="viewBookDetail(book.bookId!)"
+              class="bg-gray-100 text-gray-700 text-xs font-semibold px-3 py-1 hover:bg-gray-200">
               <i class="fas fa-eye mr-1"></i> Xem
             </button>
           </div>
         </div>
       </section>
-      <!-- PHÂN TRANG -->
-      <div class="flex justify-center pt-6">
+
+      <div *ngIf="!loading && !hasBooks" class="bg-white shadow p-8 text-center border border-gray-100">
+        <div class="flex flex-col items-center justify-center text-gray-500">
+          <i class="fas fa-book-open fa-3x mb-4"></i>
+          <p class="text-xl font-semibold mb-2">Oops! Không tìm thấy sách nào.</p>
+          <p class="text-sm">Hãy thử tìm kiếm với các từ khóa khác hoặc duyệt qua các danh mục.</p>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && hasBooks" class="flex justify-center pt-6">
         <nav class="inline-flex -space-x-px text-sm">
           <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
             class="px-3 py-2 border border-gray-300 bg-white hover:bg-gray-100">«</button>
@@ -122,7 +153,6 @@
             class="px-3 py-2 border border-gray-300 bg-white hover:bg-gray-100">»</button>
         </nav>
       </div>
-
 
     </section>
   </div>

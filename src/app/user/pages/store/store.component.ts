@@ -1,31 +1,32 @@
-import { Component } from '@angular/core';
-import { BookService, FavoriteService, GenreService } from '../../../api/services';
+// store.component.ts
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BookService, FavoriteService, GenreService } from '../../../api/services';
 import { BookResponse, FavoriteRequest } from '../../../api/models';
 
 @Component({
   selector: 'app-store',
   standalone: false,
   templateUrl: './store.component.html',
-  styleUrl: './store.component.css'
+  styleUrls: ['./store.component.css']
 })
-export class StoreComponent {
+export class StoreComponent implements OnInit {
   books: BookResponse[] = [];
   pagedBooks: BookResponse[] = [];
   genres: any[] = [];
   favoriteBookIds: number[] = [];
-  loading = false;
+  selectedGenreId: number | null = null;
 
-  // 🔍 Tìm kiếm nâng cao
-  searchTitle: string = '';
-  searchAuthor: string = '';
+  searchTitle = '';
+  searchAuthor = '';
   searchMinPrice?: number;
   searchMaxPrice?: number;
 
-  // 📄 Phân trang
-  currentPage: number = 1;
-  pageSize: number = 8;
-  totalPages: number = 1;
+  currentPage = 1;
+  pageSize = 8;
+  totalPages = 1;
+  loading = false; // Thêm biến trạng thái loading
+  hasBooks = false; // Thêm biến trạng thái để kiểm tra sách
 
   constructor(
     private bookService: BookService,
@@ -35,164 +36,141 @@ export class StoreComponent {
   ) {}
 
   ngOnInit(): void {
-    this.loadBooks();
-    this.loadGenres();
-    this.loadFavorites();
+    this.getBooks();
+    this.getGenres();
+    this.getFavoriteBooks();
   }
 
-  loadBooks(): void {
+  /** Lấy toàn bộ sách */
+  private getBooks(): void {
     this.loading = true;
     this.bookService.apiBookGet$Json().subscribe({
-      next: (res) => {
-        this.books = res.data ?? [];
-        this.updatePagedBooks();
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Lỗi khi lấy sách:', err);
-        this.loading = false;
-      }
+      next: res => this.setBooks(res.data ?? []),
+      error: err => this.handleError('Lỗi khi lấy sách', err)
     });
   }
 
-  loadGenres(): void {
+  /** Lấy sách theo thể loại */
+  selectGenre(id: number): void {
+    this.selectedGenreId = id;
+    this.loading = true;
+    this.bookService.apiBookByGenreGenreIdGet$Json({ genreId: id }).subscribe({
+      next: res => this.setBooks(res.data ??[]),
+      error: err => this.handleError('Lỗi khi lấy sách theo thể loại', err)
+    });
+  }
+
+  /** Lấy thể loại */
+  private getGenres(): void {
     this.genreService.apiGenreGet$Json().subscribe({
-      next: (res: any) => {
-        this.genres = res.data || [];
-      },
+      next: res => this.genres = res.data || [],
       error: err => console.error('Lỗi khi load thể loại:', err)
     });
   }
 
-  loadFavorites(): void {
-    const userStr = localStorage.getItem('user');
-    const user = userStr ? JSON.parse(userStr) : null;
+  /** Lấy sách yêu thích của user */
+  private getFavoriteBooks(): void {
+    const user = this.getUser();
     if (!user) return;
 
     this.favoriteService.apiFavoriteUserUserIdGet$Json({ userId: user.userId }).subscribe({
-      next: res => {
-        this.favoriteBookIds = (res.data ?? [])
-          .map(f => f.bookId)
-          .filter((id): id is number => id !== undefined);
-      },
-      error: err => console.error('Lỗi load yêu thích:', err)
+      next: res => this.favoriteBookIds = (res.data ?? []).map(f => f.bookId!).filter(Boolean),
+      error: err => console.error('Lỗi khi load yêu thích:', err)
     });
   }
 
-  loadBooksByGenre(genreId: number): void {
+  /** Tìm kiếm nâng cao */
+  searchBooks(): void {
     this.loading = true;
-    this.bookService.apiBookByGenreGenreIdGet$Json({ genreId }).subscribe({
-      next: (res) => {
-        this.books = res.data ?? [];
-        this.currentPage = 1;
-        this.updatePagedBooks();
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Lỗi khi lấy sách theo thể loại:', err);
-        this.loading = false;
-      }
-    });
-  }
-
-  searchAdvanced(): void {
-    this.loading = true;
-    const keywordParts = [];
-    if (this.searchTitle) keywordParts.push(this.searchTitle);
-    if (this.searchAuthor) keywordParts.push(this.searchAuthor);
+    const keyword = [this.searchTitle, this.searchAuthor].filter(Boolean).join(' ');
 
     this.bookService.apiBookAdvancedSearchGet$Json({
-      keyword: keywordParts.join(' '),
+      keyword,
       minPrice: this.searchMinPrice,
       maxPrice: this.searchMaxPrice
     }).subscribe({
-      next: res => {
-        this.books = res.data ?? [];
-        this.currentPage = 1;
-        this.updatePagedBooks();
-        this.loading = false;
-      },
-      error: err => {
-        console.error('Lỗi tìm kiếm nâng cao:', err);
-        this.loading = false;
-      }
+      next: res => this.setBooks(res.data ?? []),
+      error: err => this.handleError('Lỗi tìm kiếm nâng cao', err)
     });
   }
 
-  // ❤️ Yêu thích
+  /** Thêm/Xoá yêu thích */
   toggleFavorite(book: BookResponse): void {
-    const userStr = localStorage.getItem('user');
-    const user = userStr ? JSON.parse(userStr) : null;
-    if (!user) {
-      alert('Bạn cần đăng nhập để yêu thích!');
-      return;
-    }
+    const user = this.getUser();
+    if (!user) return alert('Bạn cần đăng nhập để yêu thích!');
 
     const bookId = book.bookId!;
-    if (this.favoriteBookIds.includes(bookId)) {
-      this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({ userId: user.userId, bookId }).subscribe({
-        next: () => {
-          this.favoriteBookIds = this.favoriteBookIds.filter(id => id !== bookId);
-          alert('❌ Đã xoá khỏi yêu thích');
-        },
-        error: () => alert('Lỗi khi xoá khỏi yêu thích')
-      });
-    } else {
-      const request: FavoriteRequest = { userId: user.userId, bookId };
-      this.favoriteService.apiFavoriteAddPost$Json({ body: request }).subscribe({
-        next: res => {
-          if (res.success) {
-            this.favoriteBookIds.push(bookId);
-            alert('❤️ Đã thêm vào yêu thích!');
-          } else {
-            alert(res.message);
-          }
-        },
-        error: err => {
-          console.error('Lỗi thêm yêu thích:', err);
-          alert('❌ Lỗi khi thêm vào yêu thích!');
-        }
-      });
-    }
+    const isFav = this.favoriteBookIds.includes(bookId);
+
+    const action$ = isFav
+      ? this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({ userId: user.userId, bookId })
+      : this.favoriteService.apiFavoriteAddPost$Json({ body: { userId: user.userId, bookId } });
+
+    action$.subscribe({
+      next: () => {
+        this.favoriteBookIds = isFav
+          ? this.favoriteBookIds.filter(id => id !== bookId)
+          : [...this.favoriteBookIds, bookId];
+        alert(isFav ? '❌ Đã xoá khỏi yêu thích' : '❤️ Đã thêm vào yêu thích!');
+      },
+      error: () => alert('Lỗi khi cập nhật yêu thích')
+    });
   }
 
-  // 🔎 Chi tiết
-  goToDetail(bookId: number): void {
+  /** Xem chi tiết sách */
+  viewBookDetail(bookId: number): void {
     this.router.navigate(['/user/book-detail', bookId]);
   }
 
-  // 🛒 Giỏ hàng
+  /** Thêm vào giỏ hàng */
   addToCart(book: BookResponse): void {
-    const user = localStorage.getItem('user');
-    const username = user ? JSON.parse(user).username : null;
-    const cartKey = username ? `cart_${username}` : 'cart_guest';
-
+    const user = this.getUser();
+    const cartKey = user ? `cart_${user.username}` : 'cart_guest';
     const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+
     const existing = cart.find((item: any) => item.bookId === book.bookId);
-    if (existing) {
-      existing.quantity = (existing.quantity ?? 1) + 1;
-    } else {
-      cart.push({ ...book, quantity: 1 });
-    }
+    existing ? existing.quantity++ : cart.push({ ...book, quantity: 1 });
 
     localStorage.setItem(cartKey, JSON.stringify(cart));
     window.dispatchEvent(new Event('storage'));
     alert('🛒 Đã thêm vào giỏ hàng!');
   }
 
-  // 📄 Phân trang
-  updatePagedBooks(): void {
+  /** Phân trang */
+  changePage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.updatePagedBooks();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /** Cập nhật sách hiển thị theo trang */
+  private updatePagedBooks(): void {
     const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.pagedBooks = this.books.slice(start, end);
+    this.pagedBooks = this.books.slice(start, start + this.pageSize);
     this.totalPages = Math.ceil(this.books.length / this.pageSize);
   }
 
-  changePage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePagedBooks();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  /** Set danh sách sách & cập nhật phân trang */
+  private setBooks(data: BookResponse[] | undefined): void {
+    this.books = data ?? [];
+    this.currentPage = 1;
+    this.updatePagedBooks();
+    this.loading = false;
+    // Cập nhật trạng thái khi sách có/không có
+    this.hasBooks = this.books.length > 0;
+  }
+
+  /** Lấy thông tin user từ localStorage */
+  private getUser() {
+    const str = localStorage.getItem('user');
+    return str ? JSON.parse(str) : null;
+  }
+
+  /** Xử lý lỗi chung */
+  private handleError(msg: string, err: any): void {
+    console.error(msg, err);
+    this.loading = false;
+    this.hasBooks = false;
   }
 }

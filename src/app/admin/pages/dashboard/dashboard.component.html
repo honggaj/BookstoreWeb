@@ -1,65 +1,71 @@
 <div class="flex min-h-screen">
-  <!-- Sidebar -->
-  <app-sidebar *ngIf="isSidebarOpen"></app-sidebar>
+  <!-- Sidebar - Fixed position -->
+  <aside 
+    *ngIf="isSidebarOpen" 
+    class="fixed left-0 top-0 w-64 bg-white border-r border-gray-200 flex flex-col justify-between h-screen overflow-y-auto z-10"
+  >
+   <app-sidebar></app-sidebar>
+  </aside>
 
-  <!-- Main content -->
-  <main class="flex-1 flex flex-col">
-    <!-- Top bar -->
-    <header class="flex items-center justify-between border-b border-gray-200 px-6 py-3">
+  <!-- Main content với margin left để tránh sidebar -->
+  <main 
+    class="flex-1 flex flex-col min-h-screen overflow-y-auto"
+    [ngClass]="{'ml-64': isSidebarOpen, 'ml-0': !isSidebarOpen}"
+  >
+    <header class="flex items-center justify-between border-b border-gray-200 px-6 py-3 bg-white sticky top-0 z-5">
       <div class="flex items-center gap-6">
-        <button aria-label="Menu" class="text-gray-600 hover:text-gray-900 focus:outline-none"
-          (click)="toggleSidebar()">
+        <button
+          aria-label="Menu"
+          class="text-gray-600 hover:text-gray-900 focus:outline-none"
+          (click)="toggleSidebar()"
+        >
           <i class="fas fa-bars"></i>
         </button>
 
         <div class="relative">
           <input
-            class="border border-gray-300  text-xs py-1.5 pl-3 pr-10 w-48 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Ctrl + K" type="search" />
-          <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+            class="border border-gray-300 text-xs py-1.5 pl-3 pr-10 w-48 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Ctrl + K"
+            type="search"
+          />
+          <i
+            class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"
+          >
           </i>
         </div>
-       <button
-  routerLink="/user/home"
-  class="bg-blue-500 text-white px-6 py-2  shadow-md transition-all duration-200 hover:bg-blue-600 active:scale-95 cursor-pointer"
->
-  Xem web
-</button>
+        <button
+          routerLink="/user/home"
+          class="bg-blue-500 text-white px-6 py-2 shadow-md transition-all duration-200 hover:bg-blue-600 active:scale-95 cursor-pointer"
+        >
+          Xem web
+        </button>
       </div>
       <div class="flex items-center gap-6">
-        <!-- <button aria-label="GitHub" class="text-gray-600 hover:text-gray-900 focus:outline-none">
-          <i class="fab fa-github text-lg">
-          </i>
-        </button>
-        <button aria-label="Notifications" class="relative text-gray-600 hover:text-gray-900 focus:outline-none">
-          <i class="fas fa-bell text-lg">
-          </i>
-          <span
-            class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-semibold -full w-4 h-4 flex items-center justify-center">
-            3
-          </span>
-        </button> -->
         <div class="flex items-center gap-2 cursor-pointer select-none">
-          <img alt="User avatar with short brown hair and light skin tone" class="-full w-8 h-8" height="32"
-            src="assets/images/avt.jpg" width="32" />
+          <img
+            alt="User avatar with short brown hair and light skin tone"
+            class="rounded-full w-8 h-8"
+            height="32"
+            src="assets/images/avt.jpg"
+            width="32"
+          />
           <span class="text-sm font-semibold text-gray-900">
             {{ username }}
           </span>
-
         </div>
       </div>
     </header>
-    <!-- Dashboard cards -->
+    
     <section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-gray-50">
-
-      <!-- Total Users -->
-      <div class="bg-white  p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
+      <div class="bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
         <p class="text-xs text-gray-500 mb-1 select-none">Total Users</p>
         <div class="flex items-center gap-2">
           <p class="font-extrabold text-lg text-gray-900 select-text">
             {{ stats.totalUsers | number: '1.0-0' }}
           </p>
-          <div class="text-xs text-blue-600 bg-blue-100  px-2 py-0.5 select-text flex items-center gap-1">
+          <div
+            class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 select-text flex items-center gap-1"
+          >
             <i class="fas fa-user-friends"></i>
             +10%
           </div>
@@ -67,14 +73,15 @@
         <p class="text-xs text-gray-500 mt-1 select-text">Tài khoản người dùng</p>
       </div>
 
-      <!-- Total Books -->
-      <div class="bg-white  p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
+      <div class="bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
         <p class="text-xs text-gray-500 mb-1 select-none">Total Books</p>
         <div class="flex items-center gap-2">
           <p class="font-extrabold text-lg text-gray-900 select-text">
             {{ stats.totalBooks | number: '1.0-0' }}
           </p>
-          <div class="text-xs text-green-600 bg-green-100  px-2 py-0.5 select-text flex items-center gap-1">
+          <div
+            class="text-xs text-green-600 bg-green-100 px-2 py-0.5 select-text flex items-center gap-1"
+          >
             <i class="fas fa-book"></i>
             +12%
           </div>
@@ -82,14 +89,15 @@
         <p class="text-xs text-gray-500 mt-1 select-text">Sách đang bán</p>
       </div>
 
-      <!-- Total Combos -->
-      <div class="bg-white  p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
+      <div class="bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
         <p class="text-xs text-gray-500 mb-1 select-none">Total Combos</p>
         <div class="flex items-center gap-2">
           <p class="font-extrabold text-lg text-gray-900 select-text">
             {{ stats.totalCombos | number: '1.0-0' }}
           </p>
-          <div class="text-xs text-pink-600 bg-pink-100  px-2 py-0.5 select-text flex items-center gap-1">
+          <div
+            class="text-xs text-pink-600 bg-pink-100 px-2 py-0.5 select-text flex items-center gap-1"
+          >
             <i class="fas fa-gift"></i>
             +5%
           </div>
@@ -97,14 +105,15 @@
         <p class="text-xs text-gray-500 mt-1 select-text">Combo ưu đãi</p>
       </div>
 
-      <!-- Total Orders -->
-      <div class="bg-white  p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
+      <div class="bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
         <p class="text-xs text-gray-500 mb-1 select-none">Total Orders</p>
         <div class="flex items-center gap-2">
           <p class="font-extrabold text-lg text-gray-900 select-text">
             {{ stats.totalOrders | number: '1.0-0' }}
           </p>
-          <div class="text-xs text-yellow-600 bg-yellow-100  px-2 py-0.5 select-text flex items-center gap-1">
+          <div
+            class="text-xs text-yellow-600 bg-yellow-100 px-2 py-0.5 select-text flex items-center gap-1"
+          >
             <i class="fas fa-shopping-cart"></i>
             +8%
           </div>
@@ -112,25 +121,26 @@
         <p class="text-xs text-gray-500 mt-1 select-text">Đơn hàng đã đặt</p>
       </div>
 
-      <!-- Total Sales -->
-      <div class="col-span-full bg-white  p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
+      <div
+        class="col-span-full bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between"
+      >
         <p class="text-xs text-gray-500 mb-1 select-none">Total Sales</p>
         <div class="flex items-center gap-2">
           <p class="font-extrabold text-2xl text-gray-900 select-text">
             {{ stats.totalSales | number: '1.0-0' }} VND
           </p>
-          <div class="text-xs text-purple-600 bg-purple-100  px-2 py-0.5 select-text flex items-center gap-1">
+          <div
+            class="text-xs text-purple-600 bg-purple-100 px-2 py-0.5 select-text flex items-center gap-1"
+          >
             <i class="fas fa-coins"></i>
             +15%
           </div>
         </div>
         <p class="text-xs text-gray-500 mt-1 select-text">Doanh thu tích lũy</p>
       </div>
-
     </section>
 
-    <!-- Main dashboard content -->
-    <section class="flex-grow w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6 overflow-auto">
+    <section class="flex-grow w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
       <router-outlet></router-outlet>
     </section>
   </main>

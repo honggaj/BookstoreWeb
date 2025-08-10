@@ -64,7 +64,7 @@ export class ComboListComponent implements OnInit {
 }
 
 
-  goToDetail(comboId: number): void {
-    this.router.navigate(['/user/combo', comboId]);
-  }
+  // goToDetail(comboId: number): void {
+  //   this.router.navigate(['/user/combo', comboId]);
+  // }
 }

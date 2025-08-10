@@ -4,7 +4,9 @@
 
 export { AuthService } from './services/auth.service';
 export { BookService } from './services/book.service';
+export { BookStoreApiService } from './services/book-store-api.service';
 export { ComboService } from './services/combo.service';
+export { ContactService } from './services/contact.service';
 export { DashboardService } from './services/dashboard.service';
 export { FavoriteService } from './services/favorite.service';
 export { GenreService } from './services/genre.service';

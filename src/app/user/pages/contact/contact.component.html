@@ -4,24 +4,26 @@
   <div class="max-w-5xl w-full flex flex-col md:flex-row border border-gray-200">
 
     <!-- Form -->
-    <form class="flex-1 bg-white p-8 space-y-6">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <input type="text" placeholder="Tên của bạn"
-          class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
-        <input type="email" placeholder="Địa chỉ Email"
-          class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
-        <input type="text" placeholder="Số điện thoại"
-          class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
-        <input type="text" placeholder="Tiêu đề"
-          class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
-      </div>
-      <textarea placeholder="Nội dung" rows="3"
-        class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full resize-none"></textarea>
-      <button type="submit" aria-label="Send message"
-        class="w-12 h-12 bg-blue-500 hover:bg-blue-600 -full flex justify-center items-center text-white text-lg ml-auto">
-        <i class="fas fa-paper-plane"></i>
-      </button>
-    </form>
+    <form class="flex-1 bg-white p-8 space-y-6" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <input type="text" placeholder="Tên của bạn" name="name" [(ngModel)]="contact.name" required
+      class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
+    <input type="email" placeholder="Địa chỉ Email" name="email" [(ngModel)]="contact.email" required
+      class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
+    <input type="text" placeholder="Số điện thoại" name="phone" [(ngModel)]="contact.phone"
+      class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
+    <input type="text" placeholder="Tiêu đề" name="subject" [(ngModel)]="contact.subject"
+      class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full" />
+  </div>
+  <textarea placeholder="Nội dung" rows="3" name="message" [(ngModel)]="contact.message" required
+    class="border-b border-gray-300 focus:outline-none focus:border-blue-500 text-sm text-gray-700 placeholder-gray-400 pb-1 w-full resize-none"></textarea>
+  
+  <button type="submit" aria-label="Send message"
+    class="w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full flex justify-center items-center text-white text-lg ml-auto">
+    <i class="fas fa-paper-plane"></i>
+  </button>
+</form>
+
 
     <!-- Contact Info -->
     <div
