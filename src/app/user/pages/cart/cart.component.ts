@@ -132,18 +132,18 @@ export class CartComponent implements OnInit {
     const discount = (this.getSubtotal() * (matchedVoucher.discountPercent ?? 0)) / 100;
     this.voucherDiscount = Math.min(discount, matchedVoucher.maxDiscount ?? discount);
   }
-ngOnChanges(): void {
-  if (this.paymentMethod === 'PayPal') {
-    setTimeout(() => this.setupPayPal(), 0); // gọi lại khi thay đổi phương thức thanh toán
+  ngOnChanges(): void {
+    if (this.paymentMethod === 'PayPal') {
+      setTimeout(() => this.setupPayPal(), 0); // gọi lại khi thay đổi phương thức thanh toán
+    }
   }
-}
 
-onPaymentMethodChange(method: 'COD' | 'PayPal'): void {
-  this.paymentMethod = method;
-  if (method === 'PayPal') {
-    setTimeout(() => this.setupPayPal(), 0);
+  onPaymentMethodChange(method: 'COD' | 'PayPal'): void {
+    this.paymentMethod = method;
+    if (method === 'PayPal') {
+      setTimeout(() => this.setupPayPal(), 0);
+    }
   }
-}
 
   setupPayPal(): void {
     if (this.paymentMethod !== 'PayPal') return;
