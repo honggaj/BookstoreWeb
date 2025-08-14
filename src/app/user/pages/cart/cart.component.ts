@@ -23,6 +23,7 @@ interface CartItem {
 })
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
+  voucherMessage: string = ''; // thêm biến hiển thị thông báo
 
   cartKey = 'cart';
   recipientName = '';
@@ -118,20 +119,39 @@ export class CartComponent implements OnInit {
   applyVoucher(): void {
     const now = new Date();
     const matchedVoucher = this.voucherList.find(v =>
-      v.code?.toLowerCase() === this.voucherCode.toLowerCase() &&
-      new Date(v.expiryDate ?? '') >= now &&
-      ((v.usageLimit ?? 0) === 0 || (v.usedCount ?? 0) < (v.usageLimit ?? 0)) &&
-      this.getSubtotal() >= (v.minOrderAmount ?? 0)
+      v.code?.toLowerCase() === this.voucherCode.toLowerCase()
     );
 
     if (!matchedVoucher) {
       this.voucherDiscount = 0;
+      this.voucherMessage = ''; // reset
       return;
     }
 
+    // kiểm tra các điều kiện
+    if (new Date(matchedVoucher.expiryDate ?? '') < now) {
+      this.voucherDiscount = 0;
+      this.voucherMessage = `❌ Mã "${this.voucherCode}" đã hết hạn`;
+      return;
+    }
 
-    const discount = (this.getSubtotal() * (matchedVoucher.discountPercent ?? 0)) / 100;
-    this.voucherDiscount = Math.min(discount, matchedVoucher.maxDiscount ?? discount);
+    if ((matchedVoucher.usageLimit ?? 0) > 0 && (matchedVoucher.usedCount ?? 0) >= matchedVoucher.usageLimit!) {
+      this.voucherDiscount = 0;
+      this.voucherMessage = `❌ Mã "${this.voucherCode}" đã hết lượt sử dụng`;
+      return;
+    }
+
+    if (this.getSubtotal() < (matchedVoucher.minOrderAmount ?? 0)) {
+      this.voucherDiscount = 0;
+      this.voucherMessage = `❌ Đơn hàng chưa đủ ${matchedVoucher.minOrderAmount}đ để áp dụng mã "${this.voucherCode}"`;
+      return;
+    }
+
+  // áp dụng mã thành công
+const discount = (this.getSubtotal() * (matchedVoucher.discountPercent ?? 0)) / 100;
+this.voucherDiscount = Math.min(discount, matchedVoucher.maxDiscount ?? discount);
+this.voucherMessage = `✅ Mã "${this.voucherCode}" đã áp dụng, giảm ${this.voucherDiscount.toLocaleString()}đ`;
+
   }
   ngOnChanges(): void {
     if (this.paymentMethod === 'PayPal') {
@@ -219,83 +239,83 @@ export class CartComponent implements OnInit {
       !!this.selectedDistrictId &&
       !!this.selectedWardName;
   }
-submitOrder(): void {
-  if (this.paymentMethod === 'PayPal' && !this.paymentCompleted) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Chưa thanh toán',
-      text: 'Vui lòng hoàn tất thanh toán trước khi đặt hàng.'
-    });
-    return;
-  }
-
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
-  if (!user) {
-    Swal.fire({
-      icon: 'info',
-      title: 'Chưa đăng nhập',
-      text: 'Vui lòng đăng nhập để đặt hàng!'
-    });
-    return;
-  }
-
-  if (!this.isFormValid()) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Thiếu thông tin',
-      text: 'Điền đầy đủ thông tin giao hàng!'
-    });
-    return;
-  }
-
-  const items: OrderItemRequest[] = this.cartItems.map(item => ({
-    bookId: item.isCombo ? null : item.bookId ?? null,
-    comboId: item['comboId'] ?? null,
-    quantity: item.quantity,
-    price: typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0
-  }));
-
-  if (!items.length) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Giỏ hàng trống',
-      text: '🛑 Bạn chưa có sản phẩm nào trong giỏ!'
-    });
-    return;
-  }
-
-  const order: OrderRequest = {
-    userId: user.userId,
-    recipientName: this.recipientName,
-    address: `${this.address}, ${this.selectedWardName}, ${this.getDistrictName()}, ${this.getProvinceName()}`,
-    phoneNumber: this.phoneNumber,
-    items,
-    paymentMethod: this.paymentMethod,
-    isPaid: this.paymentMethod === 'PayPal',
-    voucherCode: this.voucherCode || null
-  };
-
-  this.orderService.apiOrderCreatePost$Json({ body: order }).subscribe({
-    next: () => {
+  submitOrder(): void {
+    if (this.paymentMethod === 'PayPal' && !this.paymentCompleted) {
       Swal.fire({
-        icon: 'success',
-        title: 'Đặt hàng thành công!',
-        text: 'Cảm ơn bạn đã mua hàng ❤️'
-      }).then(() => {
-        this.clearCart();
-        this.router.navigate(['/user/history']);
+        icon: 'warning',
+        title: 'Chưa thanh toán',
+        text: 'Vui lòng hoàn tất thanh toán trước khi đặt hàng.'
       });
-    },
-    error: (err) => {
-      console.error('Đặt hàng lỗi:', err);
+      return;
+    }
+
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!user) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Chưa đăng nhập',
+        text: 'Vui lòng đăng nhập để đặt hàng!'
+      });
+      return;
+    }
+
+    if (!this.isFormValid()) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Thiếu thông tin',
+        text: 'Điền đầy đủ thông tin giao hàng!'
+      });
+      return;
+    }
+
+    const items: OrderItemRequest[] = this.cartItems.map(item => ({
+      bookId: item.isCombo ? null : item.bookId ?? null,
+      comboId: item['comboId'] ?? null,
+      quantity: item.quantity,
+      price: typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0
+    }));
+
+    if (!items.length) {
       Swal.fire({
         icon: 'error',
-        title: 'Lỗi',
-        text: 'Có lỗi xảy ra khi đặt hàng! Vui lòng thử lại.'
+        title: 'Giỏ hàng trống',
+        text: '🛑 Bạn chưa có sản phẩm nào trong giỏ!'
       });
+      return;
     }
-  });
-}
+
+    const order: OrderRequest = {
+      userId: user.userId,
+      recipientName: this.recipientName,
+      address: `${this.address}, ${this.selectedWardName}, ${this.getDistrictName()}, ${this.getProvinceName()}`,
+      phoneNumber: this.phoneNumber,
+      items,
+      paymentMethod: this.paymentMethod,
+      isPaid: this.paymentMethod === 'PayPal',
+      voucherCode: this.voucherCode || null
+    };
+
+    this.orderService.apiOrderCreatePost$Json({ body: order }).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Đặt hàng thành công!',
+          text: 'Cảm ơn bạn đã mua hàng ❤️'
+        }).then(() => {
+          this.clearCart();
+          this.router.navigate(['/user/history']);
+        });
+      },
+      error: (err) => {
+        console.error('Đặt hàng lỗi:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Có lỗi xảy ra khi đặt hàng! Vui lòng thử lại.'
+        });
+      }
+    });
+  }
 
   getProvinceName(): string {
     return this.provinces.find(p => p.id === this.selectedProvinceId)?.name || '';
