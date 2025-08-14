@@ -14,7 +14,6 @@ import { StoreComponent } from './pages/store/store.component';
 import { ProductCarouselComponent } from './components/product-carousel/product-carousel.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { BookDetailComponent } from './pages/book-detail/book-detail.component';
-import { GenreListComponent } from './components/genre-list/genre-list.component';
 import { AuthModule } from '../auth/auth.module';
 import { ContactComponent } from './pages/contact/contact.component';
 import { NewsComponent } from './pages/news/news.component';
@@ -27,7 +26,6 @@ import { HistoryComponent } from './pages/history/history.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { ComboListComponent } from './components/combo-list/combo-list.component';
-import { ComboDetailComponent } from './components/combo-detail/combo-detail.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { FooterComponent } from './components/footer/footer.component';
 
@@ -41,7 +39,6 @@ import { FooterComponent } from './components/footer/footer.component';
     ProductCarouselComponent,
     ProductListComponent,
     BookDetailComponent,
-    GenreListComponent,
     ContactComponent,
     NewsComponent,
     CartComponent,
@@ -52,7 +49,6 @@ import { FooterComponent } from './components/footer/footer.component';
     PaymentComponent,
     SearchPageComponent,
     ComboListComponent,
-    ComboDetailComponent,
     FooterComponent,
     
   ],

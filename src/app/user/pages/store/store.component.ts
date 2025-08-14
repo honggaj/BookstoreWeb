@@ -2,7 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookService, FavoriteService, GenreService } from '../../../api/services';
-import { BookResponse, FavoriteRequest } from '../../../api/models';
+import { BookResponse } from '../../../api/models';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-store',
@@ -25,8 +26,8 @@ export class StoreComponent implements OnInit {
   currentPage = 1;
   pageSize = 8;
   totalPages = 1;
-  loading = false; // Thêm biến trạng thái loading
-  hasBooks = false; // Thêm biến trạng thái để kiểm tra sách
+  loading = false;
+  hasBooks = false;
 
   constructor(
     private bookService: BookService,
@@ -41,7 +42,6 @@ export class StoreComponent implements OnInit {
     this.getFavoriteBooks();
   }
 
-  /** Lấy toàn bộ sách */
   private getBooks(): void {
     this.loading = true;
     this.bookService.apiBookGet$Json().subscribe({
@@ -50,17 +50,15 @@ export class StoreComponent implements OnInit {
     });
   }
 
-  /** Lấy sách theo thể loại */
   selectGenre(id: number): void {
     this.selectedGenreId = id;
     this.loading = true;
     this.bookService.apiBookByGenreGenreIdGet$Json({ genreId: id }).subscribe({
-      next: res => this.setBooks(res.data ??[]),
+      next: res => this.setBooks(res.data ?? []),
       error: err => this.handleError('Lỗi khi lấy sách theo thể loại', err)
     });
   }
 
-  /** Lấy thể loại */
   private getGenres(): void {
     this.genreService.apiGenreGet$Json().subscribe({
       next: res => this.genres = res.data || [],
@@ -68,7 +66,6 @@ export class StoreComponent implements OnInit {
     });
   }
 
-  /** Lấy sách yêu thích của user */
   private getFavoriteBooks(): void {
     const user = this.getUser();
     if (!user) return;
@@ -79,7 +76,6 @@ export class StoreComponent implements OnInit {
     });
   }
 
-  /** Tìm kiếm nâng cao */
   searchBooks(): void {
     this.loading = true;
     const keyword = [this.searchTitle, this.searchAuthor].filter(Boolean).join(' ');
@@ -94,10 +90,12 @@ export class StoreComponent implements OnInit {
     });
   }
 
-  /** Thêm/Xoá yêu thích */
   toggleFavorite(book: BookResponse): void {
     const user = this.getUser();
-    if (!user) return alert('Bạn cần đăng nhập để yêu thích!');
+    if (!user) {
+      Swal.fire('Thông báo', 'Bạn cần đăng nhập để yêu thích!', 'info');
+      return;
+    }
 
     const bookId = book.bookId!;
     const isFav = this.favoriteBookIds.includes(bookId);
@@ -111,18 +109,21 @@ export class StoreComponent implements OnInit {
         this.favoriteBookIds = isFav
           ? this.favoriteBookIds.filter(id => id !== bookId)
           : [...this.favoriteBookIds, bookId];
-        alert(isFav ? '❌ Đã xoá khỏi yêu thích' : '❤️ Đã thêm vào yêu thích!');
+
+        Swal.fire(
+          isFav ? '❌ Đã xoá khỏi yêu thích' : '❤️ Đã thêm vào yêu thích!',
+          '',
+          'success'
+        );
       },
-      error: () => alert('Lỗi khi cập nhật yêu thích')
+      error: () => Swal.fire('Lỗi', 'Không thể cập nhật yêu thích', 'error')
     });
   }
 
-  /** Xem chi tiết sách */
   viewBookDetail(bookId: number): void {
     this.router.navigate(['/user/book-detail', bookId]);
   }
 
-  /** Thêm vào giỏ hàng */
   addToCart(book: BookResponse): void {
     const user = this.getUser();
     const cartKey = user ? `cart_${user.username}` : 'cart_guest';
@@ -133,10 +134,10 @@ export class StoreComponent implements OnInit {
 
     localStorage.setItem(cartKey, JSON.stringify(cart));
     window.dispatchEvent(new Event('storage'));
-    alert('🛒 Đã thêm vào giỏ hàng!');
+
+    Swal.fire('🛒 Đã thêm vào giỏ hàng!', '', 'success');
   }
 
-  /** Phân trang */
   changePage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
@@ -144,31 +145,26 @@ export class StoreComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  /** Cập nhật sách hiển thị theo trang */
-  private updatePagedBooks(): void {
+  updatePagedBooks(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     this.pagedBooks = this.books.slice(start, start + this.pageSize);
     this.totalPages = Math.ceil(this.books.length / this.pageSize);
   }
 
-  /** Set danh sách sách & cập nhật phân trang */
-  private setBooks(data: BookResponse[] | undefined): void {
+  setBooks(data: BookResponse[] | undefined): void {
     this.books = data ?? [];
     this.currentPage = 1;
     this.updatePagedBooks();
     this.loading = false;
-    // Cập nhật trạng thái khi sách có/không có
     this.hasBooks = this.books.length > 0;
   }
 
-  /** Lấy thông tin user từ localStorage */
-  private getUser() {
+  getUser() {
     const str = localStorage.getItem('user');
     return str ? JSON.parse(str) : null;
   }
 
-  /** Xử lý lỗi chung */
-  private handleError(msg: string, err: any): void {
+  handleError(msg: string, err: any): void {
     console.error(msg, err);
     this.loading = false;
     this.hasBooks = false;

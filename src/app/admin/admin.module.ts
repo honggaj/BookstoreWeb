@@ -9,16 +9,17 @@ import { ManageOrdersModule } from './pages/manage-orders/manage-orders.module';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 import { ManageGenresModule } from './pages/manage-genres/manage-genres.module';
-import { ComboCreateComponent } from './pages/manage-combos/combo-create/combo-create.component';
-import { ComboListComponent } from './pages/manage-combos/combo-list/combo-list.component';
-import { ComboUpdateComponent } from './pages/manage-combos/combo-update/combo-update.component';
+
 import { ManageCombosModule } from './pages/manage-combos/manage-combos.module';
+
+import { ManageVouchersModule } from './pages/manage-vouchers/manage-vouchers.module';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     SidebarComponent,
+
     
    
     
@@ -31,7 +32,8 @@ import { ManageCombosModule } from './pages/manage-combos/manage-combos.module';
     ManageUsersModule,
     ManageOrdersModule,
     ManageGenresModule,
-    ManageCombosModule
+    ManageCombosModule,
+    ManageVouchersModule
   ]
 })
 export class AdminModule { }

@@ -5,10 +5,7 @@
     <div class="w-full mx-auto flex items-center justify-between gap-4 px-8 py-3 ">
         <!-- Logo + Search -->
         <div class="flex items-center gap-4 flex-1">
-            <!-- <img alt="BookStore logo" class="h-12 w-auto"
-                src="https://phuongnamvina.com/img_data/images/mau-logo-nha-sach.jpg" /> -->
-
-            <!-- Search -->
+        
             <form (submit)="onSearch(searchInput.value); $event.preventDefault()" class="relative flex-1">
                 <input #searchInput type="text" placeholder="Bạn muốn mua gì?"
                     class="w-full border border-gray-200 focus:border-blue-500 focus:outline-none p-2 text-sm placeholder-gray-400 " />

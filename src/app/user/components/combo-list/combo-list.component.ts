@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ComboService } from '../../../api/services';
 import { Router } from '@angular/router';
 import { ComboResponse } from '../../../api/models';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-combo-list',
@@ -32,37 +33,48 @@ export class ComboListComponent implements OnInit {
       error: err => {
         console.error('Lỗi khi load combo:', err);
         this.loading = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Không thể tải danh sách combo!',
+        });
       }
     });
   }
 
   addToCart(combo: ComboResponse): void {
-  const user = localStorage.getItem('user');
-  const username = user ? JSON.parse(user).username : null;
-  const cartKey = username ? `cart_${username}` : 'cart_guest';
+    const user = localStorage.getItem('user');
+    const username = user ? JSON.parse(user).username : null;
+    const cartKey = username ? `cart_${username}` : 'cart_guest';
 
-  const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
+    const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
 
-  const existing = cart.find((item: any) => item.comboId === combo.comboId && item.isCombo);
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push({
-      isCombo: true,
-      comboId: combo.comboId,
-      title: combo.name || 'Combo không tên',
-      coverImageUrl: combo.image,
-      price: combo.discountPrice ?? combo.totalPrice ?? 0,
-      quantity: 1,
-      comboDescription: combo.description || ''
+    const existing = cart.find((item: any) => item.comboId === combo.comboId && item.isCombo);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({
+        isCombo: true,
+        comboId: combo.comboId,
+        title: combo.name || 'Combo không tên',
+        coverImageUrl: combo.image,
+        price: combo.discountPrice ?? combo.totalPrice ?? 0,
+        quantity: 1,
+        comboDescription: combo.description || ''
+      });
+    }
+
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    window.dispatchEvent(new Event('storage'));
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Đã thêm vào giỏ hàng',
+      text: `Combo "${combo.name}" đã được thêm vào giỏ 🛒`,
+      showConfirmButton: false,
+      timer: 1500
     });
   }
-
-  localStorage.setItem(cartKey, JSON.stringify(cart));
-  window.dispatchEvent(new Event('storage'));
-  alert('🛒 Đã thêm combo vào giỏ hàng!');
-}
-
 
   // goToDetail(comboId: number): void {
   //   this.router.navigate(['/user/combo', comboId]);

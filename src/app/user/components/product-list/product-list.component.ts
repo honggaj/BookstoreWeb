@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BookResponse, FavoriteRequest } from '../../../api/models';
 import { BookService, FavoriteService } from '../../../api/services';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-list-home',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ProductListComponent implements OnInit {
   loading = false;
-  @Input() books: BookResponse[] = []; // 📥 nhận sách từ cha
+  @Input() books: BookResponse[] = [];
   favoriteBookIds: number[] = [];
 
   constructor(
@@ -22,7 +23,7 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadBooks();
-    this.loadFavorites(); // 💖 Load yêu thích
+    this.loadFavorites();
   }
 
   loadBooks(): void {
@@ -59,7 +60,7 @@ export class ProductListComponent implements OnInit {
     const user = userStr ? JSON.parse(userStr) : null;
 
     if (!user) {
-      alert('Bạn cần đăng nhập để yêu thích!');
+      Swal.fire('Thông báo', 'Bạn cần đăng nhập để yêu thích!', 'warning');
       return;
     }
 
@@ -71,9 +72,9 @@ export class ProductListComponent implements OnInit {
       }).subscribe({
         next: () => {
           this.favoriteBookIds = this.favoriteBookIds.filter(id => id !== bookId);
-          alert('❌ Đã xoá khỏi yêu thích');
+          Swal.fire('Thành công', '❌ Đã xoá khỏi yêu thích', 'success');
         },
-        error: () => alert('Lỗi khi xoá khỏi yêu thích')
+        error: () => Swal.fire('Lỗi', 'Không thể xoá khỏi yêu thích', 'error')
       });
     } else {
       const request: FavoriteRequest = { userId: user.userId, bookId };
@@ -81,14 +82,14 @@ export class ProductListComponent implements OnInit {
         next: res => {
           if (res.success) {
             this.favoriteBookIds.push(bookId);
-            alert('❤️ Đã thêm vào yêu thích!');
+            Swal.fire('Thành công', '❤️ Đã thêm vào yêu thích!', 'success');
           } else {
-            alert(res.message);
+            Swal.fire('Thông báo', res.message ?? '', 'info');
           }
         },
         error: err => {
           console.error('Lỗi thêm yêu thích:', err);
-          alert('❌ Lỗi khi thêm vào yêu thích!');
+          Swal.fire('Lỗi', '❌ Lỗi khi thêm vào yêu thích!', 'error');
         }
       });
     }
@@ -113,6 +114,6 @@ export class ProductListComponent implements OnInit {
 
     localStorage.setItem(cartKey, JSON.stringify(cart));
     window.dispatchEvent(new Event('storage'));
-    alert('🛒 Đã thêm vào giỏ hàng!');
+    Swal.fire('Thành công', '🛒 Đã thêm vào giỏ hàng!', 'success');
   }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ContactFormDto } from '../../../api/models';
 import { ContactService } from '../../../api/services';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-contact',
@@ -10,37 +10,44 @@ import { ContactService } from '../../../api/services';
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent {
- contact: ContactFormDto = {
-  name: '',
-  email: '',
-  phone: '',
-  subject: '',
-  message: ''
-};
-
+  contact: ContactFormDto = {
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  };
 
   isSending = false;
-  successMsg = '';
-  errorMsg = '';
 
   constructor(private apiContact: ContactService) {}
 
   onSubmit() {
     this.isSending = true;
-    this.successMsg = '';
-    this.errorMsg = '';
 
     this.apiContact.apiContactPost({ body: this.contact })
       .subscribe({
         next: () => {
-          this.successMsg = 'Gửi email thành công!';
           this.isSending = false;
           this.contact = { name: '', email: '', phone: '', subject: '', message: '' };
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công!',
+            text: 'Gửi email thành công!',
+            timer: 2000,
+            showConfirmButton: false
+          });
         },
         error: (err) => {
-          this.errorMsg = 'Gửi email thất bại!';
           this.isSending = false;
           console.error(err);
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Thất bại!',
+            text: 'Gửi email thất bại. Vui lòng thử lại.',
+          });
         }
       });
   }

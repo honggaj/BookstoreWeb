@@ -20,7 +20,7 @@
 /* Menu mobile trượt vào từ trái */
 .mobile-menu {
   position: fixed;
-  top: 64px; /* Sửa từ 124px xuống 64px để khớp với header height */
+  top: 0px; /* Sửa từ 124px xuống 64px để khớp với header height */
   left: 0;
   width: 280px; /* Tăng width từ 260px lên 280px cho rộng rãi hơn */
   height: calc(100vh - 64px); /* Sử dụng 100vh thay vì 100% */

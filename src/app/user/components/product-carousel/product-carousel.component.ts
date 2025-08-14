@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BookService, FavoriteService } from '../../../api/services';
 import { Router } from '@angular/router';
 import { BookResponse, FavoriteRequest } from '../../../api/models';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-carousel',
@@ -38,9 +39,9 @@ export class ProductCarouselComponent {
         this.books = res.data ?? [];
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Lỗi khi lấy sách:', err);
+      error: () => {
         this.loading = false;
+        Swal.fire('Lỗi', 'Không thể tải sách!', 'error');
       }
     });
   }
@@ -56,7 +57,7 @@ export class ProductCarouselComponent {
           .map(f => f.bookId)
           .filter((id): id is number => id !== undefined);
       },
-      error: err => console.error('Lỗi load yêu thích:', err)
+      error: () => Swal.fire('Lỗi', 'Không thể tải danh sách yêu thích!', 'error')
     });
   }
 
@@ -65,40 +66,37 @@ export class ProductCarouselComponent {
     const user = userStr ? JSON.parse(userStr) : null;
 
     if (!user) {
-      alert('Bạn cần đăng nhập để yêu thích!');
+      Swal.fire('Thông báo', 'Bạn cần đăng nhập để yêu thích!', 'warning');
       return;
     }
 
-    const bookId = book.bookId;
+    const bookId = book.bookId!;
 
-    if (this.favoriteBookIds.includes(bookId!)) {
-      // Đã yêu thích → Xóa
+    if (this.favoriteBookIds.includes(bookId)) {
+      // Xóa khỏi yêu thích
       this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({
         userId: user.userId,
         bookId
       }).subscribe({
         next: () => {
           this.favoriteBookIds = this.favoriteBookIds.filter(id => id !== bookId);
-          alert('❌ Đã xoá khỏi yêu thích');
+          Swal.fire('Đã xoá', `"${book.title}" đã xoá khỏi yêu thích ❌`, 'success');
         },
-        error: () => alert('Lỗi khi xoá khỏi yêu thích')
+        error: () => Swal.fire('Lỗi', 'Không thể xoá khỏi yêu thích!', 'error')
       });
     } else {
-      // Chưa yêu thích → Thêm
+      // Thêm vào yêu thích
       const request: FavoriteRequest = { userId: user.userId, bookId };
       this.favoriteService.apiFavoriteAddPost$Json({ body: request }).subscribe({
         next: res => {
           if (res.success) {
-            this.favoriteBookIds.push(bookId!);
-            alert('❤️ Đã thêm vào yêu thích!');
+            this.favoriteBookIds.push(bookId);
+            Swal.fire('Thành công', `"${book.title}" đã thêm vào yêu thích ❤️`, 'success');
           } else {
-            alert(res.message);
+Swal.fire('Thông báo', res.message ?? '', 'info');
           }
         },
-        error: err => {
-          console.error('Lỗi thêm yêu thích:', err);
-          alert('❌ Lỗi khi thêm vào yêu thích!');
-        }
+        error: () => Swal.fire('Lỗi', 'Không thể thêm vào yêu thích!', 'error')
       });
     }
   }
@@ -114,6 +112,7 @@ export class ProductCarouselComponent {
 
     const cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
     const existing = cart.find((item: any) => item.bookId === book.bookId);
+
     if (existing) {
       existing.quantity = (existing.quantity ?? 1) + 1;
     } else {
@@ -122,37 +121,43 @@ export class ProductCarouselComponent {
 
     localStorage.setItem(cartKey, JSON.stringify(cart));
     window.dispatchEvent(new Event('storage'));
-    alert('🛒 Đã thêm vào giỏ hàng!');
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Đã thêm vào giỏ hàng 🛒',
+      text: `"${book.title}" đã được thêm vào giỏ!`,
+      showConfirmButton: false,
+      timer: 1500
+    });
   }
+
   filterBooks(type: 'latest' | 'top-rated' | 'best-seller'): void {
-  this.loading = true;
+    this.loading = true;
 
-  let request$;
-
-  switch (type) {
-    case 'latest':
-      request$ = this.bookService.apiBookLatestGet$Json();
-      break;
-    case 'top-rated':
-      request$ = this.bookService.apiBookTopRatedGet$Json();
-      break;
-    case 'best-seller':
-      request$ = this.bookService.apiBookBestSellersGet$Json();
-      break;
-    default:
-      request$ = this.bookService.apiBookGet$Json();
-  }
-
-  request$.subscribe({
-    next: (res) => {
-      this.books = res.data ?? [];
-      this.loading = false;
-    },
-    error: (err) => {
-      console.error('Lỗi khi lọc sách:', err);
-      this.loading = false;
+    let request$;
+    switch (type) {
+      case 'latest':
+        request$ = this.bookService.apiBookLatestGet$Json();
+        break;
+      case 'top-rated':
+        request$ = this.bookService.apiBookTopRatedGet$Json();
+        break;
+      case 'best-seller':
+        request$ = this.bookService.apiBookBestSellersGet$Json();
+        break;
+      default:
+        request$ = this.bookService.apiBookGet$Json();
     }
-  });
-}
 
+    request$.subscribe({
+      next: (res) => {
+        this.books = res.data ?? [];
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        Swal.fire('Lỗi', 'Không thể lọc sách!', 'error');
+      }
+    });
+  }
 }

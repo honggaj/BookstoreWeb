@@ -25,6 +25,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/manage-genres/manage-genres.module').then(m => m.ManageGenresModule)
       },
+        {
+        path: 'vouchers',
+        loadChildren: () =>
+          import('./pages/manage-vouchers/manage-vouchers.module').then(m => m.ManageVouchersModule)
+      },
       {
         path: 'orders',
         loadChildren: () =>

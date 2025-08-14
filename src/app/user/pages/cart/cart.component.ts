@@ -5,6 +5,7 @@ import { loadScript } from '@paypal/paypal-js';
 import { BookResponse, OrderItemRequest, OrderRequest } from '../../../api/models';
 import { OrderService, VoucherService } from '../../../api/services';
 import { AddressService } from '../../../../services/address.service';
+import Swal from 'sweetalert2';
 
 interface CartItem {
   quantity: number;
@@ -218,50 +219,83 @@ export class CartComponent implements OnInit {
       !!this.selectedDistrictId &&
       !!this.selectedWardName;
   }
-
-  submitOrder(): void {
-    if (!this.paymentCompleted) {
-      alert('⚠️ Vui lòng hoàn tất thanh toán trước khi đặt hàng.');
-      return;
-    }
-
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    if (!user) return alert('Vui lòng đăng nhập để đặt hàng!');
-    if (!this.isFormValid()) return alert('⚠️ Điền đủ thông tin giao hàng!');
-
-    const items: OrderItemRequest[] = this.cartItems.map(item => ({
-      bookId: item.isCombo ? null : item.bookId ?? null,
-      comboId: item['comboId'] ?? null,
-      quantity: item.quantity,
-      price: typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0
-    }));
-
-    if (!items.length) return alert('🛑 Giỏ hàng trống!');
-
-    const order: OrderRequest = {
-      userId: user.userId,
-      recipientName: this.recipientName,
-      address: `${this.address}, ${this.selectedWardName}, ${this.getDistrictName()}, ${this.getProvinceName()}`,
-      phoneNumber: this.phoneNumber,
-      items,
-      paymentMethod: this.paymentMethod,
-      isPaid: this.paymentMethod === 'PayPal',
-      voucherCode: this.voucherCode || null
-    };
-
-    this.orderService.apiOrderCreatePost$Json({ body: order }).subscribe({
-      next: () => {
-        alert('✅ Đặt hàng thành công!');
-        this.clearCart();
-        this.router.navigate(['/user/history']);
-      },
-      error: (err) => {
-        console.error('Đặt hàng lỗi:', err);
-        alert('Có lỗi xảy ra khi đặt hàng!');
-      }
+submitOrder(): void {
+  if (this.paymentMethod === 'PayPal' && !this.paymentCompleted) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Chưa thanh toán',
+      text: 'Vui lòng hoàn tất thanh toán trước khi đặt hàng.'
     });
+    return;
   }
 
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!user) {
+    Swal.fire({
+      icon: 'info',
+      title: 'Chưa đăng nhập',
+      text: 'Vui lòng đăng nhập để đặt hàng!'
+    });
+    return;
+  }
+
+  if (!this.isFormValid()) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Thiếu thông tin',
+      text: 'Điền đầy đủ thông tin giao hàng!'
+    });
+    return;
+  }
+
+  const items: OrderItemRequest[] = this.cartItems.map(item => ({
+    bookId: item.isCombo ? null : item.bookId ?? null,
+    comboId: item['comboId'] ?? null,
+    quantity: item.quantity,
+    price: typeof item.price === 'number' ? item.price : parseFloat(item.price as any) || 0
+  }));
+
+  if (!items.length) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Giỏ hàng trống',
+      text: '🛑 Bạn chưa có sản phẩm nào trong giỏ!'
+    });
+    return;
+  }
+
+  const order: OrderRequest = {
+    userId: user.userId,
+    recipientName: this.recipientName,
+    address: `${this.address}, ${this.selectedWardName}, ${this.getDistrictName()}, ${this.getProvinceName()}`,
+    phoneNumber: this.phoneNumber,
+    items,
+    paymentMethod: this.paymentMethod,
+    isPaid: this.paymentMethod === 'PayPal',
+    voucherCode: this.voucherCode || null
+  };
+
+  this.orderService.apiOrderCreatePost$Json({ body: order }).subscribe({
+    next: () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Đặt hàng thành công!',
+        text: 'Cảm ơn bạn đã mua hàng ❤️'
+      }).then(() => {
+        this.clearCart();
+        this.router.navigate(['/user/history']);
+      });
+    },
+    error: (err) => {
+      console.error('Đặt hàng lỗi:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Có lỗi xảy ra khi đặt hàng! Vui lòng thử lại.'
+      });
+    }
+  });
+}
 
   getProvinceName(): string {
     return this.provinces.find(p => p.id === this.selectedProvinceId)?.name || '';
