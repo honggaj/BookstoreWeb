@@ -295,7 +295,7 @@ this.voucherMessage = `✅ Mã "${this.voucherCode}" đã áp dụng, giảm ${t
       voucherCode: this.voucherCode || null
     };
 
-    this.orderService.apiOrderCreatePost$Json({ body: order }).subscribe({
+    this.orderService.apiOrderPost$Json({ body: order }).subscribe({
       next: () => {
         Swal.fire({
           icon: 'success',

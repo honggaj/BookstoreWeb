@@ -9,6 +9,7 @@ export interface BookResponse {
   coverImageUrl?: string | null;
   description?: string | null;
   genreId?: number | null;
+  genreName?: string | null;
   price?: number;
   publishedDate?: string | null;
   stock?: number;

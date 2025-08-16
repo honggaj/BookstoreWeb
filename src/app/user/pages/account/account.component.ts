@@ -54,7 +54,7 @@ export class AccountComponent {
 
   this.isLoading = true;
 
-  this.userService.apiUserChangePasswordPost({
+  this.userService.apiUserChangepasswordPost({
     body: {
       userId: this.user.userId,
       oldPassword,

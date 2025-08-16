@@ -29,4 +29,4 @@ export function apiComboDeleteIdDelete(http: HttpClient, rootUrl: string, params
   );
 }
 
-apiComboDeleteIdDelete.PATH = '/api/Combo/Delete{id}';
+apiComboDeleteIdDelete.PATH = '/api/Combo/delete/{id}';

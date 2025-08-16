@@ -23,7 +23,7 @@
   top: 0px; /* Sửa từ 124px xuống 64px để khớp với header height */
   left: 0;
   width: 280px; /* Tăng width từ 260px lên 280px cho rộng rãi hơn */
-  height: calc(100vh - 64px); /* Sử dụng 100vh thay vì 100% */
+  height:100vh; /* Sử dụng 100vh thay vì 100% */
   background-color: white;
   z-index: 50;
   transform: translateX(-100%);

@@ -56,7 +56,7 @@ import { UserResponse } from '../../../../api/models';
 
   deleteUser(id: number): void {
     if (confirm('Bạn có chắc muốn xoá người dùng này không?')) {
-      this.userService.apiUserDeleteIdDelete({ id }).subscribe({
+      this.userService.apiUserIdDelete({ id }).subscribe({
         next: () => {
           alert('🗑️ Xoá thành công!');
           this.loadUsers();

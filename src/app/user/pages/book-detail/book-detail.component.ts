@@ -137,7 +137,7 @@ export class BookDetailComponent implements OnInit {
 
     if (this.isEditing && this.editingReviewId) {
       // 👉 Cập nhật
-      this.reviewService.apiReviewUpdateIdPut$Json({
+      this.reviewService.apiReviewIdPut$Json({
         id: this.editingReviewId,
         body: review
       }).subscribe({
@@ -152,7 +152,7 @@ export class BookDetailComponent implements OnInit {
       });
     } else {
       // 👉 Tạo mới
-      this.reviewService.apiReviewCreatePost$Json({ body: review }).subscribe({
+      this.reviewService.apiReviewPost$Json({ body: review }).subscribe({
         next: () => {
           alert('✅ Đánh giá đã được gửi!');
           this.afterReviewSubmit(userData.userId);
@@ -191,7 +191,7 @@ export class BookDetailComponent implements OnInit {
 
     if (!confirm('Bạn chắc chắn muốn xóa đánh giá này?')) return;
 
-    this.reviewService.apiReviewDeleteIdDelete$Json({ id: reviewId, userId }).subscribe({
+    this.reviewService.apiReviewIdDelete$Json({ id: reviewId, userId }).subscribe({
       next: () => {
         alert('🗑️ Đã xóa đánh giá!');
         this.loadReviews();

@@ -11,10 +11,6 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { apiVoucherCreatePost$Json } from '../fn/voucher/api-voucher-create-post-json';
-import { ApiVoucherCreatePost$Json$Params } from '../fn/voucher/api-voucher-create-post-json';
-import { apiVoucherCreatePost$Plain } from '../fn/voucher/api-voucher-create-post-plain';
-import { ApiVoucherCreatePost$Plain$Params } from '../fn/voucher/api-voucher-create-post-plain';
 import { apiVoucherGet$Json } from '../fn/voucher/api-voucher-get-json';
 import { ApiVoucherGet$Json$Params } from '../fn/voucher/api-voucher-get-json';
 import { apiVoucherGet$Plain } from '../fn/voucher/api-voucher-get-plain';
@@ -23,6 +19,10 @@ import { apiVoucherIdDelete$Json } from '../fn/voucher/api-voucher-id-delete-jso
 import { ApiVoucherIdDelete$Json$Params } from '../fn/voucher/api-voucher-id-delete-json';
 import { apiVoucherIdDelete$Plain } from '../fn/voucher/api-voucher-id-delete-plain';
 import { ApiVoucherIdDelete$Plain$Params } from '../fn/voucher/api-voucher-id-delete-plain';
+import { apiVoucherPost$Json } from '../fn/voucher/api-voucher-post-json';
+import { ApiVoucherPost$Json$Params } from '../fn/voucher/api-voucher-post-json';
+import { apiVoucherPost$Plain } from '../fn/voucher/api-voucher-post-plain';
+import { ApiVoucherPost$Plain$Params } from '../fn/voucher/api-voucher-post-plain';
 import { ObjectResultCustomModel } from '../models/object-result-custom-model';
 import { StringResultCustomModel } from '../models/string-result-custom-model';
 import { VoucherResponseListResultCustomModel } from '../models/voucher-response-list-result-custom-model';
@@ -80,49 +80,49 @@ export class VoucherService extends BaseService {
     );
   }
 
-  /** Path part for operation `apiVoucherCreatePost()` */
-  static readonly ApiVoucherCreatePostPath = '/api/Voucher/Create';
+  /** Path part for operation `apiVoucherPost()` */
+  static readonly ApiVoucherPostPath = '/api/Voucher';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiVoucherCreatePost$Plain()` instead.
+   * To access only the response body, use `apiVoucherPost$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiVoucherCreatePost$Plain$Response(params?: ApiVoucherCreatePost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<StringResultCustomModel>> {
-    return apiVoucherCreatePost$Plain(this.http, this.rootUrl, params, context);
+  apiVoucherPost$Plain$Response(params?: ApiVoucherPost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<StringResultCustomModel>> {
+    return apiVoucherPost$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiVoucherCreatePost$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiVoucherPost$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiVoucherCreatePost$Plain(params?: ApiVoucherCreatePost$Plain$Params, context?: HttpContext): Observable<StringResultCustomModel> {
-    return this.apiVoucherCreatePost$Plain$Response(params, context).pipe(
+  apiVoucherPost$Plain(params?: ApiVoucherPost$Plain$Params, context?: HttpContext): Observable<StringResultCustomModel> {
+    return this.apiVoucherPost$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<StringResultCustomModel>): StringResultCustomModel => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiVoucherCreatePost$Json()` instead.
+   * To access only the response body, use `apiVoucherPost$Json()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiVoucherCreatePost$Json$Response(params?: ApiVoucherCreatePost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<StringResultCustomModel>> {
-    return apiVoucherCreatePost$Json(this.http, this.rootUrl, params, context);
+  apiVoucherPost$Json$Response(params?: ApiVoucherPost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<StringResultCustomModel>> {
+    return apiVoucherPost$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiVoucherCreatePost$Json$Response()` instead.
+   * To access the full response (for headers, for example), `apiVoucherPost$Json$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiVoucherCreatePost$Json(params?: ApiVoucherCreatePost$Json$Params, context?: HttpContext): Observable<StringResultCustomModel> {
-    return this.apiVoucherCreatePost$Json$Response(params, context).pipe(
+  apiVoucherPost$Json(params?: ApiVoucherPost$Json$Params, context?: HttpContext): Observable<StringResultCustomModel> {
+    return this.apiVoucherPost$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<StringResultCustomModel>): StringResultCustomModel => r.body)
     );
   }

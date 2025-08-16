@@ -1,4 +1,4 @@
-<main class="flex-grow max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+<main class="flex-grow max-w-full mx-auto py-6">
   <div class="flex items-center justify-between mb-4">
     <h1 class="text-2xl font-semibold text-gray-900">Danh sách sách</h1>
     <button (click)="createBook()"
@@ -30,7 +30,7 @@
           </td>
           <td class="px-6 py-4 text-gray-900 font-medium">{{ book.title }}</td>
           <td class="px-6 py-4 text-gray-500">{{ book.author }}</td>
-          <td class="px-6 py-4 text-gray-500">{{ book.genreId }}</td>
+          <td class="px-6 py-4 text-gray-500">{{ book.genreName }}</td>
           <td class="px-6 py-4 text-gray-900">{{ book.price | number:'1.0-0' }} VNĐ</td>
           <td class="px-6 py-4 text-gray-500">{{ book.stock }}</td>
           <td class="px-6 py-4 text-gray-500 max-w-xs">

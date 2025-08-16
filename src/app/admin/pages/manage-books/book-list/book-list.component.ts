@@ -64,7 +64,7 @@ export class BookListComponent {
 
   deleteBook(id: number): void {
     if (confirm('Bạn có chắc muốn xoá sách này không?')) {
-      this.bookService.apiBookDeleteIdDelete$Json({ id }).subscribe({
+      this.bookService.apiBookIdDelete$Json({ id }).subscribe({
         next: (res) => {
           alert(res.message || 'Xoá thành công!');
           this.loadBooks();

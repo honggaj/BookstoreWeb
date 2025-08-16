@@ -25,7 +25,7 @@ export class ContactComponent {
   onSubmit() {
     this.isSending = true;
 
-    this.apiContact.apiContactPost({ body: this.contact })
+    this.apiContact.apiContactSendPost({ body: this.contact })
       .subscribe({
         next: () => {
           this.isSending = false;

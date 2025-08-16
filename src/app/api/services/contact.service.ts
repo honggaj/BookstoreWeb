@@ -11,8 +11,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { apiContactPost } from '../fn/contact/api-contact-post';
-import { ApiContactPost$Params } from '../fn/contact/api-contact-post';
+import { apiContactSendPost } from '../fn/contact/api-contact-send-post';
+import { ApiContactSendPost$Params } from '../fn/contact/api-contact-send-post';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService extends BaseService {
@@ -20,27 +20,27 @@ export class ContactService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `apiContactPost()` */
-  static readonly ApiContactPostPath = '/api/Contact';
+  /** Path part for operation `apiContactSendPost()` */
+  static readonly ApiContactSendPostPath = '/api/Contact/send';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiContactPost()` instead.
+   * To access only the response body, use `apiContactSendPost()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiContactPost$Response(params?: ApiContactPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiContactPost(this.http, this.rootUrl, params, context);
+  apiContactSendPost$Response(params?: ApiContactSendPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiContactSendPost(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiContactPost$Response()` instead.
+   * To access the full response (for headers, for example), `apiContactSendPost$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiContactPost(params?: ApiContactPost$Params, context?: HttpContext): Observable<void> {
-    return this.apiContactPost$Response(params, context).pipe(
+  apiContactSendPost(params?: ApiContactSendPost$Params, context?: HttpContext): Observable<void> {
+    return this.apiContactSendPost$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

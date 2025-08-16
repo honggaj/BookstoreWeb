@@ -31,4 +31,4 @@ export function apiAuthGoogleLoginPost$Plain(http: HttpClient, rootUrl: string, 
   );
 }
 
-apiAuthGoogleLoginPost$Plain.PATH = '/api/Auth/GoogleLogin';
+apiAuthGoogleLoginPost$Plain.PATH = '/api/Auth/google-login';

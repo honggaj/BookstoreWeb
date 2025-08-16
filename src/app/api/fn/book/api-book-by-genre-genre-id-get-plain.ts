@@ -30,4 +30,4 @@ export function apiBookByGenreGenreIdGet$Plain(http: HttpClient, rootUrl: string
   );
 }
 
-apiBookByGenreGenreIdGet$Plain.PATH = '/api/Book/ByGenre/{genreId}';
+apiBookByGenreGenreIdGet$Plain.PATH = '/api/Book/by-genre/{genreId}';

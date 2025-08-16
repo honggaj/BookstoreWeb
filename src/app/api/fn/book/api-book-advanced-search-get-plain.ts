@@ -42,4 +42,4 @@ export function apiBookAdvancedSearchGet$Plain(http: HttpClient, rootUrl: string
   );
 }
 
-apiBookAdvancedSearchGet$Plain.PATH = '/api/Book/AdvancedSearch';
+apiBookAdvancedSearchGet$Plain.PATH = '/api/Book/advanced-search';

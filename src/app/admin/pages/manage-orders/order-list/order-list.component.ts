@@ -43,7 +43,7 @@ export class OrderListComponent {
     console.log('TODO: Mở form sửa sách', order);
   }
 updateStatus(orderId: number, newStatus: string): void {
-  this.orderService.apiOrderUpdateStatusIdPut$Json({
+  this.orderService.apiOrderIdStatusPut$Json({
     id: orderId,
     status: newStatus // 👈 chỗ này nè, đúng chuẩn query param
   }).subscribe({

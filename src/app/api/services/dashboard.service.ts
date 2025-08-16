@@ -11,11 +11,29 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { apiDashboardBestSellersGet$Json } from '../fn/dashboard/api-dashboard-best-sellers-get-json';
+import { ApiDashboardBestSellersGet$Json$Params } from '../fn/dashboard/api-dashboard-best-sellers-get-json';
+import { apiDashboardBestSellersGet$Plain } from '../fn/dashboard/api-dashboard-best-sellers-get-plain';
+import { ApiDashboardBestSellersGet$Plain$Params } from '../fn/dashboard/api-dashboard-best-sellers-get-plain';
+import { apiDashboardRevenueMonthlyGet$Json } from '../fn/dashboard/api-dashboard-revenue-monthly-get-json';
+import { ApiDashboardRevenueMonthlyGet$Json$Params } from '../fn/dashboard/api-dashboard-revenue-monthly-get-json';
+import { apiDashboardRevenueMonthlyGet$Plain } from '../fn/dashboard/api-dashboard-revenue-monthly-get-plain';
+import { ApiDashboardRevenueMonthlyGet$Plain$Params } from '../fn/dashboard/api-dashboard-revenue-monthly-get-plain';
+import { apiDashboardRevenueWeeklyGet$Json } from '../fn/dashboard/api-dashboard-revenue-weekly-get-json';
+import { ApiDashboardRevenueWeeklyGet$Json$Params } from '../fn/dashboard/api-dashboard-revenue-weekly-get-json';
+import { apiDashboardRevenueWeeklyGet$Plain } from '../fn/dashboard/api-dashboard-revenue-weekly-get-plain';
+import { ApiDashboardRevenueWeeklyGet$Plain$Params } from '../fn/dashboard/api-dashboard-revenue-weekly-get-plain';
+import { apiDashboardRevenueYearlyGet$Json } from '../fn/dashboard/api-dashboard-revenue-yearly-get-json';
+import { ApiDashboardRevenueYearlyGet$Json$Params } from '../fn/dashboard/api-dashboard-revenue-yearly-get-json';
+import { apiDashboardRevenueYearlyGet$Plain } from '../fn/dashboard/api-dashboard-revenue-yearly-get-plain';
+import { ApiDashboardRevenueYearlyGet$Plain$Params } from '../fn/dashboard/api-dashboard-revenue-yearly-get-plain';
 import { apiDashboardStatsGet$Json } from '../fn/dashboard/api-dashboard-stats-get-json';
 import { ApiDashboardStatsGet$Json$Params } from '../fn/dashboard/api-dashboard-stats-get-json';
 import { apiDashboardStatsGet$Plain } from '../fn/dashboard/api-dashboard-stats-get-plain';
 import { ApiDashboardStatsGet$Plain$Params } from '../fn/dashboard/api-dashboard-stats-get-plain';
+import { BookBestSellerResponseListResultCustomModel } from '../models/book-best-seller-response-list-result-custom-model';
 import { DashboardStatsResponse } from '../models/dashboard-stats-response';
+import { RevenueResponse } from '../models/revenue-response';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService extends BaseService {
@@ -67,6 +85,194 @@ export class DashboardService extends BaseService {
   apiDashboardStatsGet$Json(params?: ApiDashboardStatsGet$Json$Params, context?: HttpContext): Observable<DashboardStatsResponse> {
     return this.apiDashboardStatsGet$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<DashboardStatsResponse>): DashboardStatsResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `apiDashboardRevenueWeeklyGet()` */
+  static readonly ApiDashboardRevenueWeeklyGetPath = '/api/Dashboard/revenue/weekly';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiDashboardRevenueWeeklyGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueWeeklyGet$Plain$Response(params?: ApiDashboardRevenueWeeklyGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<RevenueResponse>>> {
+    return apiDashboardRevenueWeeklyGet$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiDashboardRevenueWeeklyGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueWeeklyGet$Plain(params?: ApiDashboardRevenueWeeklyGet$Plain$Params, context?: HttpContext): Observable<Array<RevenueResponse>> {
+    return this.apiDashboardRevenueWeeklyGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<RevenueResponse>>): Array<RevenueResponse> => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiDashboardRevenueWeeklyGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueWeeklyGet$Json$Response(params?: ApiDashboardRevenueWeeklyGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<RevenueResponse>>> {
+    return apiDashboardRevenueWeeklyGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiDashboardRevenueWeeklyGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueWeeklyGet$Json(params?: ApiDashboardRevenueWeeklyGet$Json$Params, context?: HttpContext): Observable<Array<RevenueResponse>> {
+    return this.apiDashboardRevenueWeeklyGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<RevenueResponse>>): Array<RevenueResponse> => r.body)
+    );
+  }
+
+  /** Path part for operation `apiDashboardRevenueMonthlyGet()` */
+  static readonly ApiDashboardRevenueMonthlyGetPath = '/api/Dashboard/revenue/monthly';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiDashboardRevenueMonthlyGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueMonthlyGet$Plain$Response(params?: ApiDashboardRevenueMonthlyGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<RevenueResponse>>> {
+    return apiDashboardRevenueMonthlyGet$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiDashboardRevenueMonthlyGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueMonthlyGet$Plain(params?: ApiDashboardRevenueMonthlyGet$Plain$Params, context?: HttpContext): Observable<Array<RevenueResponse>> {
+    return this.apiDashboardRevenueMonthlyGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<RevenueResponse>>): Array<RevenueResponse> => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiDashboardRevenueMonthlyGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueMonthlyGet$Json$Response(params?: ApiDashboardRevenueMonthlyGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<RevenueResponse>>> {
+    return apiDashboardRevenueMonthlyGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiDashboardRevenueMonthlyGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueMonthlyGet$Json(params?: ApiDashboardRevenueMonthlyGet$Json$Params, context?: HttpContext): Observable<Array<RevenueResponse>> {
+    return this.apiDashboardRevenueMonthlyGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<RevenueResponse>>): Array<RevenueResponse> => r.body)
+    );
+  }
+
+  /** Path part for operation `apiDashboardRevenueYearlyGet()` */
+  static readonly ApiDashboardRevenueYearlyGetPath = '/api/Dashboard/revenue/yearly';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiDashboardRevenueYearlyGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueYearlyGet$Plain$Response(params?: ApiDashboardRevenueYearlyGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<RevenueResponse>>> {
+    return apiDashboardRevenueYearlyGet$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiDashboardRevenueYearlyGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueYearlyGet$Plain(params?: ApiDashboardRevenueYearlyGet$Plain$Params, context?: HttpContext): Observable<Array<RevenueResponse>> {
+    return this.apiDashboardRevenueYearlyGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<RevenueResponse>>): Array<RevenueResponse> => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiDashboardRevenueYearlyGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueYearlyGet$Json$Response(params?: ApiDashboardRevenueYearlyGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<RevenueResponse>>> {
+    return apiDashboardRevenueYearlyGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiDashboardRevenueYearlyGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardRevenueYearlyGet$Json(params?: ApiDashboardRevenueYearlyGet$Json$Params, context?: HttpContext): Observable<Array<RevenueResponse>> {
+    return this.apiDashboardRevenueYearlyGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<RevenueResponse>>): Array<RevenueResponse> => r.body)
+    );
+  }
+
+  /** Path part for operation `apiDashboardBestSellersGet()` */
+  static readonly ApiDashboardBestSellersGetPath = '/api/Dashboard/best-sellers';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiDashboardBestSellersGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardBestSellersGet$Plain$Response(params?: ApiDashboardBestSellersGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<BookBestSellerResponseListResultCustomModel>> {
+    return apiDashboardBestSellersGet$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiDashboardBestSellersGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardBestSellersGet$Plain(params?: ApiDashboardBestSellersGet$Plain$Params, context?: HttpContext): Observable<BookBestSellerResponseListResultCustomModel> {
+    return this.apiDashboardBestSellersGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookBestSellerResponseListResultCustomModel>): BookBestSellerResponseListResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiDashboardBestSellersGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardBestSellersGet$Json$Response(params?: ApiDashboardBestSellersGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<BookBestSellerResponseListResultCustomModel>> {
+    return apiDashboardBestSellersGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiDashboardBestSellersGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiDashboardBestSellersGet$Json(params?: ApiDashboardBestSellersGet$Json$Params, context?: HttpContext): Observable<BookBestSellerResponseListResultCustomModel> {
+    return this.apiDashboardBestSellersGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<BookBestSellerResponseListResultCustomModel>): BookBestSellerResponseListResultCustomModel => r.body)
     );
   }
 

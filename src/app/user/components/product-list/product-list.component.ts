@@ -66,7 +66,7 @@ export class ProductListComponent implements OnInit {
 
     const bookId = book.bookId!;
     if (this.favoriteBookIds.includes(bookId)) {
-      this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({
+      this.favoriteService.apiFavoriteUserBookDelete$Json({
         userId: user.userId,
         bookId
       }).subscribe({
@@ -78,7 +78,7 @@ export class ProductListComponent implements OnInit {
       });
     } else {
       const request: FavoriteRequest = { userId: user.userId, bookId };
-      this.favoriteService.apiFavoriteAddPost$Json({ body: request }).subscribe({
+      this.favoriteService.apiFavoritePost$Json({ body: request }).subscribe({
         next: res => {
           if (res.success) {
             this.favoriteBookIds.push(bookId);

@@ -30,4 +30,4 @@ export function apiFavoriteUserUserIdGet$Plain(http: HttpClient, rootUrl: string
   );
 }
 
-apiFavoriteUserUserIdGet$Plain.PATH = '/api/Favorite/User/{userId}';
+apiFavoriteUserUserIdGet$Plain.PATH = '/api/Favorite/user/{userId}';

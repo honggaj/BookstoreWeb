@@ -36,7 +36,7 @@ export class VoucherCreateComponent {
     const request: VoucherRequest = this.voucherForm.value;
     this.isLoading = true;
 
-    this.voucherService.apiVoucherCreatePost$Json({ body: request }).subscribe({
+    this.voucherService.apiVoucherPost$Json({ body: request }).subscribe({
       next: (res) => {
         this.message = res.message || 'Tạo voucher thành công!';
         this.voucherForm.reset();

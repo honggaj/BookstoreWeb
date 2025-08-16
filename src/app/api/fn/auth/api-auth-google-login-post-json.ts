@@ -31,4 +31,4 @@ export function apiAuthGoogleLoginPost$Json(http: HttpClient, rootUrl: string, p
   );
 }
 
-apiAuthGoogleLoginPost$Json.PATH = '/api/Auth/GoogleLogin';
+apiAuthGoogleLoginPost$Json.PATH = '/api/Auth/google-login';

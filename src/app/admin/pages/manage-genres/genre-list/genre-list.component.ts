@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GenreService } from '../../../../api/services';
 import { Router } from '@angular/router';
 import { GenreResponse } from '../../../../api/models';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-genre-list',
@@ -55,10 +56,29 @@ export class GenreListComponent implements OnInit {
     this.router.navigate(['/genres/genre-update', genre.genreId]);
     console.log('TODO: Mở form sửa thể loại', genre);
   }
-
-  deleteGenre(id: number) {
-    if (confirm('Xác nhận xóa?')) {
-      alert(`TODO: Gọi API xóa thể loại ID: ${id}`);
-    }
+ deleteGenre(id: number): void {
+    Swal.fire({
+      title: 'Bạn có chắc muốn xoá?',
+      text: 'Hành động này sẽ không thể hoàn tác!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Xoá',
+      cancelButtonText: 'Huỷ',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.genreService.apiGenreIdDelete$Json({ id }).subscribe({
+          next: () => {
+            Swal.fire('Đã xoá!', 'Thể loại đã được xoá thành công.', 'success');
+            this.loadGenres();
+          },
+          error: (err) => {
+            console.error(err);
+            Swal.fire('Lỗi', 'Xoá thể loại thất bại.', 'error');
+          }
+        });
+      }
+    });
   }
 }

@@ -3,13 +3,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { OrderListComponent } from './pages/manage-orders/order-list/order-list.component';
 import { UserListComponent } from './pages/manage-users/user-list/user-list.component';
+import { AuthGuard } from '../guard/auth.guard';
+import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent, // layout chính
+    component: AdminLayoutComponent, // layout chính
+        canActivate: [AuthGuard],  // <-- thêm đây
+
     children: [
+        {
+        path: 'dashboard',component:DashboardComponent,
+         
+      },
       {
         path: 'books',
         loadChildren: () =>

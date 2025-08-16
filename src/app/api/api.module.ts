@@ -8,7 +8,6 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { AuthService } from './services/auth.service';
 import { BookService } from './services/book.service';
-import { BookStoreApiService } from './services/book-store-api.service';
 import { ComboService } from './services/combo.service';
 import { ContactService } from './services/contact.service';
 import { DashboardService } from './services/dashboard.service';
@@ -19,7 +18,6 @@ import { ReviewService } from './services/review.service';
 import { ShippingAddressService } from './services/shipping-address.service';
 import { UserService } from './services/user.service';
 import { VoucherService } from './services/voucher.service';
-import { WeatherForecastService } from './services/weather-forecast.service';
 
 /**
  * Module that provides all services and configuration.
@@ -31,7 +29,6 @@ import { WeatherForecastService } from './services/weather-forecast.service';
   providers: [
     AuthService,
     BookService,
-    BookStoreApiService,
     ComboService,
     ContactService,
     DashboardService,
@@ -42,7 +39,6 @@ import { WeatherForecastService } from './services/weather-forecast.service';
     ShippingAddressService,
     UserService,
     VoucherService,
-    WeatherForecastService,
     ApiConfiguration
   ],
 })

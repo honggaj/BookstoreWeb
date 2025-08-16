@@ -11,24 +11,24 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { apiUserChangePasswordPost } from '../fn/user/api-user-change-password-post';
-import { ApiUserChangePasswordPost$Params } from '../fn/user/api-user-change-password-post';
-import { apiUserCreatePost } from '../fn/user/api-user-create-post';
-import { ApiUserCreatePost$Params } from '../fn/user/api-user-create-post';
-import { apiUserDeleteIdDelete } from '../fn/user/api-user-delete-id-delete';
-import { ApiUserDeleteIdDelete$Params } from '../fn/user/api-user-delete-id-delete';
+import { apiUserChangepasswordPost } from '../fn/user/api-user-changepassword-post';
+import { ApiUserChangepasswordPost$Params } from '../fn/user/api-user-changepassword-post';
 import { apiUserGet$Json } from '../fn/user/api-user-get-json';
 import { ApiUserGet$Json$Params } from '../fn/user/api-user-get-json';
 import { apiUserGet$Plain } from '../fn/user/api-user-get-plain';
 import { ApiUserGet$Plain$Params } from '../fn/user/api-user-get-plain';
+import { apiUserIdDelete } from '../fn/user/api-user-id-delete';
+import { ApiUserIdDelete$Params } from '../fn/user/api-user-id-delete';
 import { apiUserIdGet$Json } from '../fn/user/api-user-id-get-json';
 import { ApiUserIdGet$Json$Params } from '../fn/user/api-user-id-get-json';
 import { apiUserIdGet$Plain } from '../fn/user/api-user-id-get-plain';
 import { ApiUserIdGet$Plain$Params } from '../fn/user/api-user-id-get-plain';
+import { apiUserIdPut } from '../fn/user/api-user-id-put';
+import { ApiUserIdPut$Params } from '../fn/user/api-user-id-put';
+import { apiUserPost } from '../fn/user/api-user-post';
+import { ApiUserPost$Params } from '../fn/user/api-user-post';
 import { apiUserSearchGet } from '../fn/user/api-user-search-get';
 import { ApiUserSearchGet$Params } from '../fn/user/api-user-search-get';
-import { apiUserUpdateIdPut } from '../fn/user/api-user-update-id-put';
-import { ApiUserUpdateIdPut$Params } from '../fn/user/api-user-update-id-put';
 import { UserResponseListResultCustomModel } from '../models/user-response-list-result-custom-model';
 import { UserResponseResultCustomModel } from '../models/user-response-result-custom-model';
 
@@ -85,6 +85,31 @@ export class UserService extends BaseService {
     );
   }
 
+  /** Path part for operation `apiUserPost()` */
+  static readonly ApiUserPostPath = '/api/User';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiUserPost()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiUserPost$Response(params?: ApiUserPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiUserPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiUserPost$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiUserPost(params?: ApiUserPost$Params, context?: HttpContext): Observable<void> {
+    return this.apiUserPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
   /** Path part for operation `apiUserIdGet()` */
   static readonly ApiUserIdGetPath = '/api/User/{id}';
 
@@ -132,83 +157,58 @@ export class UserService extends BaseService {
     );
   }
 
-  /** Path part for operation `apiUserCreatePost()` */
-  static readonly ApiUserCreatePostPath = '/api/User/Create';
+  /** Path part for operation `apiUserIdPut()` */
+  static readonly ApiUserIdPutPath = '/api/User/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiUserCreatePost()` instead.
+   * To access only the response body, use `apiUserIdPut()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiUserCreatePost$Response(params?: ApiUserCreatePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiUserCreatePost(this.http, this.rootUrl, params, context);
+  apiUserIdPut$Response(params: ApiUserIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiUserIdPut(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiUserCreatePost$Response()` instead.
+   * To access the full response (for headers, for example), `apiUserIdPut$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiUserCreatePost(params?: ApiUserCreatePost$Params, context?: HttpContext): Observable<void> {
-    return this.apiUserCreatePost$Response(params, context).pipe(
+  apiUserIdPut(params: ApiUserIdPut$Params, context?: HttpContext): Observable<void> {
+    return this.apiUserIdPut$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
-  /** Path part for operation `apiUserUpdateIdPut()` */
-  static readonly ApiUserUpdateIdPutPath = '/api/User/Update/{id}';
+  /** Path part for operation `apiUserIdDelete()` */
+  static readonly ApiUserIdDeletePath = '/api/User/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiUserUpdateIdPut()` instead.
+   * To access only the response body, use `apiUserIdDelete()` instead.
    *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   * This method doesn't expect any request body.
    */
-  apiUserUpdateIdPut$Response(params: ApiUserUpdateIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiUserUpdateIdPut(this.http, this.rootUrl, params, context);
+  apiUserIdDelete$Response(params: ApiUserIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiUserIdDelete(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiUserUpdateIdPut$Response()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiUserUpdateIdPut(params: ApiUserUpdateIdPut$Params, context?: HttpContext): Observable<void> {
-    return this.apiUserUpdateIdPut$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
-    );
-  }
-
-  /** Path part for operation `apiUserDeleteIdDelete()` */
-  static readonly ApiUserDeleteIdDeletePath = '/api/User/Delete/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiUserDeleteIdDelete()` instead.
+   * To access the full response (for headers, for example), `apiUserIdDelete$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiUserDeleteIdDelete$Response(params: ApiUserDeleteIdDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiUserDeleteIdDelete(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiUserDeleteIdDelete$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiUserDeleteIdDelete(params: ApiUserDeleteIdDelete$Params, context?: HttpContext): Observable<void> {
-    return this.apiUserDeleteIdDelete$Response(params, context).pipe(
+  apiUserIdDelete(params: ApiUserIdDelete$Params, context?: HttpContext): Observable<void> {
+    return this.apiUserIdDelete$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
   /** Path part for operation `apiUserSearchGet()` */
-  static readonly ApiUserSearchGetPath = '/api/User/Search';
+  static readonly ApiUserSearchGetPath = '/api/User/search';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -232,27 +232,27 @@ export class UserService extends BaseService {
     );
   }
 
-  /** Path part for operation `apiUserChangePasswordPost()` */
-  static readonly ApiUserChangePasswordPostPath = '/api/User/ChangePassword';
+  /** Path part for operation `apiUserChangepasswordPost()` */
+  static readonly ApiUserChangepasswordPostPath = '/api/User/changepassword';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiUserChangePasswordPost()` instead.
+   * To access only the response body, use `apiUserChangepasswordPost()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiUserChangePasswordPost$Response(params?: ApiUserChangePasswordPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiUserChangePasswordPost(this.http, this.rootUrl, params, context);
+  apiUserChangepasswordPost$Response(params?: ApiUserChangepasswordPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiUserChangepasswordPost(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiUserChangePasswordPost$Response()` instead.
+   * To access the full response (for headers, for example), `apiUserChangepasswordPost$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiUserChangePasswordPost(params?: ApiUserChangePasswordPost$Params, context?: HttpContext): Observable<void> {
-    return this.apiUserChangePasswordPost$Response(params, context).pipe(
+  apiUserChangepasswordPost(params?: ApiUserChangepasswordPost$Params, context?: HttpContext): Observable<void> {
+    return this.apiUserChangepasswordPost$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

@@ -30,4 +30,4 @@ export function apiAuthResetPasswordPost(http: HttpClient, rootUrl: string, para
   );
 }
 
-apiAuthResetPasswordPost.PATH = '/api/Auth/ResetPassword';
+apiAuthResetPasswordPost.PATH = '/api/Auth/reset-password';

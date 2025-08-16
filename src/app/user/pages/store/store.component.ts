@@ -101,8 +101,8 @@ export class StoreComponent implements OnInit {
     const isFav = this.favoriteBookIds.includes(bookId);
 
     const action$ = isFav
-      ? this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({ userId: user.userId, bookId })
-      : this.favoriteService.apiFavoriteAddPost$Json({ body: { userId: user.userId, bookId } });
+      ? this.favoriteService.apiFavoriteUserBookDelete$Json({ userId: user.userId, bookId })
+      : this.favoriteService.apiFavoritePost$Json({ body: { userId: user.userId, bookId } });
 
     action$.subscribe({
       next: () => {

@@ -30,4 +30,4 @@ export function apiAuthForgotPasswordPost(http: HttpClient, rootUrl: string, par
   );
 }
 
-apiAuthForgotPasswordPost.PATH = '/api/Auth/ForgotPassword';
+apiAuthForgotPasswordPost.PATH = '/api/Auth/forgot-password';

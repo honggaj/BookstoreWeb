@@ -30,4 +30,4 @@ export function apiReviewBookBookIdGet$Plain(http: HttpClient, rootUrl: string, 
   );
 }
 
-apiReviewBookBookIdGet$Plain.PATH = '/api/Review/Book/{bookId}';
+apiReviewBookBookIdGet$Plain.PATH = '/api/Review/book/{bookId}';

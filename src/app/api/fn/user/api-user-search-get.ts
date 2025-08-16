@@ -29,4 +29,4 @@ export function apiUserSearchGet(http: HttpClient, rootUrl: string, params?: Api
   );
 }
 
-apiUserSearchGet.PATH = '/api/User/Search';
+apiUserSearchGet.PATH = '/api/User/search';

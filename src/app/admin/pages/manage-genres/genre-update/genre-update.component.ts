@@ -57,7 +57,7 @@ export class GenreUpdateComponent implements OnInit {
     this.isLoading = true;
     const payload = this.genreForm.value;
 
-    this.genreService.apiGenreUpdateIdPut$Json({
+    this.genreService.apiGenreIdPut$Json({
       id: this.genreId,
       body: payload
     }).subscribe({

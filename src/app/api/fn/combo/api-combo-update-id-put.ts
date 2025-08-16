@@ -38,4 +38,4 @@ export function apiComboUpdateIdPut(http: HttpClient, rootUrl: string, params: A
   );
 }
 
-apiComboUpdateIdPut.PATH = '/api/Combo/Update/{id}';
+apiComboUpdateIdPut.PATH = '/api/Combo/update/{id}';

@@ -74,7 +74,7 @@ export class ProductCarouselComponent {
 
     if (this.favoriteBookIds.includes(bookId)) {
       // Xóa khỏi yêu thích
-      this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({
+      this.favoriteService.apiFavoriteUserBookDelete$Json({
         userId: user.userId,
         bookId
       }).subscribe({
@@ -87,7 +87,7 @@ export class ProductCarouselComponent {
     } else {
       // Thêm vào yêu thích
       const request: FavoriteRequest = { userId: user.userId, bookId };
-      this.favoriteService.apiFavoriteAddPost$Json({ body: request }).subscribe({
+      this.favoriteService.apiFavoritePost$Json({ body: request }).subscribe({
         next: res => {
           if (res.success) {
             this.favoriteBookIds.push(bookId);

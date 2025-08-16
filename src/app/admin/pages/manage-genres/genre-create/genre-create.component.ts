@@ -32,7 +32,7 @@ export class GenreCreateComponent {
     this.isLoading = true;
     const payload = this.genreForm.value;
 
-    this.genreService.apiGenreCreatePost$Json({ body: payload }).subscribe({
+    this.genreService.apiGenrePost$Json({ body: payload }).subscribe({
       next: (res) => {
         this.message = '🟢 Thêm thể loại thành công!';
         this.isSuccess = true;

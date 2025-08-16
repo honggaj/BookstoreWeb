@@ -1,147 +1,108 @@
-<div class="flex min-h-screen">
-  <!-- Sidebar - Fixed position -->
-  <aside 
-    *ngIf="isSidebarOpen" 
-    class="fixed left-0 top-0 w-64 bg-white border-r border-gray-200 flex flex-col justify-between h-screen overflow-y-auto z-10"
-  >
-   <app-sidebar></app-sidebar>
-  </aside>
-
-  <!-- Main content với margin left để tránh sidebar -->
-  <main 
-    class="flex-1 flex flex-col min-h-screen overflow-y-auto"
-    [ngClass]="{'ml-64': isSidebarOpen, 'ml-0': !isSidebarOpen}"
-  >
-    <header class="flex items-center justify-between border-b border-gray-200 px-6 py-3 bg-white sticky top-0 z-5">
-      <div class="flex items-center gap-6">
-        <button
-          aria-label="Menu"
-          class="text-gray-600 hover:text-gray-900 focus:outline-none"
-          (click)="toggleSidebar()"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
-
-        <div class="relative">
-          <input
-            class="border border-gray-300 text-xs py-1.5 pl-3 pr-10 w-48 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Ctrl + K"
-            type="search"
-          />
-          <i
-            class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"
-          >
-          </i>
-        </div>
-        <button
-          routerLink="/user/home"
-          class="bg-blue-500 text-white px-6 py-2 shadow-md transition-all duration-200 hover:bg-blue-600 active:scale-95 cursor-pointer"
-        >
-          Xem web
-        </button>
-      </div>
-      <div class="flex items-center gap-6">
-        <div class="flex items-center gap-2 cursor-pointer select-none">
-          <img
-            alt="User avatar with short brown hair and light skin tone"
-            class="rounded-full w-8 h-8"
-            height="32"
-            src="assets/images/avt.jpg"
-            width="32"
-          />
-          <span class="text-sm font-semibold text-gray-900">
-            {{ username }}
-          </span>
-        </div>
-      </div>
-    </header>
-    
-    <section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-gray-50">
-      <div class="bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
-        <p class="text-xs text-gray-500 mb-1 select-none">Total Users</p>
-        <div class="flex items-center gap-2">
-          <p class="font-extrabold text-lg text-gray-900 select-text">
-            {{ stats.totalUsers | number: '1.0-0' }}
-          </p>
-          <div
-            class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 select-text flex items-center gap-1"
-          >
-            <i class="fas fa-user-friends"></i>
-            +10%
-          </div>
-        </div>
-        <p class="text-xs text-gray-500 mt-1 select-text">Tài khoản người dùng</p>
-      </div>
-
-      <div class="bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
-        <p class="text-xs text-gray-500 mb-1 select-none">Total Books</p>
-        <div class="flex items-center gap-2">
-          <p class="font-extrabold text-lg text-gray-900 select-text">
-            {{ stats.totalBooks | number: '1.0-0' }}
-          </p>
-          <div
-            class="text-xs text-green-600 bg-green-100 px-2 py-0.5 select-text flex items-center gap-1"
-          >
-            <i class="fas fa-book"></i>
-            +12%
-          </div>
-        </div>
-        <p class="text-xs text-gray-500 mt-1 select-text">Sách đang bán</p>
-      </div>
-
-      <div class="bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
-        <p class="text-xs text-gray-500 mb-1 select-none">Total Combos</p>
-        <div class="flex items-center gap-2">
-          <p class="font-extrabold text-lg text-gray-900 select-text">
-            {{ stats.totalCombos | number: '1.0-0' }}
-          </p>
-          <div
-            class="text-xs text-pink-600 bg-pink-100 px-2 py-0.5 select-text flex items-center gap-1"
-          >
-            <i class="fas fa-gift"></i>
-            +5%
-          </div>
-        </div>
-        <p class="text-xs text-gray-500 mt-1 select-text">Combo ưu đãi</p>
-      </div>
-
-      <div class="bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between">
-        <p class="text-xs text-gray-500 mb-1 select-none">Total Orders</p>
-        <div class="flex items-center gap-2">
-          <p class="font-extrabold text-lg text-gray-900 select-text">
-            {{ stats.totalOrders | number: '1.0-0' }}
-          </p>
-          <div
-            class="text-xs text-yellow-600 bg-yellow-100 px-2 py-0.5 select-text flex items-center gap-1"
-          >
-            <i class="fas fa-shopping-cart"></i>
-            +8%
-          </div>
-        </div>
-        <p class="text-xs text-gray-500 mt-1 select-text">Đơn hàng đã đặt</p>
-      </div>
-
-      <div
-        class="col-span-full bg-white p-4 border border-gray-100 shadow-sm flex flex-col justify-between"
-      >
-        <p class="text-xs text-gray-500 mb-1 select-none">Total Sales</p>
-        <div class="flex items-center gap-2">
-          <p class="font-extrabold text-2xl text-gray-900 select-text">
-            {{ stats.totalSales | number: '1.0-0' }} VND
-          </p>
-          <div
-            class="text-xs text-purple-600 bg-purple-100 px-2 py-0.5 select-text flex items-center gap-1"
-          >
-            <i class="fas fa-coins"></i>
-            +15%
-          </div>
-        </div>
-        <p class="text-xs text-gray-500 mt-1 select-text">Doanh thu tích lũy</p>
-      </div>
-    </section>
-
-    <section class="flex-grow w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
-      <router-outlet></router-outlet>
-    </section>
-  </main>
+<section class="p-6 bg-gray-50">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <!-- Card Người dùng -->
+   <!-- Card Người dùng -->
+<div class="bg-blue-50 rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+  <div class="flex items-center justify-between mb-4">
+    <div class="bg-blue-100 p-3 rounded-lg">
+      <i class="fas fa-user-friends text-blue-600 text-xl"></i>
+    </div>
+  </div>
+  <div>
+    <p class="text-sm text-gray-500 mb-1">Tổng người dùng</p>
+    <p class="text-2xl font-bold text-gray-900 mb-1">{{ stats.totalUsers | number: '1.0-0' }}</p>
+    <p class="text-xs text-gray-400">Tài khoản người dùng</p>
+  </div>
 </div>
+
+<!-- Card Sách -->
+<div class="bg-green-50 rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+  <div class="flex items-center justify-between mb-4">
+    <div class="bg-green-100 p-3 rounded-lg">
+      <i class="fas fa-book text-green-600 text-xl"></i>
+    </div>
+  </div>
+  <div>
+    <p class="text-sm text-gray-500 mb-1">Tổng sách</p>
+    <p class="text-2xl font-bold text-gray-900 mb-1">{{ stats.totalBooks | number: '1.0-0' }}</p>
+    <p class="text-xs text-gray-400">Sách đang bán</p>
+  </div>
+</div>
+
+<!-- Card Combo -->
+<div class="bg-pink-50 rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+  <div class="flex items-center justify-between mb-4">
+    <div class="bg-pink-100 p-3 rounded-lg">
+      <i class="fas fa-gift text-pink-600 text-xl"></i>
+    </div>
+  </div>
+  <div>
+    <p class="text-sm text-gray-500 mb-1">Tổng combo</p>
+    <p class="text-2xl font-bold text-gray-900 mb-1">{{ stats.totalCombos | number: '1.0-0' }}</p>
+    <p class="text-xs text-gray-400">Combo ưu đãi</p>
+  </div>
+</div>
+
+<!-- Card Đơn hàng -->
+<div class="bg-yellow-50 rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+  <div class="flex items-center justify-between mb-4">
+    <div class="bg-yellow-100 p-3 rounded-lg">
+      <i class="fas fa-shopping-cart text-yellow-600 text-xl"></i>
+    </div>
+  </div>
+  <div>
+    <p class="text-sm text-gray-500 mb-1">Tổng đơn hàng</p>
+    <p class="text-2xl font-bold text-gray-900 mb-1">{{ stats.totalOrders | number: '1.0-0' }}</p>
+    <p class="text-xs text-gray-400">Đơn hàng đã đặt</p>
+  </div>
+</div>
+
+  </div>
+
+  <!-- Card Doanh thu lớn -->
+  <div class="bg-gradient-to-r from-purple-500 to-purple-300 rounded-xl shadow-lg p-8 text-white mb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-purple-200 text-sm mb-2">Tổng doanh thu</p>
+        <p class="text-4xl font-bold mb-2">{{ stats.totalSales | number: '1.0-0' }} VND</p>
+        <p class="text-purple-200 text-sm">Doanh thu tích lũy</p>
+      </div>
+      <div class="bg-purple-500 bg-opacity-50 p-4 rounded-full">
+        <i class="fas fa-coins text-3xl"></i>
+      </div>
+    </div>
+    <!-- <div class="flex items-center mt-4 text-sm">
+            <span class="bg-green-500 bg-opacity-30 text-green-100 px-3 py-1 rounded-full">
+              <i class="fas fa-arrow-up mr-1"></i>
+              +23% so với tháng trước
+            </span>
+          </div> -->
+  </div>
+
+  <!-- Charts Section -->
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+    <!-- Revenue Chart -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-lg font-semibold text-gray-900">Biểu đồ doanh thu</h2>
+        <!-- <div class="flex items-center gap-2">
+                <button class="text-sm text-gray-500 hover:text-gray-700 px-3 py-1 rounded-md hover:bg-gray-50">30 ngày</button>
+                <button class="text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-md">90 ngày</button>
+              </div> -->
+      </div>
+      <app-revenue-chart></app-revenue-chart>
+    </div>
+
+    <!-- Best Sellers Chart -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-lg font-semibold text-gray-900">Top 5 sách bán chạy</h2>
+        <button class="text-sm text-gray-500 hover:text-gray-700">
+          <!-- <i class="fas fa-external-link-alt"></i>
+                Xem tất cả -->
+        </button>
+      </div>
+      <app-best-sellers-chart></app-best-sellers-chart>
+    </div>
+  </div>
+</section>

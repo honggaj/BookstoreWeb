@@ -13,12 +13,19 @@ import { ManageGenresModule } from './pages/manage-genres/manage-genres.module';
 import { ManageCombosModule } from './pages/manage-combos/manage-combos.module';
 
 import { ManageVouchersModule } from './pages/manage-vouchers/manage-vouchers.module';
+import { RevenueChartComponent } from './components/revenue-chart/revenue-chart.component';
+import { NgChartsModule } from 'ng2-charts';
+import { BestSellersChartComponent } from './components/best-sellers-chart/best-sellers-chart.component';
+import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     SidebarComponent,
+    RevenueChartComponent,
+    BestSellersChartComponent,
+    AdminLayoutComponent,
 
     
    
@@ -33,7 +40,9 @@ import { ManageVouchersModule } from './pages/manage-vouchers/manage-vouchers.mo
     ManageOrdersModule,
     ManageGenresModule,
     ManageCombosModule,
-    ManageVouchersModule
+    ManageVouchersModule,
+    NgChartsModule,
+    
   ]
 })
 export class AdminModule { }

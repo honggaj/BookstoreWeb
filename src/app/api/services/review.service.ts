@@ -15,22 +15,22 @@ import { apiReviewBookBookIdGet$Json } from '../fn/review/api-review-book-book-i
 import { ApiReviewBookBookIdGet$Json$Params } from '../fn/review/api-review-book-book-id-get-json';
 import { apiReviewBookBookIdGet$Plain } from '../fn/review/api-review-book-book-id-get-plain';
 import { ApiReviewBookBookIdGet$Plain$Params } from '../fn/review/api-review-book-book-id-get-plain';
-import { apiReviewCreatePost$Json } from '../fn/review/api-review-create-post-json';
-import { ApiReviewCreatePost$Json$Params } from '../fn/review/api-review-create-post-json';
-import { apiReviewCreatePost$Plain } from '../fn/review/api-review-create-post-plain';
-import { ApiReviewCreatePost$Plain$Params } from '../fn/review/api-review-create-post-plain';
-import { apiReviewDeleteIdDelete$Json } from '../fn/review/api-review-delete-id-delete-json';
-import { ApiReviewDeleteIdDelete$Json$Params } from '../fn/review/api-review-delete-id-delete-json';
-import { apiReviewDeleteIdDelete$Plain } from '../fn/review/api-review-delete-id-delete-plain';
-import { ApiReviewDeleteIdDelete$Plain$Params } from '../fn/review/api-review-delete-id-delete-plain';
 import { apiReviewGet$Json } from '../fn/review/api-review-get-json';
 import { ApiReviewGet$Json$Params } from '../fn/review/api-review-get-json';
 import { apiReviewGet$Plain } from '../fn/review/api-review-get-plain';
 import { ApiReviewGet$Plain$Params } from '../fn/review/api-review-get-plain';
-import { apiReviewUpdateIdPut$Json } from '../fn/review/api-review-update-id-put-json';
-import { ApiReviewUpdateIdPut$Json$Params } from '../fn/review/api-review-update-id-put-json';
-import { apiReviewUpdateIdPut$Plain } from '../fn/review/api-review-update-id-put-plain';
-import { ApiReviewUpdateIdPut$Plain$Params } from '../fn/review/api-review-update-id-put-plain';
+import { apiReviewIdDelete$Json } from '../fn/review/api-review-id-delete-json';
+import { ApiReviewIdDelete$Json$Params } from '../fn/review/api-review-id-delete-json';
+import { apiReviewIdDelete$Plain } from '../fn/review/api-review-id-delete-plain';
+import { ApiReviewIdDelete$Plain$Params } from '../fn/review/api-review-id-delete-plain';
+import { apiReviewIdPut$Json } from '../fn/review/api-review-id-put-json';
+import { ApiReviewIdPut$Json$Params } from '../fn/review/api-review-id-put-json';
+import { apiReviewIdPut$Plain } from '../fn/review/api-review-id-put-plain';
+import { ApiReviewIdPut$Plain$Params } from '../fn/review/api-review-id-put-plain';
+import { apiReviewPost$Json } from '../fn/review/api-review-post-json';
+import { ApiReviewPost$Json$Params } from '../fn/review/api-review-post-json';
+import { apiReviewPost$Plain } from '../fn/review/api-review-post-plain';
+import { ApiReviewPost$Plain$Params } from '../fn/review/api-review-post-plain';
 import { ObjectResultCustomModel } from '../models/object-result-custom-model';
 import { ReviewResponseListResultCustomModel } from '../models/review-response-list-result-custom-model';
 
@@ -87,8 +87,55 @@ export class ReviewService extends BaseService {
     );
   }
 
+  /** Path part for operation `apiReviewPost()` */
+  static readonly ApiReviewPostPath = '/api/Review';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiReviewPost$Plain()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiReviewPost$Plain$Response(params?: ApiReviewPost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiReviewPost$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiReviewPost$Plain$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiReviewPost$Plain(params?: ApiReviewPost$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiReviewPost$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiReviewPost$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiReviewPost$Json$Response(params?: ApiReviewPost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiReviewPost$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiReviewPost$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiReviewPost$Json(params?: ApiReviewPost$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiReviewPost$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
   /** Path part for operation `apiReviewBookBookIdGet()` */
-  static readonly ApiReviewBookBookIdGetPath = '/api/Review/Book/{bookId}';
+  static readonly ApiReviewBookBookIdGetPath = '/api/Review/book/{bookId}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -134,143 +181,96 @@ export class ReviewService extends BaseService {
     );
   }
 
-  /** Path part for operation `apiReviewCreatePost()` */
-  static readonly ApiReviewCreatePostPath = '/api/Review/Create';
+  /** Path part for operation `apiReviewIdPut()` */
+  static readonly ApiReviewIdPutPath = '/api/Review/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiReviewCreatePost$Plain()` instead.
+   * To access only the response body, use `apiReviewIdPut$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiReviewCreatePost$Plain$Response(params?: ApiReviewCreatePost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiReviewCreatePost$Plain(this.http, this.rootUrl, params, context);
+  apiReviewIdPut$Plain$Response(params: ApiReviewIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiReviewIdPut$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiReviewCreatePost$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiReviewIdPut$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiReviewCreatePost$Plain(params?: ApiReviewCreatePost$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiReviewCreatePost$Plain$Response(params, context).pipe(
+  apiReviewIdPut$Plain(params: ApiReviewIdPut$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiReviewIdPut$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiReviewCreatePost$Json()` instead.
+   * To access only the response body, use `apiReviewIdPut$Json()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiReviewCreatePost$Json$Response(params?: ApiReviewCreatePost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiReviewCreatePost$Json(this.http, this.rootUrl, params, context);
+  apiReviewIdPut$Json$Response(params: ApiReviewIdPut$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiReviewIdPut$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiReviewCreatePost$Json$Response()` instead.
+   * To access the full response (for headers, for example), `apiReviewIdPut$Json$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiReviewCreatePost$Json(params?: ApiReviewCreatePost$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiReviewCreatePost$Json$Response(params, context).pipe(
+  apiReviewIdPut$Json(params: ApiReviewIdPut$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiReviewIdPut$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
-  /** Path part for operation `apiReviewUpdateIdPut()` */
-  static readonly ApiReviewUpdateIdPutPath = '/api/Review/Update/{id}';
+  /** Path part for operation `apiReviewIdDelete()` */
+  static readonly ApiReviewIdDeletePath = '/api/Review/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiReviewUpdateIdPut$Plain()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiReviewUpdateIdPut$Plain$Response(params: ApiReviewUpdateIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiReviewUpdateIdPut$Plain(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiReviewUpdateIdPut$Plain$Response()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiReviewUpdateIdPut$Plain(params: ApiReviewUpdateIdPut$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiReviewUpdateIdPut$Plain$Response(params, context).pipe(
-      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
-    );
-  }
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiReviewUpdateIdPut$Json()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiReviewUpdateIdPut$Json$Response(params: ApiReviewUpdateIdPut$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiReviewUpdateIdPut$Json(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiReviewUpdateIdPut$Json$Response()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiReviewUpdateIdPut$Json(params: ApiReviewUpdateIdPut$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiReviewUpdateIdPut$Json$Response(params, context).pipe(
-      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
-    );
-  }
-
-  /** Path part for operation `apiReviewDeleteIdDelete()` */
-  static readonly ApiReviewDeleteIdDeletePath = '/api/Review/Delete/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiReviewDeleteIdDelete$Plain()` instead.
+   * To access only the response body, use `apiReviewIdDelete$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiReviewDeleteIdDelete$Plain$Response(params: ApiReviewDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiReviewDeleteIdDelete$Plain(this.http, this.rootUrl, params, context);
+  apiReviewIdDelete$Plain$Response(params: ApiReviewIdDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiReviewIdDelete$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiReviewDeleteIdDelete$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiReviewIdDelete$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiReviewDeleteIdDelete$Plain(params: ApiReviewDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiReviewDeleteIdDelete$Plain$Response(params, context).pipe(
+  apiReviewIdDelete$Plain(params: ApiReviewIdDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiReviewIdDelete$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiReviewDeleteIdDelete$Json()` instead.
+   * To access only the response body, use `apiReviewIdDelete$Json()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiReviewDeleteIdDelete$Json$Response(params: ApiReviewDeleteIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiReviewDeleteIdDelete$Json(this.http, this.rootUrl, params, context);
+  apiReviewIdDelete$Json$Response(params: ApiReviewIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiReviewIdDelete$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiReviewDeleteIdDelete$Json$Response()` instead.
+   * To access the full response (for headers, for example), `apiReviewIdDelete$Json$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiReviewDeleteIdDelete$Json(params: ApiReviewDeleteIdDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiReviewDeleteIdDelete$Json$Response(params, context).pipe(
+  apiReviewIdDelete$Json(params: ApiReviewIdDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiReviewIdDelete$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }

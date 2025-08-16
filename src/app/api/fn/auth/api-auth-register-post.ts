@@ -30,4 +30,4 @@ export function apiAuthRegisterPost(http: HttpClient, rootUrl: string, params?: 
   );
 }
 
-apiAuthRegisterPost.PATH = '/api/Auth/Register';
+apiAuthRegisterPost.PATH = '/api/Auth/register';

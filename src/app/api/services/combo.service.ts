@@ -81,31 +81,6 @@ export class ComboService extends BaseService {
     );
   }
 
-  /** Path part for operation `apiComboCreatePost()` */
-  static readonly ApiComboCreatePostPath = '/api/Combo/Create';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiComboCreatePost()` instead.
-   *
-   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
-   */
-  apiComboCreatePost$Response(params?: ApiComboCreatePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return apiComboCreatePost(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiComboCreatePost$Response()` instead.
-   *
-   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
-   */
-  apiComboCreatePost(params?: ApiComboCreatePost$Params, context?: HttpContext): Observable<void> {
-    return this.apiComboCreatePost$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
-    );
-  }
-
   /** Path part for operation `apiComboIdGet()` */
   static readonly ApiComboIdGetPath = '/api/Combo/{id}';
 
@@ -153,8 +128,33 @@ export class ComboService extends BaseService {
     );
   }
 
+  /** Path part for operation `apiComboCreatePost()` */
+  static readonly ApiComboCreatePostPath = '/api/Combo/create';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiComboCreatePost()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  apiComboCreatePost$Response(params?: ApiComboCreatePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiComboCreatePost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiComboCreatePost$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  apiComboCreatePost(params?: ApiComboCreatePost$Params, context?: HttpContext): Observable<void> {
+    return this.apiComboCreatePost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
   /** Path part for operation `apiComboUpdateIdPut()` */
-  static readonly ApiComboUpdateIdPutPath = '/api/Combo/Update/{id}';
+  static readonly ApiComboUpdateIdPutPath = '/api/Combo/update/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -179,7 +179,7 @@ export class ComboService extends BaseService {
   }
 
   /** Path part for operation `apiComboDeleteIdDelete()` */
-  static readonly ApiComboDeleteIdDeletePath = '/api/Combo/Delete{id}';
+  static readonly ApiComboDeleteIdDeletePath = '/api/Combo/delete/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

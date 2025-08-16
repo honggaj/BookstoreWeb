@@ -29,6 +29,8 @@ export class SidebarComponent {
     {
       title: 'Manage',
       items: [
+                { label: 'Dashboard', icon: 'fas fa-text-height', link: '/dashboard' },
+
         { label: 'Tài khoản', icon: 'fas fa-text-height', link: '/users' },
         { label: 'Sách', icon: 'fas fa-palette', link: '/books' },
         { label: 'Combo sách', icon: 'fas fa-palette', link: '/combos' },

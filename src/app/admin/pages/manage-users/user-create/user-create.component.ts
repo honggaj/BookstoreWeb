@@ -33,7 +33,7 @@ export class UserCreateComponent {
     this.isLoading = true;
     const payload = this.userForm.value;
 
-    this.userService.apiUserCreatePost({ body: payload }).subscribe({
+    this.userService.apiUserPost({ body: payload }).subscribe({
       next: () => {
         this.message = '🟢 Thêm người dùng thành công!';
         setTimeout(() => {

@@ -72,7 +72,7 @@ export class FavoriteComponent {
       cancelButtonText: 'Huỷ'
     }).then(result => {
       if (result.isConfirmed) {
-        this.favoriteService.apiFavoriteDeleteByUserBookDelete$Json({
+        this.favoriteService.apiFavoriteUserBookDelete$Json({
           userId: JSON.parse(localStorage.getItem('user')!).userId,
           bookId
         }).subscribe({

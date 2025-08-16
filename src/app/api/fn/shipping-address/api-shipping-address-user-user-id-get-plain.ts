@@ -30,4 +30,4 @@ export function apiShippingAddressUserUserIdGet$Plain(http: HttpClient, rootUrl:
   );
 }
 
-apiShippingAddressUserUserIdGet$Plain.PATH = '/api/ShippingAddress/User/{userId}';
+apiShippingAddressUserUserIdGet$Plain.PATH = '/api/ShippingAddress/user/{userId}';

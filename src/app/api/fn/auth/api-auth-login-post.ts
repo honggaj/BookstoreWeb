@@ -30,4 +30,4 @@ export function apiAuthLoginPost(http: HttpClient, rootUrl: string, params?: Api
   );
 }
 
-apiAuthLoginPost.PATH = '/api/Auth/Login';
+apiAuthLoginPost.PATH = '/api/Auth/login';

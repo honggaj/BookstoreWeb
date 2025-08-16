@@ -58,7 +58,7 @@ export class UserUpdateComponent implements OnInit {
     this.isLoading = true;
     const payload = this.userForm.value;
 
-    this.userService.apiUserUpdateIdPut({
+    this.userService.apiUserIdPut({
       id: this.userId,
       body: payload
     }).subscribe({

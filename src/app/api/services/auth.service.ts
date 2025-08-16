@@ -32,7 +32,7 @@ export class AuthService extends BaseService {
   }
 
   /** Path part for operation `apiAuthLoginPost()` */
-  static readonly ApiAuthLoginPostPath = '/api/Auth/Login';
+  static readonly ApiAuthLoginPostPath = '/api/Auth/login';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -57,7 +57,7 @@ export class AuthService extends BaseService {
   }
 
   /** Path part for operation `apiAuthRegisterPost()` */
-  static readonly ApiAuthRegisterPostPath = '/api/Auth/Register';
+  static readonly ApiAuthRegisterPostPath = '/api/Auth/register';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -82,7 +82,7 @@ export class AuthService extends BaseService {
   }
 
   /** Path part for operation `apiAuthForgotPasswordPost()` */
-  static readonly ApiAuthForgotPasswordPostPath = '/api/Auth/ForgotPassword';
+  static readonly ApiAuthForgotPasswordPostPath = '/api/Auth/forgot-password';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -107,7 +107,7 @@ export class AuthService extends BaseService {
   }
 
   /** Path part for operation `apiAuthResetPasswordPost()` */
-  static readonly ApiAuthResetPasswordPostPath = '/api/Auth/ResetPassword';
+  static readonly ApiAuthResetPasswordPostPath = '/api/Auth/reset-password';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -132,7 +132,7 @@ export class AuthService extends BaseService {
   }
 
   /** Path part for operation `apiAuthGoogleLoginPost()` */
-  static readonly ApiAuthGoogleLoginPostPath = '/api/Auth/GoogleLogin';
+  static readonly ApiAuthGoogleLoginPostPath = '/api/Auth/google-login';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

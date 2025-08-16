@@ -4,7 +4,6 @@
 
 export { AuthService } from './services/auth.service';
 export { BookService } from './services/book.service';
-export { BookStoreApiService } from './services/book-store-api.service';
 export { ComboService } from './services/combo.service';
 export { ContactService } from './services/contact.service';
 export { DashboardService } from './services/dashboard.service';
@@ -15,4 +14,3 @@ export { ReviewService } from './services/review.service';
 export { ShippingAddressService } from './services/shipping-address.service';
 export { UserService } from './services/user.service';
 export { VoucherService } from './services/voucher.service';
-export { WeatherForecastService } from './services/weather-forecast.service';

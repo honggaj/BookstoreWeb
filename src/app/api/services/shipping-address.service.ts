@@ -11,22 +11,22 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { apiShippingAddressCreatePost$Json } from '../fn/shipping-address/api-shipping-address-create-post-json';
-import { ApiShippingAddressCreatePost$Json$Params } from '../fn/shipping-address/api-shipping-address-create-post-json';
-import { apiShippingAddressCreatePost$Plain } from '../fn/shipping-address/api-shipping-address-create-post-plain';
-import { ApiShippingAddressCreatePost$Plain$Params } from '../fn/shipping-address/api-shipping-address-create-post-plain';
-import { apiShippingAddressDeleteIdDelete$Json } from '../fn/shipping-address/api-shipping-address-delete-id-delete-json';
-import { ApiShippingAddressDeleteIdDelete$Json$Params } from '../fn/shipping-address/api-shipping-address-delete-id-delete-json';
-import { apiShippingAddressDeleteIdDelete$Plain } from '../fn/shipping-address/api-shipping-address-delete-id-delete-plain';
-import { ApiShippingAddressDeleteIdDelete$Plain$Params } from '../fn/shipping-address/api-shipping-address-delete-id-delete-plain';
 import { apiShippingAddressGet$Json } from '../fn/shipping-address/api-shipping-address-get-json';
 import { ApiShippingAddressGet$Json$Params } from '../fn/shipping-address/api-shipping-address-get-json';
 import { apiShippingAddressGet$Plain } from '../fn/shipping-address/api-shipping-address-get-plain';
 import { ApiShippingAddressGet$Plain$Params } from '../fn/shipping-address/api-shipping-address-get-plain';
-import { apiShippingAddressUpdateIdPut$Json } from '../fn/shipping-address/api-shipping-address-update-id-put-json';
-import { ApiShippingAddressUpdateIdPut$Json$Params } from '../fn/shipping-address/api-shipping-address-update-id-put-json';
-import { apiShippingAddressUpdateIdPut$Plain } from '../fn/shipping-address/api-shipping-address-update-id-put-plain';
-import { ApiShippingAddressUpdateIdPut$Plain$Params } from '../fn/shipping-address/api-shipping-address-update-id-put-plain';
+import { apiShippingAddressIdDelete$Json } from '../fn/shipping-address/api-shipping-address-id-delete-json';
+import { ApiShippingAddressIdDelete$Json$Params } from '../fn/shipping-address/api-shipping-address-id-delete-json';
+import { apiShippingAddressIdDelete$Plain } from '../fn/shipping-address/api-shipping-address-id-delete-plain';
+import { ApiShippingAddressIdDelete$Plain$Params } from '../fn/shipping-address/api-shipping-address-id-delete-plain';
+import { apiShippingAddressIdPut$Json } from '../fn/shipping-address/api-shipping-address-id-put-json';
+import { ApiShippingAddressIdPut$Json$Params } from '../fn/shipping-address/api-shipping-address-id-put-json';
+import { apiShippingAddressIdPut$Plain } from '../fn/shipping-address/api-shipping-address-id-put-plain';
+import { ApiShippingAddressIdPut$Plain$Params } from '../fn/shipping-address/api-shipping-address-id-put-plain';
+import { apiShippingAddressPost$Json } from '../fn/shipping-address/api-shipping-address-post-json';
+import { ApiShippingAddressPost$Json$Params } from '../fn/shipping-address/api-shipping-address-post-json';
+import { apiShippingAddressPost$Plain } from '../fn/shipping-address/api-shipping-address-post-plain';
+import { ApiShippingAddressPost$Plain$Params } from '../fn/shipping-address/api-shipping-address-post-plain';
 import { apiShippingAddressUserUserIdGet$Json } from '../fn/shipping-address/api-shipping-address-user-user-id-get-json';
 import { ApiShippingAddressUserUserIdGet$Json$Params } from '../fn/shipping-address/api-shipping-address-user-user-id-get-json';
 import { apiShippingAddressUserUserIdGet$Plain } from '../fn/shipping-address/api-shipping-address-user-user-id-get-plain';
@@ -87,8 +87,55 @@ export class ShippingAddressService extends BaseService {
     );
   }
 
+  /** Path part for operation `apiShippingAddressPost()` */
+  static readonly ApiShippingAddressPostPath = '/api/ShippingAddress';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiShippingAddressPost$Plain()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiShippingAddressPost$Plain$Response(params?: ApiShippingAddressPost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiShippingAddressPost$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiShippingAddressPost$Plain$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiShippingAddressPost$Plain(params?: ApiShippingAddressPost$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiShippingAddressPost$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiShippingAddressPost$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiShippingAddressPost$Json$Response(params?: ApiShippingAddressPost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiShippingAddressPost$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiShippingAddressPost$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiShippingAddressPost$Json(params?: ApiShippingAddressPost$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiShippingAddressPost$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
   /** Path part for operation `apiShippingAddressUserUserIdGet()` */
-  static readonly ApiShippingAddressUserUserIdGetPath = '/api/ShippingAddress/User/{userId}';
+  static readonly ApiShippingAddressUserUserIdGetPath = '/api/ShippingAddress/user/{userId}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -134,143 +181,96 @@ export class ShippingAddressService extends BaseService {
     );
   }
 
-  /** Path part for operation `apiShippingAddressCreatePost()` */
-  static readonly ApiShippingAddressCreatePostPath = '/api/ShippingAddress/Create';
+  /** Path part for operation `apiShippingAddressIdPut()` */
+  static readonly ApiShippingAddressIdPutPath = '/api/ShippingAddress/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiShippingAddressCreatePost$Plain()` instead.
+   * To access only the response body, use `apiShippingAddressIdPut$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiShippingAddressCreatePost$Plain$Response(params?: ApiShippingAddressCreatePost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiShippingAddressCreatePost$Plain(this.http, this.rootUrl, params, context);
+  apiShippingAddressIdPut$Plain$Response(params: ApiShippingAddressIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiShippingAddressIdPut$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiShippingAddressCreatePost$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiShippingAddressIdPut$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiShippingAddressCreatePost$Plain(params?: ApiShippingAddressCreatePost$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiShippingAddressCreatePost$Plain$Response(params, context).pipe(
+  apiShippingAddressIdPut$Plain(params: ApiShippingAddressIdPut$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiShippingAddressIdPut$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiShippingAddressCreatePost$Json()` instead.
+   * To access only the response body, use `apiShippingAddressIdPut$Json()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiShippingAddressCreatePost$Json$Response(params?: ApiShippingAddressCreatePost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiShippingAddressCreatePost$Json(this.http, this.rootUrl, params, context);
+  apiShippingAddressIdPut$Json$Response(params: ApiShippingAddressIdPut$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiShippingAddressIdPut$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiShippingAddressCreatePost$Json$Response()` instead.
+   * To access the full response (for headers, for example), `apiShippingAddressIdPut$Json$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiShippingAddressCreatePost$Json(params?: ApiShippingAddressCreatePost$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiShippingAddressCreatePost$Json$Response(params, context).pipe(
+  apiShippingAddressIdPut$Json(params: ApiShippingAddressIdPut$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiShippingAddressIdPut$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
-  /** Path part for operation `apiShippingAddressUpdateIdPut()` */
-  static readonly ApiShippingAddressUpdateIdPutPath = '/api/ShippingAddress/Update/{id}';
+  /** Path part for operation `apiShippingAddressIdDelete()` */
+  static readonly ApiShippingAddressIdDeletePath = '/api/ShippingAddress/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiShippingAddressUpdateIdPut$Plain()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiShippingAddressUpdateIdPut$Plain$Response(params: ApiShippingAddressUpdateIdPut$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiShippingAddressUpdateIdPut$Plain(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiShippingAddressUpdateIdPut$Plain$Response()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiShippingAddressUpdateIdPut$Plain(params: ApiShippingAddressUpdateIdPut$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiShippingAddressUpdateIdPut$Plain$Response(params, context).pipe(
-      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
-    );
-  }
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiShippingAddressUpdateIdPut$Json()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiShippingAddressUpdateIdPut$Json$Response(params: ApiShippingAddressUpdateIdPut$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiShippingAddressUpdateIdPut$Json(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiShippingAddressUpdateIdPut$Json$Response()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiShippingAddressUpdateIdPut$Json(params: ApiShippingAddressUpdateIdPut$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiShippingAddressUpdateIdPut$Json$Response(params, context).pipe(
-      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
-    );
-  }
-
-  /** Path part for operation `apiShippingAddressDeleteIdDelete()` */
-  static readonly ApiShippingAddressDeleteIdDeletePath = '/api/ShippingAddress/Delete/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiShippingAddressDeleteIdDelete$Plain()` instead.
+   * To access only the response body, use `apiShippingAddressIdDelete$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiShippingAddressDeleteIdDelete$Plain$Response(params: ApiShippingAddressDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiShippingAddressDeleteIdDelete$Plain(this.http, this.rootUrl, params, context);
+  apiShippingAddressIdDelete$Plain$Response(params: ApiShippingAddressIdDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiShippingAddressIdDelete$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiShippingAddressDeleteIdDelete$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiShippingAddressIdDelete$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiShippingAddressDeleteIdDelete$Plain(params: ApiShippingAddressDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiShippingAddressDeleteIdDelete$Plain$Response(params, context).pipe(
+  apiShippingAddressIdDelete$Plain(params: ApiShippingAddressIdDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiShippingAddressIdDelete$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiShippingAddressDeleteIdDelete$Json()` instead.
+   * To access only the response body, use `apiShippingAddressIdDelete$Json()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiShippingAddressDeleteIdDelete$Json$Response(params: ApiShippingAddressDeleteIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiShippingAddressDeleteIdDelete$Json(this.http, this.rootUrl, params, context);
+  apiShippingAddressIdDelete$Json$Response(params: ApiShippingAddressIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiShippingAddressIdDelete$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiShippingAddressDeleteIdDelete$Json$Response()` instead.
+   * To access the full response (for headers, for example), `apiShippingAddressIdDelete$Json$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiShippingAddressDeleteIdDelete$Json(params: ApiShippingAddressDeleteIdDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiShippingAddressDeleteIdDelete$Json$Response(params, context).pipe(
+  apiShippingAddressIdDelete$Json(params: ApiShippingAddressIdDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiShippingAddressIdDelete$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }

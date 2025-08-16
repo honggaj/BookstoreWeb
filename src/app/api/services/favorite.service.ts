@@ -11,22 +11,22 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { apiFavoriteAddPost$Json } from '../fn/favorite/api-favorite-add-post-json';
-import { ApiFavoriteAddPost$Json$Params } from '../fn/favorite/api-favorite-add-post-json';
-import { apiFavoriteAddPost$Plain } from '../fn/favorite/api-favorite-add-post-plain';
-import { ApiFavoriteAddPost$Plain$Params } from '../fn/favorite/api-favorite-add-post-plain';
-import { apiFavoriteDeleteByUserBookDelete$Json } from '../fn/favorite/api-favorite-delete-by-user-book-delete-json';
-import { ApiFavoriteDeleteByUserBookDelete$Json$Params } from '../fn/favorite/api-favorite-delete-by-user-book-delete-json';
-import { apiFavoriteDeleteByUserBookDelete$Plain } from '../fn/favorite/api-favorite-delete-by-user-book-delete-plain';
-import { ApiFavoriteDeleteByUserBookDelete$Plain$Params } from '../fn/favorite/api-favorite-delete-by-user-book-delete-plain';
-import { apiFavoriteDeleteIdDelete$Json } from '../fn/favorite/api-favorite-delete-id-delete-json';
-import { ApiFavoriteDeleteIdDelete$Json$Params } from '../fn/favorite/api-favorite-delete-id-delete-json';
-import { apiFavoriteDeleteIdDelete$Plain } from '../fn/favorite/api-favorite-delete-id-delete-plain';
-import { ApiFavoriteDeleteIdDelete$Plain$Params } from '../fn/favorite/api-favorite-delete-id-delete-plain';
 import { apiFavoriteGet$Json } from '../fn/favorite/api-favorite-get-json';
 import { ApiFavoriteGet$Json$Params } from '../fn/favorite/api-favorite-get-json';
 import { apiFavoriteGet$Plain } from '../fn/favorite/api-favorite-get-plain';
 import { ApiFavoriteGet$Plain$Params } from '../fn/favorite/api-favorite-get-plain';
+import { apiFavoriteIdDelete$Json } from '../fn/favorite/api-favorite-id-delete-json';
+import { ApiFavoriteIdDelete$Json$Params } from '../fn/favorite/api-favorite-id-delete-json';
+import { apiFavoriteIdDelete$Plain } from '../fn/favorite/api-favorite-id-delete-plain';
+import { ApiFavoriteIdDelete$Plain$Params } from '../fn/favorite/api-favorite-id-delete-plain';
+import { apiFavoritePost$Json } from '../fn/favorite/api-favorite-post-json';
+import { ApiFavoritePost$Json$Params } from '../fn/favorite/api-favorite-post-json';
+import { apiFavoritePost$Plain } from '../fn/favorite/api-favorite-post-plain';
+import { ApiFavoritePost$Plain$Params } from '../fn/favorite/api-favorite-post-plain';
+import { apiFavoriteUserBookDelete$Json } from '../fn/favorite/api-favorite-user-book-delete-json';
+import { ApiFavoriteUserBookDelete$Json$Params } from '../fn/favorite/api-favorite-user-book-delete-json';
+import { apiFavoriteUserBookDelete$Plain } from '../fn/favorite/api-favorite-user-book-delete-plain';
+import { ApiFavoriteUserBookDelete$Plain$Params } from '../fn/favorite/api-favorite-user-book-delete-plain';
 import { apiFavoriteUserUserIdGet$Json } from '../fn/favorite/api-favorite-user-user-id-get-json';
 import { ApiFavoriteUserUserIdGet$Json$Params } from '../fn/favorite/api-favorite-user-user-id-get-json';
 import { apiFavoriteUserUserIdGet$Plain } from '../fn/favorite/api-favorite-user-user-id-get-plain';
@@ -87,8 +87,55 @@ export class FavoriteService extends BaseService {
     );
   }
 
+  /** Path part for operation `apiFavoritePost()` */
+  static readonly ApiFavoritePostPath = '/api/Favorite';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiFavoritePost$Plain()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiFavoritePost$Plain$Response(params?: ApiFavoritePost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiFavoritePost$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiFavoritePost$Plain$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiFavoritePost$Plain(params?: ApiFavoritePost$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiFavoritePost$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiFavoritePost$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiFavoritePost$Json$Response(params?: ApiFavoritePost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiFavoritePost$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiFavoritePost$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiFavoritePost$Json(params?: ApiFavoritePost$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiFavoritePost$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
+    );
+  }
+
   /** Path part for operation `apiFavoriteUserUserIdGet()` */
-  static readonly ApiFavoriteUserUserIdGetPath = '/api/Favorite/User/{userId}';
+  static readonly ApiFavoriteUserUserIdGetPath = '/api/Favorite/user/{userId}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -134,143 +181,96 @@ export class FavoriteService extends BaseService {
     );
   }
 
-  /** Path part for operation `apiFavoriteAddPost()` */
-  static readonly ApiFavoriteAddPostPath = '/api/Favorite/Add';
+  /** Path part for operation `apiFavoriteIdDelete()` */
+  static readonly ApiFavoriteIdDeletePath = '/api/Favorite/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiFavoriteAddPost$Plain()` instead.
+   * To access only the response body, use `apiFavoriteIdDelete$Plain()` instead.
    *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   * This method doesn't expect any request body.
    */
-  apiFavoriteAddPost$Plain$Response(params?: ApiFavoriteAddPost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiFavoriteAddPost$Plain(this.http, this.rootUrl, params, context);
+  apiFavoriteIdDelete$Plain$Response(params: ApiFavoriteIdDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiFavoriteIdDelete$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiFavoriteAddPost$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiFavoriteIdDelete$Plain$Response()` instead.
    *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   * This method doesn't expect any request body.
    */
-  apiFavoriteAddPost$Plain(params?: ApiFavoriteAddPost$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiFavoriteAddPost$Plain$Response(params, context).pipe(
+  apiFavoriteIdDelete$Plain(params: ApiFavoriteIdDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiFavoriteIdDelete$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiFavoriteAddPost$Json()` instead.
+   * To access only the response body, use `apiFavoriteIdDelete$Json()` instead.
    *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   * This method doesn't expect any request body.
    */
-  apiFavoriteAddPost$Json$Response(params?: ApiFavoriteAddPost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiFavoriteAddPost$Json(this.http, this.rootUrl, params, context);
+  apiFavoriteIdDelete$Json$Response(params: ApiFavoriteIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiFavoriteIdDelete$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiFavoriteAddPost$Json$Response()` instead.
+   * To access the full response (for headers, for example), `apiFavoriteIdDelete$Json$Response()` instead.
    *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   * This method doesn't expect any request body.
    */
-  apiFavoriteAddPost$Json(params?: ApiFavoriteAddPost$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiFavoriteAddPost$Json$Response(params, context).pipe(
+  apiFavoriteIdDelete$Json(params: ApiFavoriteIdDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiFavoriteIdDelete$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
-  /** Path part for operation `apiFavoriteDeleteIdDelete()` */
-  static readonly ApiFavoriteDeleteIdDeletePath = '/api/Favorite/Delete/{id}';
+  /** Path part for operation `apiFavoriteUserBookDelete()` */
+  static readonly ApiFavoriteUserBookDeletePath = '/api/Favorite/user-book';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiFavoriteDeleteIdDelete$Plain()` instead.
+   * To access only the response body, use `apiFavoriteUserBookDelete$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiFavoriteDeleteIdDelete$Plain$Response(params: ApiFavoriteDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiFavoriteDeleteIdDelete$Plain(this.http, this.rootUrl, params, context);
+  apiFavoriteUserBookDelete$Plain$Response(params?: ApiFavoriteUserBookDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiFavoriteUserBookDelete$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiFavoriteDeleteIdDelete$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiFavoriteUserBookDelete$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiFavoriteDeleteIdDelete$Plain(params: ApiFavoriteDeleteIdDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiFavoriteDeleteIdDelete$Plain$Response(params, context).pipe(
-      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
-    );
-  }
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiFavoriteDeleteIdDelete$Json()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiFavoriteDeleteIdDelete$Json$Response(params: ApiFavoriteDeleteIdDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiFavoriteDeleteIdDelete$Json(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiFavoriteDeleteIdDelete$Json$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiFavoriteDeleteIdDelete$Json(params: ApiFavoriteDeleteIdDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiFavoriteDeleteIdDelete$Json$Response(params, context).pipe(
-      map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
-    );
-  }
-
-  /** Path part for operation `apiFavoriteDeleteByUserBookDelete()` */
-  static readonly ApiFavoriteDeleteByUserBookDeletePath = '/api/Favorite/DeleteByUserBook';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiFavoriteDeleteByUserBookDelete$Plain()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiFavoriteDeleteByUserBookDelete$Plain$Response(params?: ApiFavoriteDeleteByUserBookDelete$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiFavoriteDeleteByUserBookDelete$Plain(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiFavoriteDeleteByUserBookDelete$Plain$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiFavoriteDeleteByUserBookDelete$Plain(params?: ApiFavoriteDeleteByUserBookDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiFavoriteDeleteByUserBookDelete$Plain$Response(params, context).pipe(
+  apiFavoriteUserBookDelete$Plain(params?: ApiFavoriteUserBookDelete$Plain$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiFavoriteUserBookDelete$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiFavoriteDeleteByUserBookDelete$Json()` instead.
+   * To access only the response body, use `apiFavoriteUserBookDelete$Json()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiFavoriteDeleteByUserBookDelete$Json$Response(params?: ApiFavoriteDeleteByUserBookDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
-    return apiFavoriteDeleteByUserBookDelete$Json(this.http, this.rootUrl, params, context);
+  apiFavoriteUserBookDelete$Json$Response(params?: ApiFavoriteUserBookDelete$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<ObjectResultCustomModel>> {
+    return apiFavoriteUserBookDelete$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `apiFavoriteDeleteByUserBookDelete$Json$Response()` instead.
+   * To access the full response (for headers, for example), `apiFavoriteUserBookDelete$Json$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiFavoriteDeleteByUserBookDelete$Json(params?: ApiFavoriteDeleteByUserBookDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
-    return this.apiFavoriteDeleteByUserBookDelete$Json$Response(params, context).pipe(
+  apiFavoriteUserBookDelete$Json(params?: ApiFavoriteUserBookDelete$Json$Params, context?: HttpContext): Observable<ObjectResultCustomModel> {
+    return this.apiFavoriteUserBookDelete$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<ObjectResultCustomModel>): ObjectResultCustomModel => r.body)
     );
   }

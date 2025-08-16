@@ -36,4 +36,4 @@ export function apiComboCreatePost(http: HttpClient, rootUrl: string, params?: A
   );
 }
 
-apiComboCreatePost.PATH = '/api/Combo/Create';
+apiComboCreatePost.PATH = '/api/Combo/create';
