@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CrispService } from '../services/crisp.service';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,15 @@ import { Component } from '@angular/core';
   standalone: false,
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'BookstoreWeb';
+export class AppComponent implements OnInit {
+  
+   constructor(private crispService: CrispService) {}
+
+  ngOnInit(): void {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (user && user.role === 'User') {
+      this.crispService.load();
+    }
+  }
 }

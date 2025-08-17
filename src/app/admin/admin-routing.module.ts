@@ -47,7 +47,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/manage-users/manage-users.module').then(m => m.ManageUsersModule)
       },
-      { path: '', redirectTo: 'books', pathMatch: 'full' }
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }
 ];

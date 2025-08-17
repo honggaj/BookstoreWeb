@@ -11,6 +11,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { AuthModule } from './auth/auth.module';
 import { PaginatorModule } from 'primeng/paginator';
+import { NgChartsModule } from 'ng2-charts';
 import { UserModule } from './user/user.module';
 @NgModule({
   declarations: [
@@ -28,8 +29,8 @@ import { UserModule } from './user/user.module';
     SlickCarouselModule,
     PaginatorModule,
     AuthModule,
-    UserModule
-
+    UserModule,
+    NgChartsModule   // 👈 để đây là được
   ],
   providers: [],
   bootstrap: [AppComponent]

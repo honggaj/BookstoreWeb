@@ -70,7 +70,6 @@ export class ComboListComponent implements OnInit {
     Swal.fire({
       icon: 'success',
       title: 'Đã thêm vào giỏ hàng',
-      text: `Combo "${combo.name}" đã được thêm vào giỏ 🛒`,
       showConfirmButton: false,
       timer: 1500
     });

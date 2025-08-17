@@ -125,7 +125,6 @@ Swal.fire('Thông báo', res.message ?? '', 'info');
     Swal.fire({
       icon: 'success',
       title: 'Đã thêm vào giỏ hàng 🛒',
-      text: `"${book.title}" đã được thêm vào giỏ!`,
       showConfirmButton: false,
       timer: 1500
     });

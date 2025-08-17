@@ -23,11 +23,11 @@ export class OrderListComponent {
     this.fetchOrders();
   }
 
- fetchOrders() {
+fetchOrders() {
   this.loading = true;
   this.orderService.apiOrderGet$Json().subscribe({
     next: (res) => {
-      this.orders = res.data || [];
+      this.orders = (res.data || []).reverse(); // 👈 đảo thứ tự
       this.totalPages = Math.ceil(this.orders.length / this.pageSize);
       this.loading = false;
     },
@@ -37,6 +37,7 @@ export class OrderListComponent {
     }
   });
 }
+
 
   goToDetail(order: OrderResponse): void {
     this.router.navigate(['/orders/order-detail', order.orderId]);

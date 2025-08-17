@@ -100,7 +100,7 @@ export class SearchPageComponent implements OnInit {
   }
 
   goToDetail(bookId: number): void {
-    this.router.navigate(['/book', bookId]);
+    this.router.navigate(['user/book-detail', bookId]);
   }
 
   addToCart(book: BookResponse): void {

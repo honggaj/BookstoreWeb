@@ -184,7 +184,6 @@ this.voucherMessage = `✅ Mã "${this.voucherCode}" đã áp dụng, giảm ${t
           onApprove: (data, actions) => {
             if (actions.order) {
               return actions.order.capture().then(details => {
-                alert(`✅ Thanh toán thành công! Cảm ơn ${details.payer?.name?.given_name ?? 'bạn'}`);
                 this.paymentCompleted = true;
                 this.submitOrder();
               });
